@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="/visitekaartje/styles/style.css">
+    <title>Noya Term Card</title>
+</head>
+<body>
+
+    <main>
+
+        <article>
+            <header class="header">
+                <img class="header__logo" src="/visitekaartje/images/spider-logo.svg" alt="Spider Logo">
+                <p>Last Login: Wed 9 Nov 2022 04:47:23 PM on console</p>
+                <p>Type "help" to see available commands</p>
+            </header>
+
+            <form action="GET" id="prompt-form">
+                <fieldset class="prompt">
+                    <div>
+                        <label class="prompt__label" for="term-prompt"><span class="blue">guest</span><span class="green">@term.noya:</span><span class="blue">~</span></label>
+                        <div class="growing-input">
+                            <input class="prompt__input" type="text" name="user_prompt" id="promptInputField" placeholder="help">
+                        </div>
+                    </div>
+    
+                    <p class="prompt__time js-current_time">04:47:23 PM</p>
+                </fieldset>
+            </form>
+
+
+        </article>
+
+    </main>
+
+    <script>
+        const promptForm = document.getElementById('prompt-form');
+        const inputField = document.getElementById("promptInputField");
+        // force input field to be selected
+        inputField.focus();
+
+        // SOURCE: chat.openai.com/chat
+        inputField.addEventListener("input", function() {
+
+            if (this.value != '') {
+                this.style.width = 0;
+                const width = this.scrollWidth;
+                this.style.width = width + "px";
+                
+                return;
+            }
+
+            // back to default
+            this.style.width = 33 + "px";
+        });
+
+        // Prompt submitted
+        promptForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            console.log('submitted a prompt:');
+
+            formData.forEach(function(value, key) {
+                console.log(key + ": " + value);
+            });
+        });
+
+    </script>
+    
+</body>
+</html>
