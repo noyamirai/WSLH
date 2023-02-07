@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <link rel="stylesheet" href="https://use.typekit.net/xra3dmk.css">
     <link rel="stylesheet" href="/visitekaartje/styles/style.css">
     <title>Noya Term Card</title>
 </head>
@@ -15,6 +16,7 @@
         <article>
             <header class="header">
                 <img class="header__logo" src="/visitekaartje/images/spider-logo.svg" alt="Spider Logo">
+                <!-- TODO: display logged time via JS (localstorage) -->
                 <p>Last Login: Wed 9 Nov 2022 04:47:23 PM on console</p>
                 <p>Type "help" to see available commands</p>
             </header>
@@ -23,15 +25,30 @@
                 <fieldset class="prompt">
                     <div>
                         <label class="prompt__label" for="term-prompt"><span class="blue">guest</span><span class="green">@term.noya:</span><span class="blue">~</span></label>
-                        <div class="growing-input">
+                        <div class="growing-input js-growingInputContainer">
                             <input class="prompt__input" type="text" name="user_prompt" id="promptInputField" placeholder="help">
                         </div>
                     </div>
     
+                    <!-- TODO: show time of prompt submission/activation -->
                     <p class="prompt__time js-current_time">04:47:23 PM</p>
                 </fieldset>
             </form>
 
+            <section class="info js-about hide">
+                <div class="info__heading comment">
+                    <span class="comment__text comment__hashtags"></span>
+                    <h2 class="comment__text comment__heading">Get to know me</h2>
+                    <span class="comment__text comment__hashtags"></span>
+                </div>
+
+                <div class="info__content">
+                    <p class="js-typeWriter hide" id="text">&gt;_Hello! I guess you&#39;re here to read a little more about who I am and what I do.</p>
+                    <p class="js-typeWriter hide">&gt;_My name is Maijla Ikiz, I am a 24 y/o <s>nerd</s> full-stack web developer + designer by day and average video game enthusiast by night :)</p>
+                    <p class="js-typeWriter hide">&gt;_I am currently a third year Communication &amp; Multimedia Design student at the Amsterdam University of Applied Sciences. In the meantime I have also been working as a part-time web developer @ <a target='_blank' title="https://activo.nl" href="https://activo.nl">Activo</a> for over 4 years now.</p>
+                </div>                
+
+            </section>
 
         </article>
 
@@ -40,6 +57,172 @@
     <script>
         const promptForm = document.getElementById('prompt-form');
         const inputField = document.getElementById("promptInputField");
+
+        const typeWriterText = document.querySelectorAll('.js-typeWriter');
+        
+        const commentHeadings = document.querySelectorAll('.comment');
+
+        async function startType(string, textEl, typed, index, skip = false) {
+            return new Promise(resolve => {
+
+                if (index < string.length) {
+                    console.log('typing!');
+
+                    const char = string.charAt(index);
+                    typed += char;
+
+                    let resultObj = {
+                        finished: false,
+                        string: string,
+                        typed: typed,
+                        nIndex: index,
+                        skip: false
+                    }
+
+                    // moving onto next char (complete html entity)
+                    if (skip && char != ';') {
+                        console.log('STILL HTML ENTITY');
+                        index++;
+                        resultObj.skip = true;
+                        resultObj.nIndex = index;
+
+                        resolve(resultObj);
+                        return;
+                    }
+
+                    // If its HTML entity -> don't display until its completed (;)
+                    if (char == '&') {
+                        console.log('HTML ENTITY');
+                        index++;
+                        resultObj.skip = true;
+                        resultObj.nIndex = index;
+
+                        resolve(resultObj);
+                        return;
+                    }
+
+                    console.log('NORMAL TEXT/END OF ENTITY');
+
+                    textEl.innerHTML = typed;
+                    index++;
+
+                    resultObj.nIndex = index;
+                    resultObj.skip = false;
+
+                    setTimeout(function() {
+                        resolve(resultObj)
+                    }, 75);
+                }
+
+                if (index == string.length) {
+                    console.log('done typing, go next');
+                    resolve({finished:true})
+                    return;                
+                }
+
+            })
+        }
+
+        // REVIEW: issues with html tags (strikethrough or anchor tags)
+        async function processParagraphs(paragraphs, index) {
+            console.log('attempting paragraph index: ' + index);
+            console.log(index);
+            console.log(paragraphs.length);
+
+            // All elements have been animated
+            if (index >= paragraphs.length) {
+                console.log('DONE');
+                return;
+            }
+
+            console.log('we have permission for do-while!');
+
+            const paragraph = paragraphs[index];
+            paragraph.classList.remove('hide');
+
+            let result;  
+
+            // Will continue calling startType() until resolve has finished:true
+            do {
+                console.log('attempt...');
+                console.log(result);
+                console.log((result && result.skip ? true : false));
+                console.log('startType()');
+                
+                result = await startType(
+                    (result && result.string ? result.string : paragraph.innerHTML),
+                    paragraph, 
+                    (result && result.typed ? result.typed: ''), 
+                    (result && result.nIndex ? result.nIndex: 0), 
+                    (result && result.skip ? true : false)
+                );
+
+            } while (!result.finished);
+
+            // Finished
+            console.log('FINISHEDDDD');
+            console.log(result);
+
+            // Recursion
+            index++;
+            setTimeout(() => {
+                return processParagraphs(paragraphs, index);
+            }, 600);
+        }
+
+        // processParagraphs(typeWriterText, 0);
+
+        const getHashtags = (charCount) => {
+            let result = '';
+
+            for (let i = 0; i < charCount; i++) {
+                result += '#';
+            }
+
+            return result;
+        }
+
+        // Set styling for headings
+        commentHeadings.forEach((headingContainer) => {
+
+            const heading = headingContainer.querySelector('.comment__heading');
+            const hashtags = headingContainer.querySelectorAll('.comment__hashtags');
+
+            heading.innerHTML = heading.textContent.replace(/ /g, '&#x2022;');
+            heading.innerHTML = '#&#x2022;' + heading.textContent + '&#x2022;#';
+
+            const charCount = heading.textContent.length;
+            const hashtagString = getHashtags(charCount);
+
+            // Set hashtags
+            hashtags.forEach(spanEl => {
+                spanEl.textContent = hashtagString;
+            });
+
+        });
+
+        // the browser fully loaded HTML, and the DOM tree is built
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     // TODO: get content from API
+        //     const corsTrick = 'https://cors-anywhere.herokuapp.com/';
+        //     const url = 'https://whois.fdnd.nl/api/v1/member?id=cldepgz223wz20bw5mmlfm503';
+
+        //     fetch(corsTrick + url)
+        //     .then((response) => response.json())
+        //     .then((result) => {
+        //         console.log(result.member);
+        //         const aboutSection = document.querySelector('.js-about');
+        //         const aboutContent = aboutSection.querySelector('.info__content');
+
+        //         aboutContent.innerHTML = result.member.bio.html;
+
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     })
+        // });
+
+        // REVIEW: maybe ass on mobile?
         // force input field to be selected
         inputField.focus();
 
@@ -64,13 +247,35 @@
 
             let formData = new FormData(this);
 
+            const inputContainer = document.querySelector('.js-growingInputContainer');
+            inputContainer.classList.add('disabled');
+            inputField.disabled = true;
+            // removes focus
+            inputField.blur();
+
             console.log('submitted a prompt:');
 
-            formData.forEach(function(value, key) {
-                console.log(key + ": " + value);
+            formData.forEach(function(value) {
+                console.log(value);
+                // TODO: check if value is in command list, if so -> use it was selector id (ex: js-[about/help/etc])
+                if (value.toLowerCase() == 'about' || value.toLowerCase() == 'about-me') {
+                    const sectionToShow = document.querySelector('.js-about');
+
+                    setTimeout(() => {
+                        sectionToShow.classList.remove('hide');
+    
+                        setTimeout(() => {
+                            processParagraphs(typeWriterText, 0);
+                        }, 650);
+                    }, 500);
+
+                    return;
+                }
             });
         });
 
+        // TODO: REVIEW TIMEOUTS
+        // TODO: after form submission create new input prompt after last section
     </script>
     
 </body>

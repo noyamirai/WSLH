@@ -24,6 +24,7 @@ html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-
   --secondary-color: #37C3EC;
   
   --text-color: #707796;
+  --darker-text-color: #575C75;
   --comment-color: #454A5F;
   --highlight-color: #D3D7E9;
 
@@ -38,6 +39,8 @@ html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-
   --large-padding: 40px;
 
   --default-font: auger-mono, monospace;
+
+  --comment-width-hashtags: '#';
 }
 
 /*=============================================
@@ -63,6 +66,10 @@ html {
 body {
   position: relative;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   font-family: var(--default-font);
   color: var(--text-color);
   font-size: var(--mobile-font-size-px); font-size: var(--mobile-font-size-rem);
@@ -74,10 +81,54 @@ body {
 }
 
 /*=============================================
+  #HEADINGS
+=============================================*/
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+* + h1, * + h2, * + h3, * + h4, * + h5, * + h6 {
+  /* margin-top: 60px; */
+}
+
+h2 {
+  font-size: var(--mobile-font-size-px);
+  font-size: var(--mobile-font-size-rem);
+}
+
+/*----------  COMMENTS  ----------*/
+.comment {
+  display: inline;
+}
+
+  .comment__text {
+    position: relative;
+
+    display: block;
+
+    text-transform: uppercase;
+    font-weight: 500;
+
+    line-height: 1.1;
+  }
+
+  .comment__hashtags {
+    display: flex;
+    align-items: center;
+    height: 20px;
+  }
+
+/*=============================================
   #UTILS
 =============================================*/
 .green { color: var(--primary-color); }
 .blue { color: var(--secondary-color); }
+
+.hide { display: none; }
+
+s {
+  color: var(--darker-text-color);
+}
 
 input[type="text"] {
   border: none;
@@ -92,6 +143,7 @@ input[type="text"] {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 /*=============================================
   #MAIN
 =============================================*/
@@ -102,7 +154,36 @@ main {
 
   margin: 0 auto;
   padding: var(--large-padding) var(--default-padding);
-  width: 100%;
+  /* width: 100%; */
+}
+
+@media only screen and (min-width: 750px) {
+  main {
+    width: 65%;
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  main {
+    width: 750px;
+  }
+}
+
+
+/*=============================================
+  #CARD
+=============================================*/
+article {
+  /* border: 2px solid var(--comment-color); */
+  /* padding: var(--small-padding); */
+}
+
+@media only screen and (min-width: 600px) {
+  article {
+    /* border: none; */
+    /* padding: 0; */
+    width: 100%;
+  }
 }
 
 /*=============================================
@@ -124,12 +205,18 @@ main {
 /*=============================================
   #PROMPT
 =============================================*/
+form {
+  margin: var(--small-padding) 0 0 0;
+}
+
+form + * {
+  margin-top: var(--small-padding);
+}
+
 .prompt {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  margin: var(--default-padding) 0;
 }
 
   .prompt > div {
@@ -148,7 +235,11 @@ main {
 
       input.prompt__input {
         caret-color: transparent;
-        width: 33px;
+        width: 34px;
+
+        font-size: var(--mobile-font-size-px);
+        font-size: var(--mobile-font-size-rem);
+
         color: var(--highlight-color);
       }
 
@@ -176,6 +267,9 @@ main {
       animation: blink 1s step-end infinite;
     }
 
+    .growing-input.disabled::before {
+      display: none;
+    }
 
     @-webkit-keyframes blink {
       0% { opacity: 1.0; }
@@ -188,6 +282,29 @@ main {
       50% { opacity: 0.0; }
       100% { opacity: 1.0; }
     }
+
   .prompt__time {
     display: none;
   }
+
+/*=============================================
+  #CARD CONTENT
+=============================================*/
+.info {
+
+}
+
+  .info__heading + .info__content {
+    margin-top: var(--default-padding);
+  }
+
+  .info__content {
+
+  }
+
+    .info__content p + p {
+      margin-top: var(--small-padding);
+    }
+
+
+  /* TODO: custom text highlight styling */
