@@ -22,7 +22,14 @@ html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-
 
   --primary-color: #37EC92;
   --secondary-color: #37C3EC;
-  
+
+  --yellow: #FFAA17;
+  --red: #EC3749;
+  --purple: #AE4BFA;
+  --blue: #3D9DF7;
+  --green: #37EC92;
+  --pink: #FF48AD;
+
   --text-color: #707796;
   --darker-text-color: #575C75;
   --comment-color: #454A5F;
@@ -169,7 +176,6 @@ main {
   }
 }
 
-
 /*=============================================
   #CARD
 =============================================*/
@@ -209,7 +215,8 @@ form {
   margin: var(--small-padding) 0 0 0;
 }
 
-form + * {
+form + *,
+section + section {
   margin-top: var(--small-padding);
 }
 
@@ -306,5 +313,108 @@ form + * {
       margin-top: var(--small-padding);
     }
 
+
+/*=============================================
+  #SKILLS
+=============================================*/
+.skills {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+
+  gap: var(--small-padding);
+}
+
+  .skill__item {
+
+  }
+
+    .skill__level {
+      display: flex;
+    }
+
+      .skill__level__indicator {
+        display: flex;
+        align-items: center;
+      }
+
+      .skill__level__percentage {
+        color: var(--primary-color);
+        margin-left: 6px;
+      }
+
+/*=============================================
+  #PROJECTS
+=============================================*/
+.generic-list {
+
+}
+
+.generic-list--help {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+  .list__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list__item + .list__item {
+    margin-top: var(--default-padding);
+  }
+
+  .generic-list--help .list__item + .list__item {
+    margin-top: 4px;
+  }
+
+    .list__item a {
+      text-decoration: none;
+    }
+
+      .list__item h3 {
+        font-size: var(--mobile-font-size-px);
+        font-size: var(--mobile-font-size-rem);
+        width: 100%;
+        font-weight: 500;
+      }
+
+      .generic-list--help .list__item h3 {
+        font-weight: 600;
+        color: var(--pink);
+      }
+
+        .list__item h3 > span {
+          color: var(--comment-color);
+        }
+
+        .list__item__tags {
+          display: flex;
+          align-items: center;
+
+          margin-top: 8px;
+        }
+/*=============================================
+  #TAGS
+=============================================*/
+.tag {
+  padding: 4px 8px;
+  
+  color: var(--background-color);
+  text-transform: uppercase;
+  font-weight: 600;
+
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
+  .tag + .tag {
+    margin-left: 10px;
+  }
+
+.tag--yellow { background-color: var(--yellow); }
+.tag--red { background-color: var(--red); }
+.tag--purple { background-color: var(--purple); }
+.tag--blue { background-color: var(--blue); }
+.tag--green { background-color: var(--green); }
 
   /* TODO: custom text highlight styling */
