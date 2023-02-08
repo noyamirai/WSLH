@@ -14,6 +14,10 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 *,:after,:before{-webkit-box-sizing:inherit;-moz-box-sizing:inherit;box-sizing:inherit}
 
+
+iframe {
+  display: none!important;
+}
 /*=============================================
   #ROOT VARIABLES
 =============================================*/
@@ -161,7 +165,7 @@ main {
 
   margin: 0 auto;
   padding: var(--large-padding) var(--default-padding);
-  /* width: 100%; */
+  width: 100%;
 }
 
 @media only screen and (min-width: 750px) {
@@ -291,7 +295,7 @@ section + section {
     }
 
   .prompt__time {
-    display: none;
+    /* display: none; */
   }
 
 /*=============================================

@@ -16,9 +16,10 @@
         <article>
             <header class="header">
                 <img class="header__logo" src="/visitekaartje/images/spider-logo.svg" alt="Spider Logo">
+
                 <!-- TODO: display logged time via JS (localstorage) -->
-                <p>Last Login: Wed 9 Nov 2022 04:47:23 PM on console</p>
-                <p>Type "help" to see available commands</p>
+                <p class="js-typeWriter">Last Login: Wed 9 Nov 2022 04:47:23 PM on console</p>
+                <p class="js-typeWriter">Type "help" to see available commands</p>
             </header>
 
             <form action="GET" id="prompt-form">
@@ -30,8 +31,7 @@
                         </div>
                     </div>
     
-                    <!-- TODO: show time of prompt submission/activation -->
-                    <p class="prompt__time js-current_time">04:47:23 PM</p>
+                    <p class="prompt__time js-current_time"></p>
                 </fieldset>
             </form>
 
@@ -68,9 +68,9 @@
                 </div>
 
                 <div class="info__content">
-                    <p class="js-typeWriter hide" id="text">&gt;_Hello! I guess you&#39;re here to read a little more about who I am and what I do.</p>
-                    <p class="js-typeWriter hide">&gt;_My name is Maijla Ikiz, I am a 24 y/o <s>nerd</s> full-stack web developer + designer by day and average video game enthusiast by night :)</p>
-                    <p class="js-typeWriter hide">&gt;_I am currently a third year Communication &amp; Multimedia Design student at the Amsterdam University of Applied Sciences. In the meantime I have also been working as a part-time web developer @ <a target='_blank' title="https://activo.nl" href="https://activo.nl">Activo</a> for over 4 years now.</p>
+                    <p>&gt;_Hello! I guess you&#39;re here to read a little more about who I am and what I do.</p>
+                    <p>&gt;_My name is Maijla Ikiz, I am a 24 y/o <s>nerd</s> full-stack web developer + designer by day and average video game enthusiast by night :)</p>
+                    <p>&gt;_I am currently a third year Communication &amp; Multimedia Design student at the Amsterdam University of Applied Sciences. In the meantime I have also been working as a part-time web developer @ <a target='_blank' title="https://activo.nl" href="https://activo.nl">Activo</a> for over 4 years now.</p>
                 </div>                
 
             </section>
@@ -238,15 +238,22 @@
 
     </main>
     
+    <script src="/visitekaartje/scripts/utils.js"></script>
     <script src="/visitekaartje/scripts/partials.js"></script>
 
     <script>
-        // TODO: get by class
+
+        // TODO: REVIEW TIMEOUTS
+        // TODO: animate guest@term on load
+        // TODO: get currentTime
+
         const promptForms = document.querySelectorAll('form');
-        const articleEl = document.querySelector('article');
         const inputField = document.getElementById("promptInputField");
         const typeWriterText = document.querySelectorAll('.js-typeWriter');
         const commentHeadings = document.querySelectorAll('.comment');
+
+        let previousPrompts = {};
+        inputField.focus();
 
         async function startType(string, textEl, typed, index, skip = false) {
             return new Promise(resolve => {
@@ -358,33 +365,9 @@
 
         // processParagraphs(typeWriterText, 0);
 
-        const getHashtags = (charCount) => {
-            let result = '';
-
-            for (let i = 0; i < charCount; i++) {
-                result += '#';
-            }
-
-            return result;
-        }
-
         // Set styling for headings
         commentHeadings.forEach((headingContainer) => {
-
-            const heading = headingContainer.querySelector('.comment__heading');
-            const hashtags = headingContainer.querySelectorAll('.comment__hashtags');
-
-            heading.innerHTML = heading.textContent.replace(/ /g, '&#x2022;');
-            heading.innerHTML = '#&#x2022;' + heading.textContent + '&#x2022;#';
-
-            const charCount = heading.textContent.length;
-            const hashtagString = getHashtags(charCount);
-
-            // Set hashtags
-            hashtags.forEach(spanEl => {
-                spanEl.textContent = hashtagString;
-            });
-
+            setCommentHeading(headingContainer);
         });
 
         const getPercentageBars = (percentage) => {
@@ -410,7 +393,11 @@
             return result;
         };
 
-        window.addEventListener('load', () => {
+        // the browser fully loaded HTML, and the DOM tree is built
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTimeIndicator = document.querySelector('.js-current_time');
+            currentTimeIndicator.innerHTML = getCurrentTime();
+
             const skillIndicators = document.querySelectorAll('.js-skill-level-container');
 
             skillIndicators.forEach(container => {
@@ -422,94 +409,127 @@
                 percentageText.innerHTML = assignedLevel + '%';
                 levelBar.innerHTML = levelBarContent; 
             });
-        });
 
-        // the browser fully loaded HTML, and the DOM tree is built
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     // TODO: get content from API
-        //     const corsTrick = 'https://cors-anywhere.herokuapp.com/';
-        //     const url = 'https://whois.fdnd.nl/api/v1/member?id=cldepgz223wz20bw5mmlfm503';
+            // TODO: get content from API
+            // const corsTrick = 'https://cors-anywhere.herokuapp.com/';
+            // const url = 'https://whois.fdnd.nl/api/v1/member?id=cldepgz223wz20bw5mmlfm503';
 
-        //     fetch(corsTrick + url)
-        //     .then((response) => response.json())
-        //     .then((result) => {
-        //         console.log(result.member);
-        //         const aboutSection = document.querySelector('.js-about');
-        //         const aboutContent = aboutSection.querySelector('.info__content');
+            // fetch(corsTrick + url)
+            // .then((response) => response.json())
+            // .then((result) => {
+            //     console.log(result.member);
+            //     const aboutSection = document.querySelector('.js-about');
+            //     const aboutContent = aboutSection.querySelector('.info__content');
 
-        //         aboutContent.innerHTML = result.member.bio.html;
+            //     aboutContent.innerHTML = result.member.bio.html;
 
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     })
-        // });
-
-        // REVIEW: maybe ass on mobile?
-        // force input field to be selected
-        inputField.focus();
+            // })
+            // .catch((error) => {
+            //     console.log(error);
+            // })
+        });        
 
         // SOURCE: chat.openai.com/chat
-        inputField.addEventListener("input", function() {
+        articleElement.addEventListener("input", function(e) {
 
-            if (this.value != '') {
-                this.style.width = 0;
-                const width = this.scrollWidth;
-                this.style.width = width + "px";
+            if (e.target.value != '') {
+                e.target.style.width = 0;
+                const width = e.target.scrollWidth;
+                e.target.style.width = width + "px";
                 
                 return;
             }
 
             // back to default
-            this.style.width = 33 + "px";
+            e.target.style.width = 33 + "px";
         });
 
-        articleEl.addEventListener("submit", function(e){
+        articleElement.addEventListener("submit", function(e){
             e.preventDefault();
             
-            let formData = new FormData(e.target);
+            const commandList = ['help', 'about', 'projects', 'skills'];            
+            const inputContainer = e.target.querySelector('.js-growingInputContainer');
+            const currentInput = inputContainer.querySelector('input');
+            const allPromptInputs = document.querySelectorAll('form');
+    
+            let value = currentInput.value;
 
-            const commandList = ['help', 'about', 'projects', 'skills'];
+            previousPrompts[currentInput.id] = value;
+            value = value.toLowerCase();
 
-            const inputContainer = document.querySelector('.js-growingInputContainer');
+            if (commandList.includes(value)) {
+                inputContainer.classList.add('disabled');
+
+                currentInput.disabled = true;
+                currentInput.style.width = 'auto';
+
+                // removes focus
+                currentInput.blur();
+
+                const sectionToShow = document.querySelector('.js-' + value);
+
+                setTimeout(() => {
+
+                    if (allPromptInputs.length == 1) {
+                        const otherSections = document.querySelectorAll('section:not(.js-' + value + ')');
+
+                        if (sectionToShow) {
+                            sectionToShow.classList.remove('hide');
+                        } else {
+                            revealSection(value);
+                        }
+
+                        otherSections.forEach(section => {
+                            section.remove();
+                        });
+                    } else if (allPromptInputs.length > 1) {
+                        revealSection(value);
+                    }
+                    
+                    insertPromptPartial();
+
+                    // innerhtml resets form -> retrieve prev data and set
+                    displayPrevData(previousPrompts);
+
+                }, 200);
+
+                return;
+            }
+
+            if (value.toLowerCase() == 'clear') {
+                const toRemove = articleElement.querySelectorAll('section, form:not(:last-of-type)');
+
+                toRemove.forEach(element => {
+                    element.remove();
+                });
+
+                const currentInput = inputContainer.querySelector('input');
+                currentInput.value = null;
+
+                // add focus
+                currentInput.focus();
+
+                const currentTimeLabel = e.target.querySelector('.js-current_time');
+                currentTimeLabel.innerHTML = getCurrentTime();
+
+                return;
+            }
+
             inputContainer.classList.add('disabled');
-            inputField.disabled = true;
-            inputField.style.width = 'auto';
+
+            currentInput.disabled = true;
 
             // removes focus
-            inputField.blur();
+            currentInput.blur();
 
-            const allPromptInputs = document.querySelectorAll('form');
+            showError();
 
-            formData.forEach(function(value) {
+            // innerhtml resets form -> retrieve prev data and set
+            displayPrevData(previousPrompts);
 
-                if (commandList.includes(value.toLowerCase())) {
-                    const sectionToShow = document.querySelector('.js-' + value);
-
-                    setTimeout(() => {
-                        // TODO: if first prompt exec -> remove hide, if not -> insert new section
-                        
-                        sectionToShow.classList.remove('hide');
-                        sectionToShow.classList.add('info--revealed');
-                        
-                        insertPromptPartial(allPromptInputs.length);
-
-                        // REVIEW
-                        // setTimeout(() => {
-                        //     processParagraphs(typeWriterText, 0);
-                        // }, 650);
-                    }, 500);
-
-                    return;
-                }
-
-            });
+            return;
         });
 
-        
-
-        // TODO: REVIEW TIMEOUTS
-        // TODO: after form submission create new input prompt after last section
     </script>
     
 </body>
