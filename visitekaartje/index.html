@@ -237,13 +237,15 @@
         </article>
 
     </main>
+    
+    <script src="/visitekaartje/scripts/partials.js"></script>
 
     <script>
-        const promptForm = document.getElementById('prompt-form');
+        // TODO: get by class
+        const promptForms = document.querySelectorAll('form');
+        const articleEl = document.querySelector('article');
         const inputField = document.getElementById("promptInputField");
-
         const typeWriterText = document.querySelectorAll('.js-typeWriter');
-        
         const commentHeadings = document.querySelectorAll('.comment');
 
         async function startType(string, textEl, typed, index, skip = false) {
@@ -462,11 +464,10 @@
             this.style.width = 33 + "px";
         });
 
-        // Prompt submitted
-        promptForm.addEventListener('submit', function(e) {
+        articleEl.addEventListener("submit", function(e){
             e.preventDefault();
-
-            let formData = new FormData(this);
+            
+            let formData = new FormData(e.target);
 
             const commandList = ['help', 'about', 'projects', 'skills'];
 
@@ -474,17 +475,24 @@
             inputContainer.classList.add('disabled');
             inputField.disabled = true;
             inputField.style.width = 'auto';
+
             // removes focus
             inputField.blur();
 
+            const allPromptInputs = document.querySelectorAll('form');
+
             formData.forEach(function(value) {
 
-                // TODO: check if value is in command list, if so -> use it was selector id (ex: js-[about/help/etc])
                 if (commandList.includes(value.toLowerCase())) {
                     const sectionToShow = document.querySelector('.js-' + value);
 
                     setTimeout(() => {
+                        // TODO: if first prompt exec -> remove hide, if not -> insert new section
+                        
                         sectionToShow.classList.remove('hide');
+                        sectionToShow.classList.add('info--revealed');
+                        
+                        insertPromptPartial(allPromptInputs.length);
 
                         // REVIEW
                         // setTimeout(() => {
@@ -497,6 +505,8 @@
 
             });
         });
+
+        
 
         // TODO: REVIEW TIMEOUTS
         // TODO: after form submission create new input prompt after last section
