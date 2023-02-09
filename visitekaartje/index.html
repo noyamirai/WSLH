@@ -363,8 +363,11 @@
 
             if (e.target.id == newestPromptInput.id) {
                 const inputContainer = e.target.parentElement;
-                e.target.style.width = 100 + "%";
-                inputContainer.classList.remove('typing');
+
+                if (e.target.value == '') {
+                    inputContainer.classList.remove('typing');
+                    e.target.style.width = 100 + "%";
+                }
             }
         });
 
