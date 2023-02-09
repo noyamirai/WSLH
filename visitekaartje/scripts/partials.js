@@ -86,20 +86,26 @@ const setPromptPartial = () => {
     
     const currentTime = getCurrentTime();
 
-    const promptHtml = '<form action="GET" id="prompt-form-' + id + '"><fieldset class="prompt"><div><label class="prompt__label" for="term-prompt"><span class="blue">guest</span><span class="green">@term.noya:</span><span class="blue">~</span></label><div class="growing-input js-growingInputContainer"><input class="prompt__input" type="text" name="user_prompt" id="promptInputField-'+ id +'" placeholder="help"></div></div><p class="prompt__time js-current_time">' + currentTime + '</p></fieldset></form>';
+    const promptHtml = '<fieldset class="prompt"><div><label class="prompt__label" for="term-prompt"><span class="blue">guest</span><span class="green">@term.noya:</span><span class="blue">~</span></label><div class="growing-input js-growingInputContainer"><input class="prompt__input" type="text" name="user_prompt" id="promptInputField-'+ id +'" placeholder="help"></div></div><p class="prompt__time js-current_time">' + currentTime + '</p></fieldset>';
 
-    return promptHtml;
+    return {'html' : promptHtml, 'promptId': id};
 }
 
 const insertPromptPartial = async () => {
     const promptHtml = setPromptPartial();
 
-    let htmlObject = document.createElement('div');
-    htmlObject.innerHTML = promptHtml;
+    let htmlObject = document.createElement('form');
+    htmlObject.method = 'GET';
+    htmlObject.id = 'prompt-form-' + promptHtml.promptId;
+
+    htmlObject.innerHTML = promptHtml.html;
     articleElement.appendChild(htmlObject);
 
-    // CAUSES JUMPING
-    // articleElement.innerHTML += promptHtml;
+    // document.querySelector('form:last-of-type').scrollIntoView(false);
+    // articleElement.scroll({ top: articleElement.scrollHeight, behavior: 'smooth' });
+    // document.querySelector('form:last-of-type').scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+
 }
 
 const getSectionHeading = (sectionId) => {
@@ -200,7 +206,7 @@ const setSectionPartial = async (sectionId) => {
 
     hashtagString += '####';
 
-    let sectionHtml = '<section class="info js-' + nId + '"> <div class="info__heading comment"> <span class="comment__text comment__hashtags">' + hashtagString  + '</span> <h2 class="comment__text comment__heading">' + heading + '</h2> <span class="comment__text comment__hashtags">' + hashtagString + '</span> </div><div class="info__content">'
+    let sectionHtml = '<div class="info__heading comment"> <span class="comment__text comment__hashtags">' + hashtagString  + '</span> <h2 class="comment__text comment__heading">' + heading + '</h2> <span class="comment__text comment__hashtags">' + hashtagString + '</span> </div><div class="info__content">'
     
     // fetch
     if (sectionId == 'about') {
@@ -225,8 +231,8 @@ const setSectionPartial = async (sectionId) => {
         sectionHtml += getContent(sectionId);
     }
 
-    sectionHtml += '</div></section>';
-    return sectionHtml;
+    sectionHtml += '</div>';
+    return { 'html' : sectionHtml, 'sectionId': 'js-' + nId};
 
 };
 
@@ -236,10 +242,10 @@ const revealSection = async (sectionId) => {
 
         const sectionHtml = await setSectionPartial(sectionId);
 
-        let htmlObject = document.createElement('div');
-        htmlObject.innerHTML = sectionHtml;
+        let htmlObject = document.createElement('section');
+        htmlObject.id = sectionHtml.sectionId;
+        htmlObject.innerHTML = sectionHtml.html;
         articleElement.appendChild(htmlObject);
-        // articleElement.innerHTML = sectionHtml;
 
         return true;
 

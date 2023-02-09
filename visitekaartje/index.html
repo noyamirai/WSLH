@@ -340,6 +340,7 @@
 
         // SOURCE: chat.openai.com/chat
         articleElement.addEventListener("input", function(e) {
+            
             const inputContainer = e.target.parentElement;
 
             if (e.target.value != '') {
@@ -352,6 +353,7 @@
             }
 
             inputContainer.classList.remove('typing');
+            
             // back to default
             e.target.style.width = 33 + "px";
         });

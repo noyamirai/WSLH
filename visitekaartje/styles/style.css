@@ -77,9 +77,9 @@ html {
 body {
   position: relative;
 
-  /* display: flex;
+  display: flex;
   align-items: center;
-  justify-content: center; */
+  justify-content: center;
 
   min-height: 100vh;
 	min-height: -webkit-fill-available;
@@ -212,7 +212,6 @@ article {
   overflow-y: scroll;
   overflow-x: hidden;
 
-
   scroll-behavior: smooth;
   scroll-padding: var(--small-padding);
   width: 100%;
@@ -251,12 +250,9 @@ form {
 }
 
 form + *,
-section + section {
-  margin-top: var(--small-padding);
-}
-
+section + section,
 section + form {
-  margin-top: var(--default-padding);
+  margin-top: var(--small-padding);
 }
 
 .prompt {
@@ -282,7 +278,8 @@ section + form {
 
       input.prompt__input {
         caret-color: transparent;
-        width: 34px;
+        width: 100%;
+        /* width: 34px; */
 
         font-size: var(--mobile-font-size-px);
         font-size: var(--mobile-font-size-rem);
