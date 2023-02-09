@@ -77,14 +77,18 @@ html {
 body {
   position: relative;
 
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
+
+  min-height: 100vh;
+	min-height: -webkit-fill-available;
 
   font-family: var(--default-font);
-  color: var(--text-color);
   font-size: var(--mobile-font-size-px); font-size: var(--mobile-font-size-rem);
+  color: var(--text-color);
   line-height: 1.6;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -155,6 +159,17 @@ input[type="text"] {
   white-space: nowrap;
 }
 
+
+article::-webkit-scrollbar {
+  /* width: 10px; */
+}
+  article::-webkit-scrollbar-track {
+  background: var(--primary-color); 
+}
+  article::-webkit-scrollbar-thumb {
+    background: var(--primary-color); 
+    border-radius:10px;
+}
 /*=============================================
   #MAIN
 =============================================*/
@@ -184,14 +199,30 @@ main {
   #CARD
 =============================================*/
 article {
-  /* border: 2px solid var(--comment-color); */
-  /* padding: var(--small-padding); */
+  display: inline-block;
+
+  border: 2px solid var(--comment-color);
+  padding: var(--small-padding);
+
+  height: 450px;
+  min-height: 450px;
+
+  border-radius: 5px;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+
+  scroll-behavior: smooth;
+  scroll-padding: var(--small-padding);
+  width: 100%;
+
 }
 
 @media only screen and (min-width: 600px) {
   article {
-    /* border: none; */
-    /* padding: 0; */
+    border: none;
+    padding: 0;
     width: 100%;
   }
 }
@@ -224,8 +255,13 @@ section + section {
   margin-top: var(--small-padding);
 }
 
+section + form {
+  margin-top: var(--default-padding);
+}
+
 .prompt {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 }
@@ -265,7 +301,8 @@ section + section {
 
       top: 50%;
       bottom: 0;
-      right: -6px;
+      left: 0;
+      /* right: -6px; */
 
       transform: translateY(-50%);
 
@@ -276,6 +313,11 @@ section + section {
 
       -webkit-animation: blink 1s step-end infinite;
       animation: blink 1s step-end infinite;
+    }
+
+    .growing-input.typing::before {
+      right: -6px;
+      left: unset;
     }
 
     .growing-input.disabled::before {
@@ -295,7 +337,7 @@ section + section {
     }
 
   .prompt__time {
-    /* display: none; */
+    display: none;
   }
 
 /*=============================================
@@ -353,7 +395,11 @@ section + section {
 
 }
 
-.generic-list--help {
+* + .generic-list {
+  margin-top: var(--default-padding);
+}
+
+.generic-list--help, .generic-list--link {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
@@ -365,15 +411,26 @@ section + section {
 
   .list__item + .list__item {
     margin-top: var(--default-padding);
+    padding-top: var(--default-padding);
+
+    border-top: 2px dashed var(--comment-color);
   }
 
-  .generic-list--help .list__item + .list__item {
+  .generic-list--help .list__item + .list__item,
+  .generic-list--link .list__item + .list__item {
     margin-top: 4px;
+    padding-top: 0;
+    border: none;
   }
 
     .list__item a {
+      color: var(--secondary-color);
       text-decoration: none;
     }
+
+      .list__item a h3 {
+        font-weight: 700;
+      }
 
       .list__item h3 {
         font-size: var(--mobile-font-size-px);
@@ -382,12 +439,20 @@ section + section {
         font-weight: 500;
       }
 
-      .generic-list--help .list__item h3 {
+      .generic-list--help .list__item h3,
+      .generic-list--link .list__item h3 {
         font-weight: 600;
+      }
+
+      .generic-list--help .list__item h3 {
         color: var(--pink);
+      }
+      .generic-list--link .list__item h3 {
+        color: var(--secondary-color);
       }
 
         .list__item h3 > span {
+          font-weight: 500;
           color: var(--comment-color);
         }
 
