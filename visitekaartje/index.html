@@ -7,11 +7,29 @@
 
     <link rel="stylesheet" href="https://use.typekit.net/xra3dmk.css">
     <link rel="stylesheet" href="./styles/style.css">
-    <title>Noya Term Card</title>
+
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+
+    <title>guest@term.noya: welcome!</title>
 </head>
 <body>
 
     <main>
+        <noscript>
+            <section class="system-message">
+                <div class="info__heading comment">
+                    <span class="comment__text comment__hashtags">######################################</span>
+                    <h2 class="comment__text comment__heading">#&#x2022;Don't&#x2022;panic&#x2022;but&#x2022;something&#x2022;is&#x2022;wrong&#x2022;#</h2>
+                    <span class="comment__text comment__hashtags">######################################</span>
+                </div>
+    
+                <div class="info__content">
+                    <p>The device you are currently using does not support/let us use javascript :(</p>
+                    <p>This cool little website needs some javascript to <em>actually</em> be cool!</p>
+                </div>
+            </section>
+        </noscript>
+
 
         <article>
             <header class="header">
@@ -260,7 +278,7 @@
 
                 <div class="info__content">
                     <p>&gt;_Want to get in touch? Cool! You can contact me by sending me an <a href="mailto:planet1109@hotmail.com" target="_blank">e-mail</a>, and I will get back to you as soon as possible.</p>
-                    <p>&gt;_You might also be curious about my socials as well. Don't worry, I've got you covered!</p>
+                    <p>&gt;_You might be curious about my socials as well. Don't worry, I've got you covered!</p>
 
                     <ul class="generic-list generic-list--link">
                         <li class="list__item">
@@ -291,7 +309,6 @@
         const inputField = document.getElementById("promptInputField");
         const typeWriterText = document.querySelectorAll('.js-typeWriter');
         const commentHeadings = document.querySelectorAll('.comment');
-
         let previousPrompts = {};
         inputField.focus();
 
@@ -374,7 +391,9 @@
         articleElement.addEventListener("submit", function(e){
             e.preventDefault();
             
-            const commandList = ['help', 'about', 'projects', 'skills', 'contact'];            
+            const commandList = ['help', 'about', 'projects', 'skills', 'contact']; 
+            const sillyCommands = ['hi', 'hello', 'stinky', 'hehe'];
+
             const inputContainer = e.target.querySelector('.js-growingInputContainer');
             const currentInput = inputContainer.querySelector('input');
             const allPromptInputs = document.querySelectorAll('form');
@@ -429,9 +448,28 @@
                     // innerhtml resets form -> retrieve prev data and set
                     displayPrevData(previousPrompts);
 
-                }, 200);
+                }, 350);
 
                 return;
+            } else if (sillyCommands.includes(value)) {
+
+                inputContainer.classList.add('disabled');
+                currentInput.disabled = true;
+
+                // removes focus
+                currentInput.blur();
+                inputContainer.classList.remove('typing');
+
+                setTimeout(() => {
+                    getSillyContent(value);
+    
+                    // innerhtml resets form -> retrieve prev data and set
+                    displayPrevData(previousPrompts);
+                }, 350);
+
+
+                return;
+
             }
 
             if (value.toLowerCase() == 'clear') {
@@ -445,7 +483,7 @@
                 currentInput.value = null;
 
                 // add focus
-                currentInput.focus();
+                currentInput.blur();
                 inputContainer.classList.remove('typing');
 
                 const currentTimeLabel = e.target.querySelector('.js-current_time');
@@ -463,10 +501,13 @@
             currentInput.blur();
             inputContainer.classList.remove('typing');
 
-            showError();
-
-            // innerhtml resets form -> retrieve prev data and set
-            displayPrevData(previousPrompts);
+            setTimeout(() => {
+                
+                showError();
+    
+                // innerhtml resets form -> retrieve prev data and set
+                displayPrevData(previousPrompts);
+            }, 350);
 
             return;
         });

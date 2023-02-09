@@ -23,6 +23,7 @@ iframe {
 =============================================*/
 :root {
   --background-color: #1B1D29;
+  --dark-bg-color: #11131b;
 
   --primary-color: #37EC92;
   --secondary-color: #37C3EC;
@@ -62,7 +63,6 @@ iframe {
     --small-padding: 16px;
   }
 }
-
 /*=============================================
   #GENERAL
 =============================================*/
@@ -298,7 +298,7 @@ article {
 form {
   margin: var(--small-padding) 0 0 0;
 
-  background-color: #11131b;
+  background-color: var(--dark-bg-color);
   padding: 7px 8px;
 }
 
@@ -449,7 +449,12 @@ section + form {
 
 @media only screen and (min-width: 480px) {
   .skills {
-      grid-template-columns: repeat(2, 150px);
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (min-width: 600px) {
+  .skills {
+      grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -472,7 +477,7 @@ section + form {
       }
 
 /*=============================================
-  #PROJECTS
+  #LISTS
 =============================================*/
 .generic-list {
 
@@ -491,7 +496,7 @@ section + form {
 }
 
 .generic-list--link {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 150px);
 }
 
 @media only screen and (min-width: 480px) {
@@ -583,3 +588,37 @@ section + form {
 .tag--purple { background-color: var(--purple); }
 .tag--blue { background-color: var(--blue); }
 .tag--green { background-color: var(--green); }
+
+/*=============================================
+  #SYSTEM MESSAGE
+=============================================*/
+.system-message {
+  position: fixed;
+
+  inset: 0;
+
+  padding: var(--default-padding);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--primary-color);
+  color: var(--background-color);
+
+  z-index: 300;
+}
+
+.system-message.hide {
+  display: none;
+  position: unset;
+}
+
+  .system-message .comment__text {
+    font-weight: 700;
+  }
+
+  .system-message .info__content {
+    text-align: center;
+  }

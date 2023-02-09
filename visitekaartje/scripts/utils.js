@@ -101,7 +101,7 @@ const getCurrentTime = () => {
 
             setTimeout(function() {
                 resolve(resultObj)
-            }, 75);
+            }, 55);
         }
 
         if (index == string.length) {
