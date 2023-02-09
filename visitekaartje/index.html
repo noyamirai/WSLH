@@ -17,11 +17,11 @@
             <header class="header">
                 <img class="header__logo" src="/visitekaartje/images/spider-logo.svg" alt="Spider Logo">
 
-                <p class="js-typeWriter js-lastLog ">Last Login: Wed 9 Nov 2022 04:47:23 PM on console</p>
-                <p class="js-typeWriter ">Type "help" to see available commands</p>
+                <p class="js-typeWriter js-lastLog hide">Last Login: Wed 9 Nov 2022 04:47:23 PM on console</p>
+                <p class="js-typeWriter hide">Type "help" to see available commands</p>
             </header>
 
-            <form class="" method="GET" id="prompt-form">
+            <form class="hide" method="GET" id="prompt-form">
                 <fieldset class="prompt">
                     <div>
                         <label class="prompt__label" for="term-prompt"><span class="blue">guest</span><span class="green">@term.noya:</span><span class="blue">~</span></label>
@@ -170,7 +170,7 @@
                     <ul class="generic-list">
                         <li class="list__item">
                             <a href="https://www.cmd-amsterdam.nl/portfolio/cmd-online/">
-                                <h3>&gt;_CMD Online <span>~A browser based matching application that helps teachers of CMD create well-balanced project teams based on skills of students.</span></h3>
+                                <h3>&#128279; CMD Online <span>~A browser based matching application that helps teachers of CMD create well-balanced project teams based on skills of students.</span></h3>
                             </a>
                             <ul class="list__item__tags">
                                 <li class="tag tag--yellow">
@@ -208,7 +208,7 @@
                             </ul>
                         </li>
                         <li class="list__item">
-                                <h3>&gt;_Actiscan <span>~Web application that helps standholders scan leads via QR codes and form connections while being at an event.</span></h3>
+                            <h3>&gt;_Actiscan <span>~Web application that helps standholders scan leads via QR codes and form connections while being at an event.</span></h3>
                             <ul class="list__item__tags">
                                 <li class="tag tag--red">
                                     HTML
@@ -226,7 +226,7 @@
                         </li>
                         <li class="list__item">
                             <a href="https://www.cmd-amsterdam.nl/portfolio/hacking-simulator-1-0/" target="_blank">
-                                <h3>&gt;_Hacking Simulator <span>~A Cyberpunk 2077 inspired “simulator” I made in JS for a school assignment.</span></h3>
+                                <h3>&#128279; Hacking Simulator <span>~A Cyberpunk 2077 inspired “simulator” I made in JS for a school assignment.</span></h3>
                             </a>
                             <ul class="list__item__tags">
                                 <li class="tag tag--yellow">
@@ -265,12 +265,12 @@
                     <ul class="generic-list generic-list--link">
                         <li class="list__item">
                             <a href="https://www.linkedin.com/in/maijla-ikiz-775bab178/" target="_blank">
-                                <h3>LinkedIn</h3>
+                                <h3>&#128279; LinkedIn</h3>
                             </a>
                         </li>
                         <li class="list__item">
                             <a href="https://github.com/noyamirai" target="_blank">
-                                <h3>Github</h3>
+                                <h3>&#128279; Github</h3>
                             </a>
                         </li>
                     </ul>
@@ -313,19 +313,19 @@
             lastLogText.textContent = 'Last Login: ' + lastLogDate + ' on console';
 
             setTimeout(() => {
-                // processParagraphs(typeWriterText, 0).then(() => {
+                processParagraphs(typeWriterText, 0).then(() => {
 
-                //     setTimeout(() => {
-                //         const currentTimeIndicator = document.querySelector('.js-current_time');
-                //         currentTimeIndicator.innerHTML = getCurrentTime();
+                    setTimeout(() => {
+                        const currentTimeIndicator = document.querySelector('.js-current_time');
+                        currentTimeIndicator.innerHTML = getCurrentTime();
                         
-                //         const firstForm = document.querySelector('form');
-                //         firstForm.classList.remove('hide');
+                        const firstForm = document.querySelector('form');
+                        firstForm.classList.remove('hide');
                         
-                //         inputField.focus();
-                //     }, 550);
+                        inputField.focus();
+                    }, 550);
 
-                // })
+                })
             }, 600);
         }
 
@@ -355,7 +355,17 @@
             inputContainer.classList.remove('typing');
             
             // back to default
-            e.target.style.width = 33 + "px";
+            e.target.style.width = 100 + "%";
+        });
+
+        articleElement.addEventListener('focusout', (e) => {
+            const newestPromptInput = document.querySelector('form:last-of-type input');
+
+            if (e.target.id == newestPromptInput.id) {
+                const inputContainer = e.target.parentElement;
+                e.target.style.width = 100 + "%";
+                inputContainer.classList.remove('typing');
+            }
         });
 
         articleElement.addEventListener("submit", function(e){
@@ -433,10 +443,12 @@
 
                 // add focus
                 currentInput.focus();
+                inputContainer.classList.remove('typing');
 
                 const currentTimeLabel = e.target.querySelector('.js-current_time');
                 currentTimeLabel.innerHTML = getCurrentTime();
 
+                window.scrollTo(0, 0);
 
                 return;
             }
@@ -446,6 +458,7 @@
 
             // removes focus
             currentInput.blur();
+            inputContainer.classList.remove('typing');
 
             showError();
 

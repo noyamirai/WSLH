@@ -34,7 +34,7 @@ iframe {
   --green: #37EC92;
   --pink: #FF48AD;
 
-  --text-color: #707796;
+  --text-color: #7d85a7;
   --darker-text-color: #575C75;
   --comment-color: #454A5F;
   --highlight-color: #D3D7E9;
@@ -93,6 +93,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   background-color: var(--background-color);
+}
+
+@media only screen and (min-width: 600px) {
+  body {
+    align-items: flex-start;
+  }
 }
 
 /*=============================================
@@ -159,16 +165,20 @@ input[type="text"] {
   white-space: nowrap;
 }
 
-
 article::-webkit-scrollbar {
-  /* width: 10px; */
+  width: 4px;         
 }
-  article::-webkit-scrollbar-track {
-  background: var(--primary-color); 
+article::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
 }
-  article::-webkit-scrollbar-thumb {
-    background: var(--primary-color); 
-    border-radius:10px;
+
+::selection {
+  color: var(--background-color);
+  background: var(--highlight-color); /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  color: var(--background-color);
+  background: var(--highlight-color); /* Gecko Browsers */
 }
 /*=============================================
   #MAIN
@@ -181,11 +191,25 @@ main {
   margin: 0 auto;
   padding: var(--large-padding) var(--default-padding);
   width: 100%;
+
+  transition: width 250ms ease-in-out;
 }
 
 @media only screen and (min-width: 750px) {
   main {
-    width: 65%;
+    width: 70%;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  main {
+    width: 60%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  main {
+    width: 50%;
   }
 }
 
@@ -222,7 +246,7 @@ article {
   article {
     border: none;
     padding: 0;
-    width: 100%;
+    height: auto;
   }
 }
 
@@ -247,12 +271,15 @@ article {
 =============================================*/
 form {
   margin: var(--small-padding) 0 0 0;
+
+  background-color: #11131b;
+  padding: 7px 8px;
 }
 
 form + *,
 section + section,
 section + form {
-  margin-top: var(--small-padding);
+  margin-top: var(--default-padding);
 }
 
 .prompt {
@@ -271,14 +298,27 @@ section + form {
       font-weight: 700;
     }
 
+    .prompt__label > .blue {
+      display: none;
+    }
+
+    @media only screen and (min-width: 420px) {
+      .prompt__label > .blue {
+        display: inline;
+      }
+    }
+
     .growing-input {
       position: relative;
       margin-left: 10px;
+
+      max-width: 180px;
     }
 
       input.prompt__input {
         caret-color: transparent;
         width: 100%;
+        max-width: 180px;
         /* width: 34px; */
 
         font-size: var(--mobile-font-size-px);
@@ -288,7 +328,7 @@ section + form {
       }
 
       input.prompt__input::placeholder {
-        color: var(--comment-color);
+        color: #5b627a;
       }
 
     .growing-input::before {
@@ -321,6 +361,12 @@ section + form {
       display: none;
     }
 
+    .growing-input.disabled .prompt__input {
+      -webkit-text-fill-color: var(--highlight-color);
+      opacity: 1; /* required on iOS */
+      color: var(--highlight-color);
+    }
+
     @-webkit-keyframes blink {
       0% { opacity: 1.0; }
       50% { opacity: 0.0; }
@@ -335,6 +381,12 @@ section + form {
 
   .prompt__time {
     display: none;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .prompt__time {
+      display: block;
+    }
   }
 
 /*=============================================
@@ -420,6 +472,10 @@ section + form {
     border: none;
   }
 
+  .generic-list--link .list__item + .list__item {
+    margin: 0;
+  }
+
     .list__item a {
       color: var(--secondary-color);
       text-decoration: none;
@@ -445,19 +501,21 @@ section + form {
         color: var(--pink);
       }
       .generic-list--link .list__item h3 {
-        color: var(--secondary-color);
+        color: var(--pink);
       }
 
         .list__item h3 > span {
           font-weight: 500;
-          color: var(--comment-color);
+          color: var(--text-color);
         }
 
         .list__item__tags {
           display: flex;
           align-items: center;
+          flex-wrap: wrap;
 
-          margin-top: 8px;
+          gap: 10px;
+          margin-top: var(--small-padding);
         }
 /*=============================================
   #TAGS
@@ -474,7 +532,7 @@ section + form {
 }
 
   .tag + .tag {
-    margin-left: 10px;
+    /* margin-left: 10px; */
   }
 
 .tag--yellow { background-color: var(--yellow); }

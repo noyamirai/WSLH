@@ -174,20 +174,21 @@ const getContent = (sectionId) => {
 
     const content = {
         'help': '<ul class="generic-list generic-list--help"><li class="list__item"><h3>help</h3></li><li class="list__item"><h3>about</h3></li><li class="list__item"><h3>projects</h3></li><li class="list__item"><h3>skills</h3></li><li class="list__item"><h3>contact</h3></li><li class="list__item"><h3>clear</h3></li></ul>',
-        'projects': '<ul class="generic-list"> <li class="list__item"> <a href="https://www.cmd-amsterdam.nl/portfolio/cmd-online/"> <h3>&gt;_CMD Online <span>~A browser based matching application that helps teachers of CMD create well-balanced project teams based on skills of students.</span></h3> </a> <ul class="list__item__tags"> <li class="tag tag--yellow"> GDA 2022 Nominee </li> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> <li class="list__item"> <h3>&gt;_Activibes <span>~A tool used at work to let other know how you&#39;re feeling everyday in order to improve team awareness and closeness.</span></h3> <ul class="list__item__tags"> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> <li class="list__item"> <h3>&gt;_Actiscan <span>~Web application that helps standholders scan leads via QR codes and form connections while being at an event.</span></h3> <ul class="list__item__tags"> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> <li class="list__item"> <a href="https://www.cmd-amsterdam.nl/portfolio/hacking-simulator-1-0/" target="_blank"> <h3>&gt;_Hacking Simulator <span>~A Cyberpunk 2077 inspired “simulator” I made in JS for a school assignment.</span></h3> </a> <ul class="list__item__tags"> <li class="tag tag--yellow"> GDA 2021 Nominee </li> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> </ul>',
-        'contact': '<p>&gt;_Want to get in touch? Cool! You can contact me by sending me an <a href="mailto:planet1109@hotmail.com" target="_blank">e-mail</a>, and I will get back to you as soon as possible.</p> <p>&gt;_You might also be curious about my socials as well. Don&#39;t worry, I&#39;ve got you covered!</p> <ul class="generic-list generic-list--link"> <li class="list__item"> <a href="https://www.linkedin.com/in/maijla-ikiz-775bab178/" target="_blank"> <h3>LinkedIn</h3> </a> </li> <li class="list__item"> <a href="https://github.com/noyamirai" target="_blank"> <h3>Github</h3> </a> </li> </ul>'
+        'projects': '<ul class="generic-list"> <li class="list__item"> <a href="https://www.cmd-amsterdam.nl/portfolio/cmd-online/"> <h3>&#128279; CMD Online <span>~A browser based matching application that helps teachers of CMD create well-balanced project teams based on skills of students.</span></h3> </a> <ul class="list__item__tags"> <li class="tag tag--yellow"> GDA 2022 Nominee </li> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> <li class="list__item"> <h3>&gt;_Activibes <span>~A tool used at work to let other know how you&#39;re feeling everyday in order to improve team awareness and closeness.</span></h3> <ul class="list__item__tags"> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> <li class="list__item"> <h3>&gt;_Actiscan <span>~Web application that helps standholders scan leads via QR codes and form connections while being at an event.</span></h3> <ul class="list__item__tags"> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> <li class="list__item"> <a href="https://www.cmd-amsterdam.nl/portfolio/hacking-simulator-1-0/" target="_blank"> <h3>&#128279; Hacking Simulator <span>~A Cyberpunk 2077 inspired “simulator” I made in JS for a school assignment.</span></h3> </a> <ul class="list__item__tags"> <li class="tag tag--yellow"> GDA 2021 Nominee </li> <li class="tag tag--red"> HTML </li> <li class="tag tag--purple"> CSS </li> <li class="tag tag--blue"> JS </li> <li class="tag tag--green"> Node.js </li> </ul> </li> </ul>',
+        'contact': '<p>&gt;_Want to get in touch? Cool! You can contact me by sending me an <a href="mailto:planet1109@hotmail.com" target="_blank">e-mail</a>, and I will get back to you as soon as possible.</p> <p>&gt;_You might also be curious about my socials as well. Don&#39;t worry, I&#39;ve got you covered!</p> <ul class="generic-list generic-list--link"> <li class="list__item"> <a href="https://www.linkedin.com/in/maijla-ikiz-775bab178/" target="_blank"> <h3>&#128279; LinkedIn</h3> </a> </li> <li class="list__item"> <a href="https://github.com/noyamirai" target="_blank"> <h3>&#128279; Github</h3> </a> </li> </ul>',
+        'about': '<p>&gt;_Hello! I guess you&#39;re here to read a little more about who I am and what I do.</p> <p>&gt;_My name is Maijla Ikiz, I am a 24 y/o <s>nerd</s> full-stack web developer + designer by day and average video game enthusiast by night :)</p> <p>&gt;_I am currently a third year Communication &amp; Multimedia Design student at the Amsterdam University of Applied Sciences. In the meantime I have also been working as a part-time web developer @ <a target="_blank" title="https://activo.nl" href="https://activo.nl">Activo</a> for over 4 years now.</p>'
     }
 
     return content[sectionId];
 }
 
 const fetchAboutContent = async () => {
-    const corsTrick = 'https://cors-anywhere.herokuapp.com/';
+    // const corsTrick = 'https://cors-anywhere.herokuapp.com/';
     const url = 'https://whois.fdnd.nl/api/v1/member?id=cldepgz223wz20bw5mmlfm503';
 
-    let data = await fetch(corsTrick + url);
+    let data = await fetch(url);
     data = await data.json();
-
+    
     if (data) {
         return data;
     }
@@ -211,17 +212,17 @@ const setSectionPartial = async (sectionId) => {
     // fetch
     if (sectionId == 'about') {
 
-        // TODO: error handling
         try {
             let result = await fetchAboutContent();
 
             sectionHtml += result.member.bio.html;
-            sectionHtml += '</div></section>';
-            return sectionHtml;
+            sectionHtml += '</div>';
+            return { 'html' : sectionHtml, 'sectionId': 'js-' + nId};
 
         } catch (error) {
-            console.log(error);
-            return;
+            sectionHtml += getContent(sectionId);
+            sectionHtml += '</div>';
+            return { 'html' : sectionHtml, 'sectionId': 'js-' + nId};
         }
             
     } else if (sectionId == 'skills') {
