@@ -67,22 +67,29 @@ const setPercentageBars = () => {
 
 const setPromptPartial = () => {
 
-    const allPromptInputs = document.querySelectorAll('form');
+    const allFormElements = document.querySelectorAll('form');
     const index = 0;
-    const firstId = allPromptInputs[index].id;
+    const firstId = allFormElements[index].id;
     let id;
 
+    // First input prompt, standard id increase
     if (firstId == 'prompt-form') {
-        id = allPromptInputs.length + 1;
+        id = allFormElements.length + 1;
+    
+    // Multiple prompts created
     } else {
-        if (allPromptInputs.length == 1) {
-            id = parseInt(allPromptInputs[index].id.split('-').pop().trim()) + 1;
+
+        // Only one prompt on page due to clear
+        // Get last part of id
+        if (allFormElements.length == 1) {
+            id = parseInt(allFormElements[index].id.split('-').pop().trim()) + 1;
+        
+        // get the last part of id from most recently inserted form
         } else {
             const lastFormElement = document.querySelector('form:last-of-type');
             id = parseInt(lastFormElement.id.split('-').pop().trim()) + 1;
         }
     }
-
     
     const currentTime = getCurrentTime();
 
@@ -92,20 +99,14 @@ const setPromptPartial = () => {
 }
 
 const insertPromptPartial = async () => {
-    const promptHtml = setPromptPartial();
+    const promptData = setPromptPartial();
 
     let htmlObject = document.createElement('form');
     htmlObject.method = 'GET';
-    htmlObject.id = 'prompt-form-' + promptHtml.promptId;
+    htmlObject.id = 'prompt-form-' + promptData.promptId;
 
-    htmlObject.innerHTML = promptHtml.html;
+    htmlObject.innerHTML = promptData.html;
     articleElement.appendChild(htmlObject);
-
-    // document.querySelector('form:last-of-type').scrollIntoView(false);
-    // articleElement.scroll({ top: articleElement.scrollHeight, behavior: 'smooth' });
-    // document.querySelector('form:last-of-type').scrollIntoView({ behavior: 'smooth', block: 'end' });
-
-
 }
 
 const getSectionHeading = (sectionId) => {
@@ -273,9 +274,8 @@ const showError = () => {
 
 const revealSillyContent = (contentId) => {
 
-    if (contentId == 'hi') {
+    if (contentId == 'hi')
         contentId = 'hello';
-    }
 
     let contentHtml = getContent(contentId);
 

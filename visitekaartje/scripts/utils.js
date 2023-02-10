@@ -25,7 +25,7 @@ const displayPrevData = (previousPrompts) => {
     const newInputField = document.querySelector('input:not(:disabled)');
 
     newInputField.value = null;
-    newInputField.style.width = '33px';
+    newInputField.style.width = '100%';
     newInputField.focus();
 
     return;
