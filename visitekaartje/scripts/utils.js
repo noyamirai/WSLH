@@ -171,12 +171,12 @@ const logVisit = () => {
 }
 
 const retrieveLastVisit = () => {
-    let lastVisit = localStorage.getItem("lastVisit");
 
-    if (!lastVisit) {
-        logVisit();
+    if("lastVisit" in localStorage){
+        let lastVisit = localStorage.getItem("lastVisit");
+        return lastVisit
     }
 
-    // Display the date and time
-    return lastVisit;
+    logVisit();
+    return;
 }

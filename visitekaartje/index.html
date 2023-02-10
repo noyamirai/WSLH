@@ -30,7 +30,6 @@
             </section>
         </noscript>
 
-
         <article>
             <header class="header">
                 <img class="header__logo" src="./images/spider-logo.svg" alt="Spider Logo">
@@ -309,7 +308,10 @@
         const inputField = document.getElementById("promptInputField");
         const typeWriterText = document.querySelectorAll('.js-typeWriter');
         const commentHeadings = document.querySelectorAll('.comment');
+        
         let previousPrompts = {};
+
+        // Force focus on first prompt input
         inputField.focus();
 
         // Set styling for headings
@@ -317,7 +319,7 @@
             setCommentHeading(headingContainer);
         });
 
-        window.onunload = function() {
+        window.onunload = () => {
             logVisit();
         }
 
@@ -332,6 +334,7 @@
             setTimeout(() => {
                 processParagraphs(typeWriterText, 0).then(() => {
 
+                    // When done animating paragraphs -> show prompt form
                     setTimeout(() => {
                         const currentTimeIndicator = document.querySelector('.js-current_time');
                         currentTimeIndicator.innerHTML = getCurrentTime();
@@ -356,14 +359,17 @@
 
 
         // SOURCE: chat.openai.com/chat
+        // Listens to any input field, in this case theres always only one input field
         articleElement.addEventListener("input", function(e) {
             
             const inputContainer = e.target.parentElement;
 
             if (e.target.value != '') {
                 inputContainer.classList.add('typing');
+
                 e.target.style.width = 0;
                 const width = e.target.scrollWidth;
+
                 e.target.style.width = width + "px";
                 
                 return;
@@ -375,6 +381,8 @@
             e.target.style.width = 100 + "%";
         });
 
+        // Whenever inputfield 'blurs', reset width of input field
+        // NOTE: could be multiple so we need to target the most 'recently' added input
         articleElement.addEventListener('focusout', (e) => {
             const newestPromptInput = document.querySelector('form:last-of-type input');
 
@@ -388,6 +396,7 @@
             }
         });
 
+        // On each submit within the article
         articleElement.addEventListener("submit", function(e){
             e.preventDefault();
             
@@ -400,9 +409,11 @@
     
             let value = currentInput.value;
 
+            // Save user prompt for dislpaying on repaint
             previousPrompts[currentInput.id] = value;
             value = value.toLowerCase();
 
+            // If command exists in basic commandList
             if (commandList.includes(value)) {
                 inputContainer.classList.add('disabled');
 
@@ -412,17 +423,22 @@
                 // removes focus
                 currentInput.blur();
 
-                const sectionToShow = document.querySelector('.js-' + value);
 
                 setTimeout(() => {
 
+                    // If it is the first prompt submission (aka only one form element)
                     if (allPromptInputs.length == 1) {
+                        const sectionToShow = document.querySelector('.js-' + value);
                         const otherSections = document.querySelectorAll('section:not(.js-' + value + ')');
-
+                        
+                        // Always 'first try' on load
                         if (sectionToShow) {
                             sectionToShow.classList.remove('hide');
+
+                        // After clear we're back to only one prompt, but initially loaded sections don't exist anymore
                         } else {
                             revealSection(value).then(() => {
+                                // Add new prompt only after a new section has been added into view
                                 insertPromptPartial();
                                 displayPrevData(previousPrompts);
                             });
@@ -430,12 +446,15 @@
                             return;
                         }
 
+                        // Delete initial sections to avoid html clutter
                         otherSections.forEach(section => {
                             section.remove();
                         });
 
+                    // After x prompt submissions
                     } else if (allPromptInputs.length > 1) {
                         revealSection(value).then(() => {
+                            // Add new prompt only after a new section has been added into view
                             insertPromptPartial();
                             displayPrevData(previousPrompts);
                         });
@@ -443,14 +462,17 @@
                         return;
                     }
                     
+                    // Create new prompt
                     insertPromptPartial();
 
-                    // innerhtml resets form -> retrieve prev data and set
+                    // el.innerHtml resets form data so retrieve previous prompts and display in respective forms
                     displayPrevData(previousPrompts);
 
                 }, 350);
 
                 return;
+            
+            // If command exists in sillyCommands
             } else if (sillyCommands.includes(value)) {
 
                 inputContainer.classList.add('disabled');
@@ -461,17 +483,20 @@
                 inputContainer.classList.remove('typing');
 
                 setTimeout(() => {
-                    getSillyContent(value);
+                    revealSillyContent(value);
     
-                    // innerhtml resets form -> retrieve prev data and set
+                    // Create new prompt
+                    insertPromptPartial();
+
+                    // el.innerHtml resets form data so retrieve previous prompts and display in respective forms
                     displayPrevData(previousPrompts);
                 }, 350);
-
 
                 return;
 
             }
 
+            // On clear -> 'reset' terminal
             if (value.toLowerCase() == 'clear') {
                 const toRemove = articleElement.querySelectorAll('section, form:not(:last-of-type)');
 
@@ -482,17 +507,21 @@
                 const currentInput = inputContainer.querySelector('input');
                 currentInput.value = null;
 
-                // add focus
+                // remove focus
                 currentInput.blur();
                 inputContainer.classList.remove('typing');
 
+                // set new time
                 const currentTimeLabel = e.target.querySelector('.js-current_time');
                 currentTimeLabel.innerHTML = getCurrentTime();
 
+                // scroll to top of page
                 window.scrollTo(0, 0);
 
                 return;
             }
+
+            // User submitted unknown prompt
 
             inputContainer.classList.add('disabled');
             currentInput.disabled = true;

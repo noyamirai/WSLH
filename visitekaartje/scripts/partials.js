@@ -271,7 +271,7 @@ const showError = () => {
     insertPromptPartial();
 }
 
-const getSillyContent = (contentId) => {
+const revealSillyContent = (contentId) => {
 
     if (contentId == 'hi') {
         contentId = 'hello';
@@ -283,5 +283,4 @@ const getSillyContent = (contentId) => {
     htmlObject.innerHTML = contentHtml;
     articleElement.appendChild(htmlObject);
 
-    insertPromptPartial();
 }
