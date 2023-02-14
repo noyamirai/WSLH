@@ -1,56 +1,45 @@
-# Web App From Scratch @cmda-minor-web 2021 - 2022
+# :soccer: WSL Personal Hub :soccer:
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
-In this course you will learn to build a web application without frameworks or unnecessary libraries, but with vanilla HTML, CSS & JavaScript as much as possible. The end result is a modular, single page web app (SPA). Data will be retrieved from an external API, manipulated and finally shown in the UI of the App. You will learn to apply interface principles when building and testing the interface. With the gained knowledge you will be able to build interactive prototypes, based on a user story and real data. Also you will gain a better understanding of how API's, frameworks and libraries work.
+The WSL Personal Hub is a browser-based single-page women's football application, designed to keep you up-to-date with your favorite teams in the FA Women's Super League. Please note that we **do not** own any rights to the league or its teams. Our project is purely for educational purposes.
 
-## Assignment
+Whether you're a super fan or simply looking to stay informed, the WSL Personal Hub is focused on providing a simple and intuitive user experience, with features that include league standings, team overviews, today's games, and the last five games played by each team. While our project may not offer the same level of depth as official league resources, we hope it will provide a useful tool for those looking to follow the action and stay informed.
 
-1. [Visitekaartje](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/main/course/week-1.md#1-visitekaartje): Ontwerp en maak met HTML, CSS en JS een visitekaartje.
-2. [Squadpagina](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/main/course/week-1.md#2-squadpagina): Ontwerp en maak met je team een squadpagina waarin je de verschillende visitekaartjes toont.
-3. [Single Page App](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/master/course/week-2.md): Design and build a single page web app based on a User Story.
+So whether you're a super fan or simply looking to stay informed on the FA Women's Super League, we invite you to check out our application. Thank you for your interest in our project, and we hope you find it useful!
+
+---
+<!-- TODO: add preview screens of the app -->
+<!-- ![Team creator forms](./public/images/readme/team_creator-preview.jpg) -->
+
+## :computer: Features
+
+WSL Personal Hub will be offering the following features: 
+
+| Features :nail_care:        | Status :rocket:    |
+|-----------------------------|------------------------------------|--------------------|
+| View current league standings    | :hourglass: |
+| Team overviews    | :hourglass: |
+| Today's games    | :hourglass: |
+| Previous five games    | :hourglass: |
+
+<!-- ---
+
+## :memo: Documentation
+
+Learn more about the WSL Personal Hub and dive deeper into this project by reading the process documentation in our [wiki](https://github.com/noyamirai/projectteamcreator/wiki). -->
 
 ---
 
-## Program
+## :package: Resources
+Our application uses the following recourses:
+- [Livescore API](https://rapidapi.com/apidojo/api/livescore6/)
+- [The Sports DB Api](https://www.thesportsdb.com/api.php)
 
-| Planning | Maandag | Dinsdag | Vrijdag  |
-|---|---|---|---|
-| [Week 1 - Hellooo 🤸](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/master/course/week-1.md) | Introduction + visitekaartje | Squadpagina | Teambespreking |
-| [Week 2 - Hello API 🐒](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/master/course/week-2.md) | College + briefing opdracht | College + Work | Feedbackgesprekken |
-| Voorjaarsvakantie |  |  |  |
-| [Week 3 - Refactor 🛠](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/master/course/week-3.md)  | College + work  | College + work | Feedbackgesprekken  |
-| [Week 4 - Wrapping up 🎁](https://github.com/cmda-minor-web/web-app-from-scratch-2223/blob/master/course/week-4.md)  | College + work  | Review + work | Beoordelingsgesprekken  |
+---
 
-## Best Practices
+## :warning: License
 
-All work during this course will be tested against our [Best Practices for JavaScript](https://github.com/cmda-minor-web/best-practices/blob/master/javascript.md).
+This project is licensed under the terms of the MIT license.
 
-## Rubric
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/noyamirai/projectteamcreator/blob/main/LICENSE)
 
-Your efforts will be graded using a single point rubric (see below). You will have to pass the criterion (centre column) to pass the course. During the test you will be consulted and will be given feedback on things we think deficient and things we think are an improvement on the criterion.
-
-| Deficiency | Criterion | Improvement |
-|:--|:--|:--|
-|  | *User Interface* - you design, build and test the user interface by applying interface design principles |  |
-|  | *Code structure* - you write modular, consistent and efficient HTML, CSS and JavaScript code by applying structure and best practices. You manage state for the application and the UI |  |
-|  | *Data management* - you understand how you can work with an external API using asynchronous code. You can retrieve data, manipulate and dynamically convert it to structured html |  |
-|  | *Project* - your app is working and published on GitHub Pages. Your project is thoroughly documented in the `README.md` file in your repository.  |  |
-
-<!-- Add a link to your live demo in Github Pages 🌐-->
-
-<!-- ☝️ replace this description with a description of your own work -->
-
-<!-- replace the code in the /docs folder with your own, so you can showcase your work with GitHub Pages 🌍 -->
-
-<!-- Add a nice poster image here at the end of the week, showing off your shiny frontend 📸 -->
-
-<!-- Maybe a table of contents here? 📚 -->
-
-<!-- How about a section that describes how to install this project? 🤓 -->
-
-<!-- ...but how does one use this project? What are its features 🤔 -->
-
-<!-- What external data source is featured in your project and what are its properties 🌠 -->
-
-<!-- Maybe a checklist of done stuff and stuff still on your wishlist? ✅ -->
-
-<!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
