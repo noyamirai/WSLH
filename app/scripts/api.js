@@ -116,8 +116,8 @@ async function singleApiCall(urlData) {
         options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '8da66b7f65mshf2b4cd796212686p1cb703jsn1ea04441f625',
-                'X-RapidAPI-Host': 'livescore6.p.rapidapi.com'
+
+
             }
         };
     } else {
