@@ -7,7 +7,6 @@ Whether you're a super fan or simply looking to stay informed, the WSL Personal 
 
 So whether you're a super fan or simply looking to stay informed on the FA Women's Super League, we invite you to check out our application. Thank you for your interest in our project, and we hope you find it useful!
 
----
 <!-- TODO: add preview screens of the app -->
 <!-- ![Team creator forms](./public/images/readme/team_creator-preview.jpg) -->
 
@@ -16,7 +15,7 @@ So whether you're a super fan or simply looking to stay informed on the FA Women
 WSL Personal Hub will be offering the following features: 
 
 | Features :nail_care:        | Status :rocket:    |
-|-----------------------------|------------------------------------|--------------------|
+|-----------------------------|---------------------|
 | View current league standings    | :hourglass: |
 | Team overviews    | :hourglass: |
 | Today's games    | :hourglass: |
@@ -28,14 +27,10 @@ WSL Personal Hub will be offering the following features:
 
 Learn more about the WSL Personal Hub and dive deeper into this project by reading the process documentation in our [wiki](https://github.com/noyamirai/projectteamcreator/wiki). -->
 
----
-
 ## :package: Resources
 Our application uses the following recourses:
 - [Livescore API](https://rapidapi.com/apidojo/api/livescore6/)
 - [The Sports DB Api](https://www.thesportsdb.com/api.php)
-
----
 
 ## :warning: License
 
