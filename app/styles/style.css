@@ -39,6 +39,7 @@ html { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: 
 
     --default-font: 'Montserrat', sans-serif;
 
+    --nav-height: 75px;
 
     --mobile-font-size: 14px;
     --mobile-font-size-rem: 1.4rem;
@@ -105,6 +106,8 @@ h2 {
     font-size: 16px;
     font-size: 1.6rem;
     text-transform: uppercase;
+
+    margin-bottom: 18px;
 }
 
 /* =============================================================================
@@ -112,9 +115,10 @@ h2 {
 ============================================================================= */
 .header {
     position: relative;
-    padding: 30px 0 0 0;
+    padding: 30px 0 30px 0;
 
     color: var(--white);
+
     background: rgb(16,11,64);
     background: linear-gradient(180deg, rgba(16,11,64,1) 0%, rgba(67,27,87,1) 100%);
 }
@@ -181,9 +185,19 @@ h2 {
   #NAV
 ============================================================================= */
 nav {
-    position: relative;
-    margin-top: 30px;
-    background-color: var(--primary-color);
+    position: fixed;
+    -webkit-overflow-scrolling: touch;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    min-height: var(--nav-height);
+
+    box-shadow: 0 -2px rgba(0 0 0 / 5%);
+
+    display: grid;
+    background-color: var(--white-color);
 }
 
     .menu {
@@ -196,12 +210,27 @@ nav {
         }
 
             .menu__item button {
-                width: 100%;
-                padding: 12px 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+
+              height: 100%;
+              width: 100%;
+              padding: 12px 0;
+
+              font-weight: 700;
+              color: rgba(0 0 0 / 12%);
             }
 
-            .menu__item.active {
-                background-color: var(--primary-color-dark)
+            .menu__item button .icon {
+              font-size: 16px;
+              font-size: 1.6rem;
+              margin-bottom: 6px;
+            }
+
+            .menu__item.active button {
+                color: var(--secondary-color)
             }
 
 /* =============================================================================
@@ -215,65 +244,64 @@ main {
   #TABLE
 ============================================================================= */
 table {
-    border-collapse: collapse;
-    width: 100%;
-
-    margin: 12px 0 0 0;
-
-    font-size: 12px;
-    font-size: 1.2rem;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  font-size: 12px;
+  font-size: 1.2rem;
 }
 
 thead,
 thead > tr td {
-    text-transform: uppercase;
-    padding: 12px 0px;
-    color: var(--white);
-     border-style : hidden!important;
-    background-color: var(--secondary-color);
+  text-transform: uppercase;
+  padding: 12px 0px;
+  color: var(--white);
+    border-style : hidden!important;
+  background-color: var(--secondary-color);
+  font-weight: 700;
 }
 
 thead td:first-of-type { 
-    padding-left: 12px;
-    border-top-left-radius: 5px; 
-    width: 100%;
+  padding-left: 12px;
+  border-top-left-radius: 5px; 
+  width: 100%;
 }
 
 thead td:last-of-type {
-    border-top-right-radius: 5px; 
-    padding-right: 5px;
+  border-top-right-radius: 5px; 
+  padding-right: 5px;
 }
 
 thead td:not(:first-of-type) {
-    width: 40px;
+  width: 40px;
 }
 
 tbody tr > td:last-child {
-    padding-right: 5px!important;
+  padding-right: 5px!important;
 }
 
 tbody tr > td:nth-child(n+2) {
-    padding: 0 0;
-    width: 35px;
-    max-width: 35px;
-    min-width: 35px;
-    color: var(--dark-grey-text);
+  padding: 0 0;
+  width: 35px;
+  max-width: 35px;
+  min-width: 35px;
+  color: var(--dark-grey-text);
 }
 
 tbody tr > td:first-child span {
-    margin: 0 12px 0 4px;
+  margin: 0 12px 0 4px;
 }
 
 tbody tr > td:first-child {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 tbody tr > td:first-child img {
-    width: 24px;
-    height: auto;
+  width: 24px;
+  height: auto;
 
-    margin-right: 6px;
+  margin-right: 6px;
 }
 
 
@@ -306,13 +334,13 @@ td:first-child {
 ============================================================================= */
 button {
 
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
 
 }

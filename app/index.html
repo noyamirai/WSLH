@@ -13,6 +13,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="../app/styles/style.css">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     </head>
 
     <body>
@@ -31,15 +33,6 @@
                     </h1>
                 </figcaption>
             </figure>
-
-            <nav>
-                <ul class="menu">
-                    <li class="menu__item active"><button>Overview</button></li>
-                    <li class="menu__item"><button>Standings</button></li>
-                    <li class="menu__item"><button>Fixtures</button></li>
-                    <li class="menu__item"><button>Following</button></li>
-                </ul>
-            </nav>
 
         </header>
 
@@ -100,6 +93,17 @@
 
 
         </main>
+
+        <nav>
+            <ul class="menu">
+                <li class="menu__item active"><button><i class="icon fa-solid fa-house"></i>Home</button></li>
+                <li class="menu__item"><button><i class="icon fa-solid fa-list-ol"></i>Standings</button></li>
+                <li class="menu__item"><button><i class="icon fa-solid fa-futbol"></i>Fixtures</button></li>
+                <li class="menu__item"><button><i class="icon fa-solid fa-heart"></i>My teams</button></li>
+            </ul>
+        </nav>
+
+        <script src="../app/scripts/api.js"></script>
         
     </body>
 
