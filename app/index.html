@@ -4,35 +4,103 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#100b40">
+
         <title>Personal Hub | FA Women's Super League</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="../app/styles/style.css">
     </head>
+
     <body>
 
+        <header class="header">
+
+            <figure class="header__logo__container">
+                <picture class="image-wrapper">
+                    <img class="logo" src="../app/assets/logos/wsl-logo.png" alt="WSLH Logo">
+                </picture>
+
+                <figcaption class="header__logo__title ta-center">
+                    <h1>
+                        FA Women's<br>Super League
+                        <span>Personal Hub</span>
+                    </h1>
+                </figcaption>
+            </figure>
+
+            <nav>
+                <ul class="menu">
+                    <li class="menu__item active"><button>Overview</button></li>
+                    <li class="menu__item"><button>Standings</button></li>
+                    <li class="menu__item"><button>Fixtures</button></li>
+                    <li class="menu__item"><button>Following</button></li>
+                </ul>
+            </nav>
+
+        </header>
+
         <main>
-            <h1>testing</h1>
+
+            <section class="standings js-standings">
+                <h2>Standings</h2>
+
+                <table class="table table--standings">
+                    <thead>
+                        <tr>
+                            <td class="ta-left">Teams</td>
+                            <td class="ta-center">PL</td>
+                            <td class="ta-center">GD</td>
+                            <td class="ta-center">PTS</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span>1</span>
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                                Manchester United Women
+                            </td>
+                            <td>12</td>
+                            <td>+20</td>
+                            <td>41</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <span>2</span>
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                                Team A
+                            </td>
+                            <td>12</td>
+                            <td>+20</td>
+                            <td>41</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <span>3</span>
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                                Team A
+                            </td>
+                            <td>12</td>
+                            <td>+20</td>
+                            <td>41</td>
+                        </tr>
+                        
+                        
+                    </tbody>
+                </table>
+
+            </section>
+
+
         </main>
         
     </body>
 
-    <script>
-        // const options = {
-        //     method: 'GET',
-        //     headers: {
-        //         'X-RapidAPI-Key': '8da66b7f65mshf2b4cd796212686p1cb703jsn1ea04441f625',
-        //         'X-RapidAPI-Host': 'livescore6.p.rapidapi.com'
-        //     }
-        // };
-
-        // fetch('https://livescore6.p.rapidapi.com/leagues/v2/get-table?Category=soccer&Ccd=england&Scd=fa-women-s-super-league', options)
-        //     .then(response => response.json())
-        //     .then(response => console.log(response))
-        //     .catch(err => console.error(err));
-
-        // fetch('https://livescore6.p.rapidapi.com/matches/v2/list-by-league?Category=soccer&Ccd=england&Scd=fa-women-s-super-league&Date=20230213&Timezone=-7', options)
-        // .then(response => response.json())
-        // .then(response => console.log(response))
-        // .catch(err => console.error(err));
-
-        
-    </script>
 </html>
