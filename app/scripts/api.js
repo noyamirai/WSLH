@@ -1,9 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // localStorage.removeItem('lastUpdated');
-    // localStorage.removeItem('league_teams');
-    // localStorage.removeItem('standings');
-
     let lastUpdated = localStorage.getItem("lastUpdated"); 
     let currentDate = getDate();
 
@@ -11,10 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lastUpdated === null) {
         console.log('FETCH DATA AND SET LASTUPDATED KEY TO NOW');
 
-        // apiCall('league_teams');
-        // saveAndDisplayData();
+        saveAndDisplayData('', true);
 
-        // localStorage.setItem('lastUpdated', currentDate);
+        localStorage.setItem('lastUpdated', currentDate);
 
     // User has fetched data before
     } else {
@@ -30,53 +25,123 @@ document.addEventListener('DOMContentLoaded', () => {
         // Last updated today -> get data from localstorage
         } else {
             console.log('data is still fresh');
-
-            const jsonData = localStorage.getItem('league_teams');
-            const data = JSON.parse(jsonData);
-            console.log(data);
+            saveAndDisplayData('', false);
         }
     }
 
 });
 
-async function saveAndDisplayData(query = '') {
+function saveDataToStorage(data, query) {
+
+    if (data.length > 0) {
+        data.forEach((dataObject, key) => {
+            const jsonData = JSON.stringify(data[key]);
+            localStorage.setItem(dataObject.identifier, jsonData);
+        });
+    } else {
+        const jsonData = JSON.stringify(data);
+        localStorage.setItem(query, jsonData);
+    }
+
+    return;
+}
+
+async function saveAndDisplayData(query = '', needsNewData = false) {
 
     try {
 
         let result;
-        const data = await getData(query);
-        console.log('DATA!!!!');
+        let data;
 
-        // Save to localstorage
-        if (query == '') {
+        // Check whether or not it requires brand new data
+        if (needsNewData) {
+            console.log('NEEDS NEW DATA');
+            loadDelay = true;
+            data = await getData(query);
 
-            console.log('multiple');
+            if (query == '') {
+                saveDataToStorage(data);
+                result = data;
 
-            // Save data in localstorage
-            // data.forEach((dataObject, key) => {
-            //     const jsonData = JSON.stringify(data[key]);
-            //     localStorage.setItem(dataObject.identifier, jsonData);
-            // });
-
-            result = data;
-
+            } else {
+                saveDataToStorage(data, query);
+                result = [data];
+            }
+            
+        // User still has fresh data -> read from localstorage
         } else {
 
-            result = [data];
-            
-            console.log('single');
+            console.log('GET DATA FROM LOCALSTORAGE');
+            const urlData = getApiData(query);
+            result = [];
 
-            // const jsonData = JSON.stringify(data);
-            // localStorage.setItem(query, jsonData);
+            let toFetch = [];
+
+            // Save which keys are missing from storage (aka data no longer saved, need new data again)
+            for (const key in urlData) {
+                const item = urlData[key];
+                let localStorageKey = localStorage.getItem(item.identifier); 
+
+                if (localStorageKey === null || localStorageKey === undefined || localStorageKey == '' || localStorageKey == 'undefined') {
+                    delete urlData[item.identifier];
+                    toFetch.push(item);
+                }
+            }
+
+            // Get all data saved in localstorage
+            if (query == '') {
+
+                for (const key in urlData) {
+                    const item = urlData[key];
+                    const jsonData = localStorage.getItem(item.identifier);
+                    result.push(JSON.parse(jsonData));
+                }
+                
+            // Get specific key data from localstorage
+            } else {
+                const jsonData = localStorage.getItem(query);
+                result.push(JSON.parse(jsonData));
+            }
+
+            // Remaining data to fetch
+            if (toFetch.length > 0) {
+                console.log('DATA MISSING FROM LOCALSTORAGE');
+                let newData;
+
+                if (toFetch.length == 1) {
+                    newData = await singleApiCall(toFetch[0]);
+                    saveDataToStorage(newData, toFetch[0].identifier);
+
+                } else {
+                    newData = await performMultipleCalls(toFetch);
+                    saveDataToStorage(newData);
+                }
+
+                result.push(newData);
+            }
 
         }
 
-        // TODO: display data!
+        console.log('DATA TO WORK WITH:');
         console.log(result);
+
+        // Set data based on identifier
+        for (const key in result) {
+            const item = result[key];
+            const identifier = Object.keys(item)[1];
+            const apiData = Object.keys(item)[0];
+
+            if (item[identifier] == 'standings') {
+                displayStandings(item, apiData);
+            } else if (item[identifier] == 'league_teams') {
+                displayLeagueTeams(item, apiData);
+            }
+        }
         
     // TODO: error handling
     } catch (error) {
         console.log('WEE WEOO WEE WOO');
+        console.log(error);
     }
 
 }
@@ -108,6 +173,17 @@ async function performMultipleCalls(apiData) {
     return Promise.all(promises);
 }
 
+/**
+ * 
+ * @param {object} urlData
+ * @param {api} urlData.api
+ * @param {apiUrl} urlData.apiUrl
+ * @param {query} urlData.params
+ * 
+ * @note in case of livescore api a different header will be sent
+ * 
+ * @returns api data or throws error <Promise>
+ */
 async function singleApiCall(urlData) {
 
     let options = {};
@@ -116,8 +192,6 @@ async function singleApiCall(urlData) {
         options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '8da66b7f65mshf2b4cd796212686p1cb703jsn1ea04441f625',
-                'X-RapidAPI-Host': 'livescore6.p.rapidapi.com'
             }
         };
     } else {
@@ -135,6 +209,7 @@ async function singleApiCall(urlData) {
 
             // Convert the response to JavaScript Object
             const data = await response.json();
+            data.identifier = urlData.identifier;
             return data;
         } else {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -146,14 +221,13 @@ async function singleApiCall(urlData) {
 
 }
 
-
 function getApiData(query = '') {
 
     const dataArray = {
         'standings': {
             api: 'thesportsdb',
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/',
-            params:'lookuptable.php?l=4849&s=2022-2023',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php',
+            params:'?l=4849&s=2022-2023',
             identifier: 'standings'
         },
         // 'standings': {
@@ -163,8 +237,8 @@ function getApiData(query = '') {
         // },
         'league_teams': {
             api: 'thesportsdb',
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/',
-            params: 'search_all_teams.php?l=English_Womens_Super_League',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php',
+            params: '?l=English_Womens_Super_League',
             identifier: 'league_teams'
         }
     };
@@ -174,6 +248,64 @@ function getApiData(query = '') {
     }
 
     return dataArray[query];
+}
+
+function displayStandings (data, key) {
+
+    const standingsTableBody = document.querySelector('.js-standings-body');
+
+    data[key].forEach((teamObject) => {
+
+        const tableRow = document.createElement('tr');
+        tableRow.id = teamObject.idTeam;
+
+        const tableData = `
+            <td>
+                <span>${teamObject.intRank}</span>
+                <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
+                ${teamObject.strTeam}
+            </td>
+            <td>${teamObject.intPlayed}</td>
+            <td>${teamObject.intGoalDifference}</td>
+            <td>${teamObject.intPoints}</td>`;
+
+        tableRow.innerHTML = tableData;
+
+        standingsTableBody.appendChild(tableRow);
+    }); 
+
+}
+
+function displayLeagueTeams (data, key) {
+
+
+    const teamListUl = document.querySelector('.js-teamlist');
+    let listItems = [];
+
+    data[key].forEach((teamObject) => {
+        // const listItemEl = document.createElement('li');
+        // listItemEl.classname = 'teamlist__item';
+        // listItemEl.id = teamObject.idTeam;
+
+        const listData = `<li class="teamlist__item"><img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}"></li>`;
+
+        // listItemEl.appendChild(listData);
+
+        listItems.push(listData);
+    }); 
+
+    // TODO: load badges from root instead of extern?
+
+    
+    // setTimeout(() => {
+        document.querySelector('.teamlist__item--load').remove();
+
+        listItems.forEach((element, key) => {
+            teamListUl.innerHTML += element;
+        });
+        
+    // }, 500);
+
 }
 
 // SOURCE: somewhere from the depths of stackoverflow

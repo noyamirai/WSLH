@@ -38,10 +38,24 @@
 
         <main>
 
-            <section class="standings js-standings">
+            <section class="teamlist-overview js-teams-section">
+                <h2>WSL Teams</h2>
+
+                <ul class="teamlist js-teamlist">
+                    <li class="teamlist__item teamlist__item--load">
+                        <div>
+                            <i class="icon fa-solid fa-futbol"></i>
+                        </div>
+                    </li>
+                    
+                </ul>
+
+            </section>
+
+            <section class="standings js-standings-section">
                 <h2>Standings</h2>
 
-                <table class="table table--standings">
+                <table class="table table--standings js-standings-table">
                     <thead>
                         <tr>
                             <td class="ta-left">Teams</td>
@@ -51,41 +65,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span>1</span>
-                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-                                Manchester United Women
-                            </td>
-                            <td>12</td>
-                            <td>+20</td>
-                            <td>41</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <span>2</span>
-                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-                                Team A
-                            </td>
-                            <td>12</td>
-                            <td>+20</td>
-                            <td>41</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <span>3</span>
-                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-                                Team A
-                            </td>
-                            <td>12</td>
-                            <td>+20</td>
-                            <td>41</td>
-                        </tr>
-                        
-                        
+                    <tbody class="js-standings-body">
                     </tbody>
                 </table>
 
@@ -94,14 +74,14 @@
 
         </main>
 
-        <nav>
+        <!-- <nav>
             <ul class="menu">
                 <li class="menu__item active"><button><i class="icon fa-solid fa-house"></i>Home</button></li>
                 <li class="menu__item"><button><i class="icon fa-solid fa-list-ol"></i>Standings</button></li>
                 <li class="menu__item"><button><i class="icon fa-solid fa-futbol"></i>Fixtures</button></li>
                 <li class="menu__item"><button><i class="icon fa-solid fa-heart"></i>My teams</button></li>
             </ul>
-        </nav>
+        </nav> -->
 
         <script src="../app/scripts/api.js"></script>
         
