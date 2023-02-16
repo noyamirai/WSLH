@@ -31,21 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-function saveDataToStorage(data, query) {
-
-    if (data.length > 0) {
-        data.forEach((dataObject, key) => {
-            const jsonData = JSON.stringify(data[key]);
-            localStorage.setItem(dataObject.identifier, jsonData);
-        });
-    } else {
-        const jsonData = JSON.stringify(data);
-        localStorage.setItem(query, jsonData);
-    }
-
-    return;
-}
-
+/**
+ * 
+ * @param {string} query what kind of data are you fetching
+ * @param {boolean} needsNewData
+ */
 async function saveAndDisplayData(query = '', needsNewData = false) {
 
     try {
@@ -56,7 +46,6 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
         // Check whether or not it requires brand new data
         if (needsNewData) {
             console.log('NEEDS NEW DATA');
-            loadDelay = true;
             data = await getData(query);
 
             if (query == '') {
@@ -88,7 +77,7 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
                 }
             }
 
-            // Get all data saved in localstorage
+            // Get all available data saved in localstorage
             if (query == '') {
 
                 for (const key in urlData) {
@@ -103,7 +92,7 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
                 result.push(JSON.parse(jsonData));
             }
 
-            // Remaining data to fetch
+            // Remaining data to fetch (new data)
             if (toFetch.length > 0) {
                 console.log('DATA MISSING FROM LOCALSTORAGE');
                 let newData;
@@ -146,6 +135,27 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
 
 }
 
+/**
+ * 
+ * @param {array} data 
+ * @param {string} storageKey what kind of data did you fetch? needed when array.length==1
+ * @returns 
+ */
+function saveDataToStorage(data, storageKey) {
+
+    if (data.length > 0) {
+        data.forEach((dataObject, key) => {
+            const jsonData = JSON.stringify(data[key]);
+            localStorage.setItem(dataObject.identifier, jsonData);
+        });
+    } else {
+        const jsonData = JSON.stringify(data);
+        localStorage.setItem(storageKey, jsonData);
+    }
+
+    return;
+}
+
 async function getData(query = '') {
 
     const apiData = getApiData(query);
@@ -162,6 +172,35 @@ async function getData(query = '') {
     
     return result;
 
+}
+
+function getApiData(query = '') {
+
+    const dataArray = {
+        'standings': {
+            api: 'thesportsdb',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php',
+            params:'?l=4849&s=2022-2023',
+            identifier: 'standings'
+        },
+        // 'standings': {
+        //     api: 'livescore',
+        //     apiUrl: 'https://livescore6.p.rapidapi.com/leagues/v2/',
+        //     params:'search_all_teams.php?l=English_Womens_Super_League'
+        // },
+        'league_teams': {
+            api: 'thesportsdb',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php',
+            params: '?l=English_Womens_Super_League',
+            identifier: 'league_teams'
+        }
+    };
+
+    if (query == '') {
+        return dataArray;
+    }
+
+    return dataArray[query];
 }
 
 async function performMultipleCalls(apiData) {
@@ -221,35 +260,6 @@ async function singleApiCall(urlData) {
 
 }
 
-function getApiData(query = '') {
-
-    const dataArray = {
-        'standings': {
-            api: 'thesportsdb',
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php',
-            params:'?l=4849&s=2022-2023',
-            identifier: 'standings'
-        },
-        // 'standings': {
-        //     api: 'livescore',
-        //     apiUrl: 'https://livescore6.p.rapidapi.com/leagues/v2/',
-        //     params:'search_all_teams.php?l=English_Womens_Super_League'
-        // },
-        'league_teams': {
-            api: 'thesportsdb',
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php',
-            params: '?l=English_Womens_Super_League',
-            identifier: 'league_teams'
-        }
-    };
-
-    if (query == '') {
-        return dataArray;
-    }
-
-    return dataArray[query];
-}
-
 function displayStandings (data, key) {
 
     const standingsTableBody = document.querySelector('.js-standings-body');
@@ -283,19 +293,11 @@ function displayLeagueTeams (data, key) {
     let listItems = [];
 
     data[key].forEach((teamObject) => {
-        // const listItemEl = document.createElement('li');
-        // listItemEl.classname = 'teamlist__item';
-        // listItemEl.id = teamObject.idTeam;
-
         const listData = `<li class="teamlist__item"><img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}"></li>`;
-
-        // listItemEl.appendChild(listData);
-
         listItems.push(listData);
     }); 
 
     // TODO: load badges from root instead of extern?
-
     
     // setTimeout(() => {
         document.querySelector('.teamlist__item--load').remove();
