@@ -114,18 +114,7 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
         console.log('DATA TO WORK WITH:');
         console.log(result);
 
-        // Set data based on identifier
-        for (const key in result) {
-            const item = result[key];
-            const identifier = Object.keys(item)[1];
-            const apiData = Object.keys(item)[0];
-
-            if (item[identifier] == 'standings') {
-                displayStandings(item, apiData);
-            } else if (item[identifier] == 'league_teams') {
-                displayLeagueTeams(item, apiData);
-            }
-        }
+        displayData(result);
         
     // TODO: error handling
     } catch (error) {
@@ -133,6 +122,21 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
         console.log(error);
     }
 
+}
+
+function displayData(data) {
+    // Set data based on identifier
+    for (const key in data) {
+        const item = data[key];
+        const identifier = Object.keys(item)[1];
+        const apiData = Object.keys(item)[0];
+
+        if (item[identifier] == 'standings') {
+            displayStandings(item, apiData);
+        } else if (item[identifier] == 'league_teams') {
+            displayLeagueTeams(item, apiData);
+        }
+    }
 }
 
 /**
