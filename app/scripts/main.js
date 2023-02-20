@@ -84,7 +84,6 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
 
                 // Get all available data saved in localstorage
                 if (query == '') {
-                    // urlData is empty -> check
                     result = listAllDataFromStorage(urlData);
                     
                 // Get specific key data from localstorage

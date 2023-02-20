@@ -43,7 +43,6 @@ export function listAllDataFromStorage(data) {
 
     for (const key in data) {
         const item = data[key];
-        console.log(item);
         const jsonData = localStorage.getItem(item.identifier);
         result.push(JSON.parse(jsonData));
     }

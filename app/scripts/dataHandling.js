@@ -9,7 +9,7 @@ export function displayData(data) {
         const apiData = Object.keys(item)[0];
 
         if (item[identifier] == 'standings') {
-            displayStandings(item, apiData);
+            // displayStandings(item, apiData);
         } else if (item[identifier] == 'league_teams') {
             displayLeagueTeams(item, apiData);
         }
@@ -73,6 +73,8 @@ export function displayLeagueTeams (data, key) {
             isFinished = true;
         }
     });
+
+    teamSection.querySelector('h2').innerHTML += ` <span class="identifier">(${data[key].length})</span>`;
 
     if (isFinished) {
         teamSection.querySelector('.loader').remove();
