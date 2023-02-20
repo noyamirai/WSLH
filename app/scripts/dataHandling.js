@@ -19,9 +19,11 @@ export function displayData(data) {
 
 export function displayStandings (data, key) {
 
+    const standingsSection = document.querySelector('.js-standings-section');
     const standingsTableBody = document.querySelector('.js-standings-body');
+    let isFinished = false;
 
-    data[key].forEach((teamObject) => {
+    data[key].forEach((teamObject, i) => {
 
         const tableRow = document.createElement('tr');
         tableRow.id = teamObject.idTeam;
@@ -39,13 +41,19 @@ export function displayStandings (data, key) {
         tableRow.innerHTML = tableData;
 
         standingsTableBody.appendChild(tableRow);
+
+        if ((i + 1) == data[key].length) {
+            isFinished = true;
+        }
     }); 
 
+    if (isFinished) {
+        standingsSection.querySelector('.loader').remove();
+        standingsSection.querySelector('.js-standings-table').classList.remove('hide');
+    }
 }
 
 export function displayLeagueTeams (data, key) {
-
-    console.log('display league teams');
 
     const teamSection = document.querySelector('.js-teams-section');
     const teamListUl = document.querySelector('.js-teamlist');
@@ -66,17 +74,8 @@ export function displayLeagueTeams (data, key) {
         }
     });
 
-    console.log('done loop?');
-    
-    console.log(isFinished);
-
     if (isFinished) {
         teamSection.querySelector('.loader').remove();
         teamListUl.classList.remove('hide');
     }
-    
-    // setTimeout(() => {
-        
-    // }, 500);
-
 }
