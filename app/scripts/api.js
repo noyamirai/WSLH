@@ -19,8 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         currentDate = new Date(currentDate.split('/').reverse().join('/'));
 
         // Last updated in the past -> fetch new data
-        if (lastUpdatedDate > currentDate) {
+        if (currentDate > lastUpdatedDate) {
             console.log('fetched data is outdated!');
+
+            saveAndDisplayData('', true);
+            localStorage.setItem('lastUpdated', currentDate);
 
         // Last updated today -> get data from localstorage
         } else {
