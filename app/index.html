@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
         <script type="module" src="../app/scripts/main.js"></script>
+        <script src="../app/scripts/routie.min.js" defer></script>
     </head>
 
     <body>
@@ -40,242 +41,230 @@
 
         <main>
 
-            <section class="teamlist-overview js-teams-section">
-                <h2>WSL Teams</h2>
+            <article id="home-page">
 
-                <div class="loader">
-                    <i class="icon fa-solid fa-futbol"></i>
-                </div>
+                <section class="teamlist-overview js-teams-section">
+                    <h2>WSL Teams</h2>
 
-                <ul class="teamlist js-teamlist hide">
-                    
-                </ul>
+                    <div class="loader">
+                        <i class="icon fa-solid fa-futbol"></i>
+                    </div>
 
-            </section>
+                    <ul class="teamlist js-teamlist hide">
+                        
+                    </ul>
 
-            <section class="match-overview js-matches-section">
-                <h2>Games today</h2>
+                </section>
 
-                <!-- <div class="loader">
-                    <i class="icon fa-solid fa-futbol"></i>
-                </div> -->
+                <section class="match-overview js-matches-section">
+                    <h2>Games today</h2>
 
-                <ul class="matchlist js-matchlist">
 
-                    <li class="match__item">
-                        <div class="match__teamname">
-                            <p>Very lange team naam lololol</p>
-                        </div>
+                    <ul class="matchlist js-matchlist">
 
-                        <div class="match__details">
-                            <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
-
-                            <div class="match__details__time">
-                                <p>13:30</p>
+                        <li class="match__item">
+                            <div class="match__teamname">
+                                <p>Very lange team naam lololol</p>
                             </div>
 
-                            <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
+                            <div class="match__details">
+                                <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                        </div>
+                                <div class="match__details__time">
+                                    <p>13:30</p>
+                                </div>
 
-                        <div class="match__teamname">
-                            <p>Team naam</p>
-                        </div>
+                                <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                    </li>
-
-                    <li class="match__item">
-                        <div class="match__teamname">
-                            <p>Very lange team naam lololol</p>
-                        </div>
-
-                        <div class="match__details">
-                            <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
-
-                            <div class="match__details__time">
-                                <p>13:30</p>
                             </div>
 
-                            <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
-
-                        </div>
-
-                        <div class="match__teamname">
-                            <p>Team naam</p>
-                        </div>
-
-                    </li>
-
-                </ul>
-
-            </section>
-
-            <section class="blue top-three">
-
-                <h2>Current top teams</h2>
-
-                <ul class="team-highlight">
-                    <li class="team-highlight__item">
-                        <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-                        <div class="highlight__details">
-                            <h3>Manchester United Women</h3>
-                            <p>31 points</p>
-                        </div>
-                    </li>
-                    <li class="team-highlight__item">
-                        <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-                        <div class="highlight__details">
-                            <h3>Manchester United Women</h3>
-                            <p>31 points</p>
-                        </div>
-                    </li>
-                    <li class="team-highlight__item">
-                        <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-                        <div class="highlight__details">
-                            <h3>Manchester United Women</h3>
-                            <p>31 points</p>
-                        </div>
-                    </li>
-                </ul>
-
-            </section>
-
-            <section class="previous-matches js-prev-matches">
-                <h2>Previous games</h2>
-
-                <ul class="cards">
-                    <li class="card__item">
-
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-
-                            <div class="team__score team__score--result team__score--win">
-                                <p>2</p>
+                            <div class="match__teamname">
+                                <p>Team naam</p>
                             </div>
-                        </div>
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                        </li>
 
-                            <div class="team__score team__score--result team__score--loss">
-                                <p>0</p>
+                        <li class="match__item">
+                            <div class="match__teamname">
+                                <p>Very lange team naam lololol</p>
                             </div>
-                        </div>
 
-                    </li>
-                    <li class="card__item">
+                            <div class="match__details">
+                                <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                                <div class="match__details__time">
+                                    <p>13:30</p>
+                                </div>
 
-                            <div class="team__score team__score--result team__score--win">
-                                <p>2</p>
+                                <img class="match__details__logo" src="../app/assets/logos/man-united-test-logo.png" alt="">
+
                             </div>
-                        </div>
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
-
-                            <div class="team__score team__score--result team__score--loss">
-                                <p>0</p>
+                            <div class="match__teamname">
+                                <p>Team naam</p>
                             </div>
-                        </div>
 
-                    </li>
-                    <li class="card__item">
+                        </li>
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                    </ul>
 
-                            <div class="team__score team__score--result team__score--win">
-                                <p>2</p>
+                </section>
+
+                <section class="blue top-three js-top-three-section">
+
+                    <h2>Current top teams</h2>
+
+                    <div class="loader">
+                        <i class="icon fa-solid fa-futbol"></i>
+                    </div>
+
+                    <ul class="team-highlight js-top-three hide">
+                        
+                    </ul>
+
+                </section>
+
+                <section class="previous-matches js-prev-matches">
+                    <h2>Previous games</h2>
+
+                    <ul class="cards">
+                        <li class="card__item">
+
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+
+                                <div class="team__score team__score--result team__score--win">
+                                    <p>2</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                            <div class="team__score team__score--result team__score--loss">
-                                <p>0</p>
+                                <div class="team__score team__score--result team__score--loss">
+                                    <p>0</p>
+                                </div>
                             </div>
-                        </div>
 
-                    </li>
-                    <li class="card__item">
+                        </li>
+                        <li class="card__item">
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                            <div class="team__score team__score--result team__score--win">
-                                <p>2</p>
+                                <div class="team__score team__score--result team__score--win">
+                                    <p>2</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                            <div class="team__score team__score--result team__score--loss">
-                                <p>0</p>
+                                <div class="team__score team__score--result team__score--loss">
+                                    <p>0</p>
+                                </div>
                             </div>
-                        </div>
 
-                    </li>
-                    <li class="card__item">
+                        </li>
+                        <li class="card__item">
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                            <div class="team__score team__score--result team__score--win">
-                                <p>2</p>
+                                <div class="team__score team__score--result team__score--win">
+                                    <p>2</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="card__team">
-                            <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                            <div class="team__score team__score--result team__score--loss">
-                                <p>0</p>
+                                <div class="team__score team__score--result team__score--loss">
+                                    <p>0</p>
+                                </div>
                             </div>
-                        </div>
 
-                    </li>
-                </ul>
-            </section>
+                        </li>
+                        <li class="card__item">
 
-            <!-- <section class="standings js-standings-section">
-                <h2>Standings</h2>
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                <div class="loader">
-                    <i class="icon fa-solid fa-futbol"></i>
-                </div>
+                                <div class="team__score team__score--result team__score--win">
+                                    <p>2</p>
+                                </div>
+                            </div>
 
-                <table class="table table--standings js-standings-table hide">
-                    <thead>
-                        <tr>
-                            <td class="ta-left">Teams</td>
-                            <td class="ta-center">PL</td>
-                            <td class="ta-center">GD</td>
-                            <td class="ta-center">PTS</td>
-                        </tr>
-                    </thead>
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
 
-                    <tbody class="js-standings-body">
-                    </tbody>
-                </table>
+                                <div class="team__score team__score--result team__score--loss">
+                                    <p>0</p>
+                                </div>
+                            </div>
 
-            </section> -->
+                        </li>
+                        <li class="card__item">
+
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+
+                                <div class="team__score team__score--result team__score--win">
+                                    <p>2</p>
+                                </div>
+                            </div>
+
+                            <div class="card__team">
+                                <img src="../app/assets/logos/man-united-test-logo.png" alt="">
+
+                                <div class="team__score team__score--result team__score--loss">
+                                    <p>0</p>
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </section>
+
+            </article>
+
+            <article class="hide" id="standings-page">
+
+                <section class="standings js-standings-section">
+                    <h2>Standings</h2>
+
+                    <div class="loader">
+                        <i class="icon fa-solid fa-futbol"></i>
+                    </div>
+
+                    <table class="table table--standings js-standings-table hide">
+                        <thead>
+                            <tr>
+                                <td class="ta-left">Teams</td>
+                                <td class="ta-center">PL</td>
+                                <td class="ta-center">GD</td>
+                                <td class="ta-center">PTS</td>
+                            </tr>
+                        </thead>
+
+                        <tbody class="js-standings-body">
+                        </tbody>
+                    </table>
+
+                </section>
+            </article>
 
 
         </main>
 
-        <!-- <nav>
+        <nav>
             <ul class="menu">
-                <li class="menu__item active"><button><i class="icon fa-solid fa-house"></i>Home</button></li>
-                <li class="menu__item"><button><i class="icon fa-solid fa-list-ol"></i>Standings</button></li>
-                <li class="menu__item"><button><i class="icon fa-solid fa-futbol"></i>Fixtures</button></li>
-                <li class="menu__item"><button><i class="icon fa-solid fa-heart"></i>My teams</button></li>
+                <li class="menu__item active"><a href="#home"><i class="icon fa-solid fa-house"></i>Home</a></li>
+                <li class="menu__item"><a href="#standings"><i class="icon fa-solid fa-list-ol"></i>Standings</a></li>
+                <li class="menu__item"><a href=""><i class="icon fa-solid fa-futbol"></i>Fixtures</a></li>
+                <li class="menu__item"><a href=""><i class="icon fa-solid fa-heart"></i>My teams</a></li>
             </ul>
-        </nav> -->        
+        </nav>        
     </body>
 
 </html>

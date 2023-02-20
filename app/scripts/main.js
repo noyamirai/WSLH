@@ -7,11 +7,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastUpdated = localStorage.getItem("lastUpdated"); 
     let currentDate = getDate();
 
+    routie({
+        '': function() {
+            console.log('DEFAULT');
+            initialCall('home', lastUpdated, currentDate);
+        },
+        'home': function() {
+            console.log('HOME PAGE');
+            const toFetch = ['league_teams', 'standings', 'prev_games'];
+
+            initialCall('home', lastUpdated, currentDate, toFetch);
+        },
+        'standings': function() {
+            console.log('STANDINGS PAGE');
+            console.log('FETCH: standings');   
+            
+            initialCall('standings', lastUpdated, currentDate, 'standings');     
+        }
+    });
+
+    
+
+});
+
+function initialCall(target, lastUpdated, currentDate, query = '') {
+
     // If never been updated -> fetch data
     if (lastUpdated === null) {
         console.log('FETCH DATA AND SET LASTUPDATED KEY TO NOW');
 
-        saveAndDisplayData('', true);
+        saveAndDisplayData(target, query, true);
 
         localStorage.setItem('lastUpdated', currentDate);
 
@@ -23,27 +48,27 @@ document.addEventListener('DOMContentLoaded', () => {
         currentDate = new Date(currentDate.split('/').reverse().join('/'));
 
         // Last updated in the past -> fetch new data
+        // TODO: fetch on standings every time
         if (currentDate > lastUpdatedDate) {
             console.log('fetched data is outdated!');
 
-            saveAndDisplayData('', true);
+            saveAndDisplayData(target, query, true);
             localStorage.setItem('lastUpdated', currentDate);
 
         // Last updated today -> get data from localstorage
         } else {
             console.log('data is still fresh');
-            saveAndDisplayData('', false);
+            saveAndDisplayData(target, query, false);
         }
     }
-
-});
+}
 
 /**
  * 
  * @param {string} query what kind of data are you fetching
  * @param {boolean} needsNewData
  */
-async function saveAndDisplayData(query = '', needsNewData = false) {
+async function saveAndDisplayData(target, query = '', needsNewData = false) {
 
     try {
 
@@ -55,7 +80,7 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
             console.log('NEEDS NEW DATA');
             data = await getData(query);
 
-            if (query == '') {
+            if (query == '' || query.length > 0) {
                 saveDataToStorage(data);
                 result = data;
 
@@ -69,12 +94,12 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
 
             console.log('GET DATA FROM LOCALSTORAGE');
             let urlData = getApiData(query);
+
             result = [];
 
             // Save which keys are missing from storage (aka data no longer saved, need new data again)
             let missingData = checkMissingData(urlData);
 
-            
             urlData = missingData.updatedData;
             missingData = missingData.toFetch;
             
@@ -83,7 +108,7 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
             if (hasUrlData) {
 
                 // Get all available data saved in localstorage
-                if (query == '') {
+                if (query == '' || query.length > 0) {
                     result = listAllDataFromStorage(urlData);
                     
                 // Get specific key data from localstorage
@@ -91,7 +116,6 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
                     result = getDataFromStorage(query);
                 }
             }
-
 
             // Remaining data to fetch (new data)
             if (missingData.length > 0) {
@@ -117,7 +141,7 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
         console.log('DATA TO WORK WITH:');
         console.log(result);
 
-        displayData(result);
+        displayData(target, result);
         
     // TODO: error handling
     } catch (error) {

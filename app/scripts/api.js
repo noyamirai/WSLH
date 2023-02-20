@@ -5,7 +5,7 @@ export async function getData(query = '') {
     let result;
 
     // no query provided
-    if (query == '') {
+    if (query == '' || query.length > 0) {
         result = await performMultipleCalls(apiData);
 
     // specific query
@@ -36,6 +36,10 @@ export function getApiData(query = '') {
 
     if (query == '') {
         return dataArray;
+    }
+
+    if (query.length > 0) {
+        return Object.fromEntries(Object.entries(dataArray).filter(([key, value]) => query.includes(key)));
     }
 
     return dataArray[query];

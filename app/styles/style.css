@@ -224,7 +224,7 @@ nav {
             text-align: center;
         }
 
-            .menu__item button {
+            .menu__item a {
               display: flex;
               align-items: center;
               justify-content: center;
@@ -236,15 +236,16 @@ nav {
 
               font-weight: 700;
               color: rgba(0 0 0 / 12%);
+              text-decoration: none;
             }
 
-            .menu__item button .icon {
+            .menu__item a .icon {
               font-size: 16px;
               font-size: 1.6rem;
               margin-bottom: 6px;
             }
 
-            .menu__item.active button {
+            .menu__item.active a {
                 color: var(--secondary-color)
             }
 
@@ -252,8 +253,8 @@ nav {
   #MAIN
 ============================================================================= */
 main {
-    padding: var(--default-padding) 0 var(--default-padding) 0;
-    /* padding: var(--default-padding) 0 calc(var(--nav-height) + var(--default-padding)) 0; */
+    /* padding: var(--default-padding) 0 var(--default-padding) 0; */
+    padding: var(--default-padding) 0 calc(var(--nav-height) + var(--default-padding)) 0;
 }
 
 section + section {
@@ -287,6 +288,14 @@ section.teamlist-overview {
 
   /* padding: 16px; */
   /* background-color: #F4F3F5; */
+}
+
+.loader.hide {
+  display: none;
+}
+
+.blue .loader .icon {
+  opacity: 100%;
 }
 
 .loader .icon {
@@ -613,11 +622,26 @@ td:first-child {
   }
 
     .team-highlight__item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
     }
 
       .team-highlight__item img {
         width: 52px;
         height: auto;
+
+        margin-bottom: 12px;
+      }
+
+      .highlight__details {
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
 
       .highlight__details h3 {
@@ -659,6 +683,7 @@ button {
 }
 
 .cards {
+  position: relative;
   display: flex;
   align-items: center;
 
