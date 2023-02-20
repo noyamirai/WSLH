@@ -1,5 +1,7 @@
 
 export function displayData(data) {
+
+
     // Set data based on identifier
     for (const key in data) {
         const item = data[key];
@@ -43,6 +45,9 @@ export function displayStandings (data, key) {
 
 export function displayLeagueTeams (data, key) {
 
+    console.log('display league teams');
+
+    const teamSection = document.querySelector('.js-teams-section');
     const teamListUl = document.querySelector('.js-teamlist');
     let listItems = [];
 
@@ -51,14 +56,26 @@ export function displayLeagueTeams (data, key) {
         listItems.push(listData);
     }); 
 
-    // TODO: load badges from root instead of extern?
+    let isFinished = false;
+
+    listItems.forEach((element, key) => {
+        teamListUl.innerHTML += element;
+
+        if ((key + 1) == listItems.length) {
+            isFinished = true;
+        }
+    });
+
+    console.log('done loop?');
+    
+    console.log(isFinished);
+
+    if (isFinished) {
+        teamSection.querySelector('.loader').remove();
+        teamListUl.classList.remove('hide');
+    }
     
     // setTimeout(() => {
-        document.querySelector('.teamlist__item--load').remove();
-
-        listItems.forEach((element, key) => {
-            teamListUl.innerHTML += element;
-        });
         
     // }, 500);
 

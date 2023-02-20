@@ -35,6 +35,7 @@ export function getApiData(query = '') {
     };
 
     if (query == '') {
+        console.log('return entire array');
         return dataArray;
     }
 

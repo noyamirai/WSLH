@@ -73,17 +73,26 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
 
             // Save which keys are missing from storage (aka data no longer saved, need new data again)
             let missingData = checkMissingData(urlData);
+
+            
             urlData = missingData.updatedData;
             missingData = missingData.toFetch;
+            
+            const hasUrlData = Object.keys(urlData).length > 0;
 
-            // Get all available data saved in localstorage
-            if (query == '') {
-                result = listAllDataFromStorage(urlData);
-                
-            // Get specific key data from localstorage
-            } else {
-                result = getDataFromStorage(query);
+            if (hasUrlData) {
+
+                // Get all available data saved in localstorage
+                if (query == '') {
+                    // urlData is empty -> check
+                    result = listAllDataFromStorage(urlData);
+                    
+                // Get specific key data from localstorage
+                } else {
+                    result = getDataFromStorage(query);
+                }
             }
+
 
             // Remaining data to fetch (new data)
             if (missingData.length > 0) {
@@ -94,14 +103,16 @@ async function saveAndDisplayData(query = '', needsNewData = false) {
                     newData = await singleApiCall(missingData[0]);
                     saveDataToStorage(newData, missingData[0].identifier);
 
+                    result.push(newData);
+
                 } else {
                     newData = await performMultipleCalls(missingData);
                     saveDataToStorage(newData);
+
+                    result = newData;
                 }
 
-                result.push(newData);
             }
-
         }
 
         console.log('DATA TO WORK WITH:');

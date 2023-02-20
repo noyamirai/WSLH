@@ -253,6 +253,40 @@ section.teamlist-overview {
   padding: 0 0 0 12px;
 }
 
+
+/* =============================================================================
+  #LOADER
+============================================================================= */
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 65px;
+  border-radius: 6px;
+
+  font-size: 18px;
+  font-size: 1.8rem;
+
+  /* padding: 16px; */
+  /* background-color: #F4F3F5; */
+}
+
+.loader .icon {
+  opacity: 25%;
+  animation: rotate 2s linear infinite;
+}
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
 /* =============================================================================
   #TEAMLIST
 ============================================================================= */
@@ -294,18 +328,6 @@ section.teamlist-overview {
     width: 100%;
   }
 
-  .teamlist__item--load .icon {
-    animation: rotate 2s linear infinite;
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 
   .teamlist__item + .teamlist__item {
     margin-left: 12px;
@@ -322,10 +344,6 @@ section.teamlist-overview {
       font-size: 1.8rem;
       /* background-color: #e1e1e1; */
       border-radius: 50%;
-    }
-
-    .teamlist__item div .icon {
-      opacity: 20%;
     }
 
       .teamlist__item img {
