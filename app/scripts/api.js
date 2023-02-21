@@ -56,8 +56,6 @@ export function getApiData(query = '') {
     
     let currentDate = getCurrentDate(true);
 
-    console.log(currentDate);
-
     const dataArray = {
         'standings': {
             apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookuptable.php',

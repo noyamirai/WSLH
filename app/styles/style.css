@@ -85,7 +85,7 @@ body {
   #UTILITIES
 ============================================================================= */
 .hide { display: none; }
-
+.js-content.hide {display: none; }
 /* Text aligns */
 .ta-left { text-align: left; }
 .ta-center { text-align: center; }

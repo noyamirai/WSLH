@@ -3,6 +3,8 @@ import { getData, getApiData, performMultipleCalls, singleApiCall } from './api.
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
 
+const sections = document.querySelectorAll('section');
+
 document.addEventListener('DOMContentLoaded', () => {
 
     let lastUpdated = localStorage.getItem("lastUpdated"); 
@@ -27,8 +29,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
+});
 
+window.addEventListener("load", event => {
+    const sections = document.querySelectorAll('section');
+
+    sections.forEach((section) => {
+        const images = section.querySelectorAll('img');
+        // let loaded = [];
+        let loadStatus = [];
+        
+        images.forEach((image)=> {
+            let isLoaded = image.complete && image.naturalHeight !== 0;
+
+            if (isLoaded) {
+                loadStatus.push(isLoaded);
+            }
+        });
+
+        if (loadStatus.length == images.length) {
+            const contentContainer = section.querySelector('.js-content');
+
+            section.querySelector('.loader').classList.add('hide');
+
+            if (contentContainer) {
+                contentContainer.classList.remove('hide');
+            }
+                
+        }
+    });
 });
 
 function initialCall(target, lastUpdated, currentDate, query = '') {

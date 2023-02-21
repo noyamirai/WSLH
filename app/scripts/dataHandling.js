@@ -20,10 +20,12 @@ export function displayData(target, data) {
 
         } else if (item[identifier] == 'league_teams') {
             displayLeagueTeams(item[dataKey]);
+
         } else if (item[identifier] == 'prev_games') {
 
             let prevGames = item[dataKey].slice(0,10);
             displayPreviousGames(prevGames);
+
         } else if (item[identifier] == 'games_today') {
             displayCurrentGames(item[dataKey]);
         }
@@ -72,7 +74,6 @@ export function displayStandings (data) {
 
     const standingsSection = document.querySelector('.js-standings-section');
     const standingsTableBody = document.querySelector('.js-standings-body');
-    let isFinished = false;
 
     standingsTableBody.innerHTML = '';
 
@@ -94,16 +95,7 @@ export function displayStandings (data) {
         tableRow.innerHTML = tableData;
 
         standingsTableBody.appendChild(tableRow);
-
-        if ((i + 1) == data.length) {
-            isFinished = true;
-        }
     }); 
-
-    if (isFinished) {
-        standingsSection.querySelector('.loader').classList.add('hide');
-        standingsSection.querySelector('.js-standings-table').classList.remove('hide');
-    }
 }
 
 export function displayLeagueTeams (data) {
@@ -118,23 +110,14 @@ export function displayLeagueTeams (data) {
         listItems.push(listData);
     }); 
 
-    let isFinished = false;
     teamListUl.innerHTML = '';
 
     listItems.forEach((element, key) => {
         teamListUl.innerHTML += element;
-
-        if ((key + 1) == listItems.length) {
-            isFinished = true;
-        }
     });
 
     teamSection.querySelector('h2').innerHTML = `WSL Teams <span class="identifier">(${data.length})</span>`;
 
-    if (isFinished) {
-        teamSection.querySelector('.loader').classList.add('hide');
-        teamListUl.classList.remove('hide');
-    }
 }
 
 export function displayTopThreeTeams(leagueTeams) {
@@ -165,22 +148,12 @@ export function displayTopThreeTeams(leagueTeams) {
 
     });
 
-    let isFinished = false;
     teamListUl.innerHTML = '';
 
     listItems.forEach((element, key) => {
         teamListUl.innerHTML += element;
 
-        if ((key + 1) == listItems.length) {
-            isFinished = true;
-        }
     });
-
-
-    if (isFinished) {
-        teamSection.querySelector('.loader').classList.add('hide');
-        teamListUl.classList.remove('hide');
-    }
     
 }
 
@@ -234,21 +207,12 @@ function displayPreviousGames(events) {
 
         Promise.all(listItems).then(data => {
 
-            let isFinished = false;
             prevMatchList.innerHTML = '';
 
             data.forEach((element, key) => {
                 prevMatchList.innerHTML += element;
 
-                if ((key + 1) == data.length)
-                    isFinished = true;
             });
-
-            if (isFinished) {
-                prevMatchSection.querySelector('.loader').classList.add('hide');
-                prevMatchList.classList.remove('hide');
-            }
-
         })
        
     } catch (error) {
@@ -309,30 +273,23 @@ function displayCurrentGames(events) {
     
             Promise.all(listItems).then(data => {
     
-                let isFinished = false;
                 matchList.innerHTML = '';
     
                 data.forEach((element, key) => {
                     matchList.innerHTML += element;
-    
-                    if ((key + 1) == data.length)
-                        isFinished = true;
                 });
     
-                if (isFinished) {
-                    matchSection.querySelector('.loader').classList.add('hide');
-                    matchList.classList.remove('hide');
-                }
     
             })
         } else {
 
             const messageEl = document.createElement('div');
-            messageEl.className = 'message message--empty';
+            messageEl.className = 'message message--empty js-content hide';
             messageEl.innerHTML = '<i class="icon fa-solid fa-heart-crack"></i><p>No games today</p>';
 
-            matchList.remove();
-            matchSection.querySelector('.loader').classList.add('hide');
+            if (matchList)
+                matchList.remove();
+        
             matchSection.appendChild(messageEl);
             
         }
