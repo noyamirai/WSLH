@@ -1,3 +1,4 @@
+import { getCurrentDate } from "./utils.js";
 import { getData, getApiData, performMultipleCalls, singleApiCall } from './api.js';
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
@@ -5,7 +6,7 @@ import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFro
 document.addEventListener('DOMContentLoaded', () => {
 
     let lastUpdated = localStorage.getItem("lastUpdated"); 
-    let currentDate = getDate();
+    let currentDate = getCurrentDate();
 
     routie({
         '': function() {
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         'home': function() {
             console.log('HOME PAGE');
-            const toFetch = ['league_teams', 'standings', 'prev_games'];
+            const toFetch = ['league_teams', 'standings', 'prev_games', 'games_today'];
 
             initialCall('home', lastUpdated, currentDate, toFetch);
         },
@@ -149,19 +150,4 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
         console.log(error);
     }
 
-}
-
-// SOURCE: somewhere from the depths of stackoverflow
-function getDate () {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1; // Months start at 0!
-    let dd = today.getDate();
-
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-
-    const formattedToday = dd + '/' + mm + '/' + yyyy;
-
-    return formattedToday;
 }

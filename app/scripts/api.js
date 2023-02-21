@@ -1,3 +1,5 @@
+import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
+import { getCurrentDate } from "./utils.js";
 
 export async function getData(query = '') {
 
@@ -17,20 +19,65 @@ export async function getData(query = '') {
 
 }
 
+export async function getTeamDetails(idTeam) {
+
+    // console.log('inside team details');
+    const fetchedLeagueTeams = getDataFromStorage('league_teams');
+
+    let result;
+
+    // No fetched teams
+    if (fetchedLeagueTeams === null) {
+
+        console.log('NEW FETCH');
+        const apiData = getApiData('league_teams');
+        const teamData = await singleApiCall(apiData);
+
+        console.log('GOT DATA ');
+        // console.log(teamData);
+
+    } else {
+
+        const objectKey = getResultKey(fetchedLeagueTeams);
+
+        fetchedLeagueTeams[objectKey].forEach(teamObject => {
+            if (teamObject.idTeam == idTeam) {
+                result = teamObject;
+            }
+        });
+
+    }
+
+
+    return result;
+}
+
 export function getApiData(query = '') {
+    
+    let currentDate = getCurrentDate(true);
+
+    console.log(currentDate);
 
     const dataArray = {
         'standings': {
-            api: 'thesportsdb',
             apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookuptable.php',
             params:'?l=4849&s=2022-2023',
             identifier: 'standings'
         },
         'league_teams': {
-            api: 'thesportsdb',
             apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/search_all_teams.php',
             params: '?l=English_Womens_Super_League',
             identifier: 'league_teams'
+        },
+        'prev_games': {
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventspastleague.php',
+            params: '?id=4849',
+            identifier: 'prev_games'
+        },
+        'games_today': {
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventsday.php',
+            params: `?d=${currentDate}&l=4849`,
+            identifier: 'games_today'
         }
     };
 
@@ -57,29 +104,14 @@ export async function performMultipleCalls(apiData) {
 /**
  * 
  * @param {object} urlData
- * @param {api} urlData.api
  * @param {apiUrl} urlData.apiUrl
  * @param {query} urlData.params
- * 
- * @note in case of livescore api a different header will be sent
- * 
+ *  
  * @returns api data or throws error <Promise>
  */
 export async function singleApiCall(urlData) {
 
     let options = {};
-
-    if (urlData.api == 'livescore') {
-        options = {
-            method: 'GET',
-            headers: {
-            }
-        };
-    } else {
-        options = {
-            method: 'GET'
-        };
-    }
 
     try {
 

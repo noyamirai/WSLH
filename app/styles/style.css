@@ -275,7 +275,7 @@ section.teamlist-overview {
 /* =============================================================================
   #LOADER
 ============================================================================= */
-.loader {
+.loader, .message {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -288,6 +288,21 @@ section.teamlist-overview {
 
   /* padding: 16px; */
   /* background-color: #F4F3F5; */
+}
+
+.message {
+  flex-direction: column;
+  font-size: 14px;
+  font-size: 1.4rem;
+}
+
+.message p {
+    opacity: 30%;
+    font-weight: 600;
+}
+
+.message .icon {
+  opacity: 25%;
 }
 
 .loader.hide {
@@ -685,8 +700,7 @@ button {
 .cards {
   position: relative;
   display: flex;
-  align-items: center;
-
+  /* align-items: center; */
   padding: 0 12px 0 0;
   /* margin-left: -12px; */
   overflow-x: auto;
@@ -703,6 +717,7 @@ button {
 }
 
   .card__item {
+    position: relative;
     display: flex;
     align-items: center;
     background-color: var(--grey);
@@ -712,8 +727,49 @@ button {
       scroll-snap-align: start;
   }
 
+  .card__item--column {
+      flex-direction: column;
+      padding-bottom: calc(14px + 20px);
+  }
+
+  .card__item--postponed.card__item span {
+    background-color: #e2e2e2;
+    color: #A5A4A6;
+  }
+
+  .card__item span {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    font-size: 12px;
+    font: 1.2rem;
+    height: 24px;
+
+    color: var(--white);
+
+    text-align: center;
+
+    margin-top: 6px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
     .card__item + .card__item {
       margin-left: 12px;
+    }
+
+
+    .card__details {
+      display: flex;
+      align-items: center;
     }
 
 
@@ -740,7 +796,7 @@ button {
         width: 100%;
         padding: 0 6px;
         border-radius: 5px;
-        background-color: #E6E6E6;
+        background-color: #e2e2e2;
       }
 
         .team__score p {
@@ -753,10 +809,16 @@ button {
       .team__score--win {
         background-color: #4CB669;
       }
+
+      .team__score--result.team__score--win p,
+      .team__score--result.team__score--loss p {
+        color: var(--white);
+      }
+
       .team__score--loss {
         background-color: #E93333;
       }
 
         .team__score--result p {
-          color: var(--white);
+          color: #A5A4A6;
         }
