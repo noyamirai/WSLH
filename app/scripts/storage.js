@@ -56,3 +56,14 @@ export function getDataFromStorage(key) {
     return JSON.parse(jsonData);
 
 }
+
+export function getResultKey(dataObject) {
+
+    let objectKey;
+
+    for (const key in dataObject) {
+        objectKey = Object.keys(dataObject)[0];
+    }
+
+    return objectKey;
+}

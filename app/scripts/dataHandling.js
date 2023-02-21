@@ -1,3 +1,4 @@
+import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
 
 export function displayData(target, data) {
 
@@ -133,17 +134,26 @@ export function displayTopThreeTeams(leagueTeams) {
     const teamListUl = document.querySelector('.js-top-three');
     let listItems = [];
 
+    const fetchedLeagueTeams = getDataFromStorage('league_teams');
+    const objectKey = getResultKey(fetchedLeagueTeams);
 
-    leagueTeams.forEach(teamObject => {
-        const listData = `
-                        <li class="team-highlight__item">
-                            <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
-                            <div class="highlight__details">
-                                <h3>${teamObject.strTeam}</h3>
-                                <p>${teamObject.intPoints} points</p>
-                            </div>
-                        </li>`;
-        listItems.push(listData);
+    leagueTeams.forEach(leagueTeamObject => {
+
+        // Get team details for better pic
+        fetchedLeagueTeams[objectKey].forEach(teamObject => {
+            if (leagueTeamObject.idTeam == teamObject.idTeam) {
+                const listData = `
+                                <li class="team-highlight__item">
+                                    <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
+                                    <div class="highlight__details">
+                                        <h3>${teamObject.strTeam}</h3>
+                                        <p>${leagueTeamObject.intPoints} points</p>
+                                    </div>
+                                </li>`;
+                listItems.push(listData);
+            }
+        });
+
     });
 
     let isFinished = false;

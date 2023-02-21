@@ -22,13 +22,13 @@ export function getApiData(query = '') {
     const dataArray = {
         'standings': {
             api: 'thesportsdb',
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookuptable.php',
             params:'?l=4849&s=2022-2023',
             identifier: 'standings'
         },
         'league_teams': {
             api: 'thesportsdb',
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/search_all_teams.php',
             params: '?l=English_Womens_Super_League',
             identifier: 'league_teams'
         }
