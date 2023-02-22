@@ -33,7 +33,7 @@ export function displayData(target, data) {
     }
 
     setActiveMenu(target);
-    showPage(target);
+    // showPage(target);
 }
 
 export function setActiveMenu(target) {

@@ -138,6 +138,47 @@ h2 {
   border-bottom-right-radius: 30px;
 }
 
+.team-details .header {
+  padding: 0;
+
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  background: var(--secondary-color)
+}
+
+  .team-details .header__logo__container {
+    position: relative;
+    padding: 30px 0 30px 0;
+    height: 100%;
+  }
+
+  .team-details .image-wrapper {
+    width: 90px;
+  }
+
+  .team-details .header__logo__title {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    padding: 4px 12px;
+
+    min-width: 120px;
+
+    border-radius: 20px;
+
+    background-color: var(--accent-color);
+    
+    transform: translateX(-50%);
+  }
+
+
 .header::before {
     content: "";
     position: absolute;
@@ -151,6 +192,10 @@ h2 {
     background-image: url('../assets/logos/wsl-logo.png');
     filter: brightness(0) invert(1);
     opacity: 5%;
+}
+
+.team-details .header::before {
+  opacity: 8%;
 }
 
     .header__logo__container {
@@ -698,6 +743,30 @@ button {
 
 }
 
+
+.btn--menu {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    position: absolute;
+    right: var(--default-padding);
+    top: var(--default-padding);
+
+    background-color: #FFF;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+}
+
+.btn--menu .icon {
+  font-size: 24px;
+  font-size: 2.4rem;
+  color: var(--accent-color);
+}
 /* =============================================================================
   #PREV GAMES
 ============================================================================= */
@@ -834,10 +903,10 @@ button {
 /* =============================================================================
   #TEAM DETAILS
 ============================================================================= */
-
 .team-details {
   position: fixed;
-  inset: auto 0 0 0;
+  /* inset: auto 0 0 0; */
+  inset: 0 0 0 0;
 
   background-color: var(--white);
 
