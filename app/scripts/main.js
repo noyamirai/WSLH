@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('FETCH: standings');   
             
             initialCall('standings', lastUpdated, currentDate, 'standings');     
+        },
+        'team-details/:id': function(teamId) {
+            console.log('DISPLAY TEAM DETAILS FOR:' + teamId );
         }
     });
 

@@ -362,12 +362,16 @@ section.teamlist-overview {
     min-width: 62px;
     height: 62px;
 
-    padding: 14px;
 
     border-radius: 6px;
 
     background-color: var(--grey);
   }
+
+    .teamlist__item a {
+      padding: 14px;
+      display: flex;
+    }
 
   .teamlist__item--load {
     width: 100%;

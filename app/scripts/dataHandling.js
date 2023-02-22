@@ -108,7 +108,13 @@ export function displayLeagueTeams (data) {
     let listItems = [];
 
     data.forEach((teamObject) => {
-        const listData = `<li class="teamlist__item"><img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}"></li>`;
+        const listData = `
+                    <li class="teamlist__item">
+                        <a href="#team-details/${teamObject.idTeam}">
+                            <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
+                        </a>
+                    </li>
+        `;
         listItems.push(listData);
     }); 
 
