@@ -1,6 +1,7 @@
 import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
 import { formatDate } from "./utils.js";
 import { getTeamDetails } from "../scripts/api.js";
+import { revealSection } from "../scripts/renderUI.js";
 
 export function displayData(target, data) {
 
@@ -96,6 +97,8 @@ export function displayStandings (data) {
 
         standingsTableBody.appendChild(tableRow);
     }); 
+
+    revealSection(standingsSection);
 }
 
 export function displayLeagueTeams (data) {
@@ -103,7 +106,6 @@ export function displayLeagueTeams (data) {
     const teamSection = document.querySelector('.js-teams-section');
     const teamListUl = document.querySelector('.js-teamlist');
     let listItems = [];
-
 
     data.forEach((teamObject) => {
         const listData = `<li class="teamlist__item"><img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}"></li>`;
@@ -117,6 +119,8 @@ export function displayLeagueTeams (data) {
     });
 
     teamSection.querySelector('h2').innerHTML = `WSL Teams <span class="identifier">(${data.length})</span>`;
+    revealSection(teamSection);
+
 
 }
 
@@ -152,8 +156,9 @@ export function displayTopThreeTeams(leagueTeams) {
 
     listItems.forEach((element, key) => {
         teamListUl.innerHTML += element;
-
     });
+
+    revealSection(teamSection);
     
 }
 
@@ -211,8 +216,9 @@ function displayPreviousGames(events) {
 
             data.forEach((element, key) => {
                 prevMatchList.innerHTML += element;
-
             });
+
+            revealSection(prevMatchSection);
         })
        
     } catch (error) {
@@ -233,7 +239,7 @@ function displayCurrentGames(events) {
             
             listItems = events.map(async (eventObject) => {
             
-                const fetches = []
+                const fetches = [];
             
                 fetches.push(await getTeamDetails(eventObject.idHomeTeam));
                 fetches.push(await getTeamDetails(eventObject.idAwayTeam));
@@ -278,20 +284,27 @@ function displayCurrentGames(events) {
                 data.forEach((element, key) => {
                     matchList.innerHTML += element;
                 });
-    
+
+                revealSection(matchSection);
     
             })
         } else {
 
-            const messageEl = document.createElement('div');
-            messageEl.className = 'message message--empty js-content hide';
-            messageEl.innerHTML = '<i class="icon fa-solid fa-heart-crack"></i><p>No games today</p>';
+            let messageEl = matchSection.querySelector('.message');
+
+            if (!messageEl) {
+                
+                messageEl = document.createElement('div');
+                messageEl.className = 'message message--empty js-message hide';
+                messageEl.innerHTML = '<i class="icon fa-solid fa-heart-crack"></i><p>No games today</p>';
+                matchSection.appendChild(messageEl);
+            }
 
             if (matchList)
                 matchList.remove();
+
+            revealSection(matchSection);
         
-            matchSection.appendChild(messageEl);
-            
         }
 
        

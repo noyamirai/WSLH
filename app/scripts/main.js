@@ -3,8 +3,6 @@ import { getData, getApiData, performMultipleCalls, singleApiCall } from './api.
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
 
-const sections = document.querySelectorAll('section');
-
 document.addEventListener('DOMContentLoaded', () => {
 
     let lastUpdated = localStorage.getItem("lastUpdated"); 
@@ -29,35 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-});
-
-window.addEventListener("load", event => {
-    const sections = document.querySelectorAll('section');
-
-    sections.forEach((section) => {
-        const images = section.querySelectorAll('img');
-        // let loaded = [];
-        let loadStatus = [];
-        
-        images.forEach((image)=> {
-            let isLoaded = image.complete && image.naturalHeight !== 0;
-
-            if (isLoaded) {
-                loadStatus.push(isLoaded);
-            }
-        });
-
-        if (loadStatus.length == images.length) {
-            const contentContainer = section.querySelector('.js-content');
-
-            section.querySelector('.loader').classList.add('hide');
-
-            if (contentContainer) {
-                contentContainer.classList.remove('hide');
-            }
-                
-        }
-    });
 });
 
 function initialCall(target, lastUpdated, currentDate, query = '') {
@@ -105,9 +74,21 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
         let result;
         let data;
 
+        if (query == 'league_teams' || query.includes('league_teams')) {
+
+            if (query == 'league_teams') {
+                query = ['league_teams', 'male_team_data'];
+            } else {
+                query.push('male_team_data'); 
+            }
+        }
+
+        // console.log(query);
+
         // Check whether or not it requires brand new data
         if (needsNewData) {
             console.log('NEEDS NEW DATA');
+            
             data = await getData(query);
 
             if (query == '' || query.length > 0) {
@@ -123,9 +104,12 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
         } else {
 
             console.log('GET DATA FROM LOCALSTORAGE');
+
             let urlData = getApiData(query);
 
             result = [];
+
+            // console.log(urlData);
 
             // Save which keys are missing from storage (aka data no longer saved, need new data again)
             let missingData = checkMissingData(urlData);

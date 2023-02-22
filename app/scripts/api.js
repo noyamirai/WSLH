@@ -3,8 +3,9 @@ import { getCurrentDate } from "./utils.js";
 
 export async function getData(query = '') {
 
-    const apiData = getApiData(query);
+    const apiData = getApiData(query, true);
     let result;
+
 
     // no query provided
     if (query == '' || query.length > 0) {
@@ -14,22 +15,84 @@ export async function getData(query = '') {
     } else {
         result = await singleApiCall(apiData);
     }
-    
+
+    if (query == 'league_teams' || query.includes('league_teams')) {
+
+        let teamData = [];
+
+        result.forEach((item) => {
+            const dataKey = Object.keys(item)[0];
+            
+            if (item.identifier == 'male_team_data' || item.identifier == 'league_teams') {
+                const key =  (item.identifier == 'male_team_data' ? 'men' : 'women');
+                teamData.push({ [key] : item[dataKey]});
+            }
+        });
+
+        const updatedLeagueTeams = await addAditionalData(teamData);
+
+        result.forEach((item, key) => {
+
+            const dataKey = Object.keys(item)[0];
+            
+            if (item.identifier == 'league_teams') {
+                result[key][dataKey] = updatedLeagueTeams;
+            } else if (item.identifier == 'male_team_data') {
+                result.splice(key, 1);
+            }
+
+        });
+
+        
+    }
+
     return result;
 
 }
 
+async function addAditionalData(teamData) {
+
+    teamData.forEach((object, key) => {
+
+        if (object.women) {
+            object.women.forEach((womenTeam, wKey) => {
+                
+                const arrayKey = (key == (teamData.length - 1) ? key-1 : key+1);
+
+                teamData[arrayKey].men.forEach(menTeam => {
+                    const containsSubstring = womenTeam.strTeam.includes(menTeam.strTeam);
+
+                    if (containsSubstring) {
+                        teamData[key].women[wKey].strTeamShort = menTeam.strTeamShort;
+                    }
+                });
+            });
+            
+        }
+    });
+
+    const womenData = teamData.filter((item) => {
+        if (item.women) {
+            return item;
+        }
+    });
+
+    return womenData[0].women;
+}
+
 export async function getTeamDetails(idTeam) {
 
-    // console.log('inside team details');
     const fetchedLeagueTeams = getDataFromStorage('league_teams');
+    // console.log('inside team details');
 
     let result;
+
+    // console.log(fetchedLeagueTeams);
 
     // No fetched teams
     if (fetchedLeagueTeams === null) {
 
-        console.log('NEW FETCH');
+        console.log('NEW FETCH???');
         const apiData = getApiData('league_teams');
         const teamData = await singleApiCall(apiData);
 
@@ -52,7 +115,7 @@ export async function getTeamDetails(idTeam) {
     return result;
 }
 
-export function getApiData(query = '') {
+export function getApiData(query = '', newData = false) {
     
     let currentDate = getCurrentDate(true);
 
@@ -77,13 +140,30 @@ export function getApiData(query = '') {
             params: `?d=${currentDate}&l=4849`,
             identifier: 'games_today'
         }
+        
     };
 
+    
     if (query == '') {
+        if (newData || newData && query == 'league_teams') {
+            dataArray.male_team_data = {};
+            dataArray.male_team_data.apiUrl = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php'
+            dataArray.male_team_data.params =`?l=English%20Premier%20League`
+            dataArray.male_team_data.identifier = 'male_team_data';
+        }
+
         return dataArray;
     }
 
     if (query.length > 0) {
+
+        if (newData || newData && query.includes('league_teams')) {
+            dataArray.male_team_data = {};
+            dataArray.male_team_data.apiUrl = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php'
+            dataArray.male_team_data.params =`?l=English%20Premier%20League`
+            dataArray.male_team_data.identifier = 'male_team_data';
+        }
+    
         return Object.fromEntries(Object.entries(dataArray).filter(([key, value]) => query.includes(key)));
     }
 
@@ -113,7 +193,9 @@ export async function singleApiCall(urlData) {
 
     try {
 
-        const response = await fetch(`${urlData.apiUrl}${urlData.params}`, options);
+        let url = urlData.apiUrl + urlData.params;
+
+        const response = await fetch(url, options);
 
         if (response.ok) {
             console.log('RESPONSE OK!!');
