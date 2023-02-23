@@ -684,9 +684,14 @@ td:first-child {
   }
 
   .team-highlight {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    /* display: grid;
+    grid-template-columns: repeat(3, 1fr); */
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    gap: 16px;
   }
 
     .team-highlight__item {
@@ -701,7 +706,7 @@ td:first-child {
         width: 52px;
         height: auto;
 
-        margin-bottom: 12px;
+        margin-bottom: 6px;
       }
 
       .highlight__details {

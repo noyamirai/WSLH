@@ -16,7 +16,7 @@ export async function getData(query = '') {
         result = await singleApiCall(apiData);
     }
 
-    if (query == 'league_teams' || query.includes('league_teams')) {
+    if (query == 'league_teams' || query.includes('league_teams') || query == '') {
 
         let teamData = [];
 
@@ -43,7 +43,6 @@ export async function getData(query = '') {
 
         });
 
-        
     }
 
     return result;
