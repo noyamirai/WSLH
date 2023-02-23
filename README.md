@@ -16,10 +16,10 @@ WSL Personal Hub will be offering the following features:
 
 | Features :nail_care:        | Status :rocket:    |
 |-----------------------------|---------------------|
-| View current league standings    | :hourglass: |
+| View current league standings    | :check: |
 | Team overviews    | :hourglass: |
-| Today's games    | :hourglass: |
-| Previous five games    | :hourglass: |
+| Today's games    | :check: |
+| Previous ten games    | :check: |
 
 <!-- ---
 
