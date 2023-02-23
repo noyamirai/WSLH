@@ -33,7 +33,7 @@ export function displayData(target, data) {
     }
 
     setActiveMenu(target);
-    showPage(target);
+    // showPage(target);
 }
 
 export function setActiveMenu(target) {
@@ -86,7 +86,7 @@ export function displayStandings (data) {
         const tableData = `
             <td>
                 <span>${teamObject.intRank}</span>
-                <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
+                <img class="team__logo" src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
                 ${teamObject.strTeam}
             </td>
             <td>${teamObject.intPlayed}</td>
@@ -109,9 +109,9 @@ export function displayLeagueTeams (data) {
 
     data.forEach((teamObject) => {
         const listData = `
-                    <li class="teamlist__item">
+                    <li class="card__item">
                         <a href="#team-details/${teamObject.idTeam}">
-                            <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
+                            <img class="team__logo" src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
                         </a>
                     </li>
         `;
@@ -145,11 +145,11 @@ export function displayTopThreeTeams(leagueTeams) {
         fetchedLeagueTeams[objectKey].forEach(teamObject => {
             if (leagueTeamObject.idTeam == teamObject.idTeam) {
                 const listData = `
-                                <li class="team-highlight__item">
-                                    <img src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
-                                    <div class="highlight__details">
+                                <li class="card__item">
+                                    <img class="team__logo" src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
+                                    <div class="card__details">
                                         <h3>${teamObject.strTeam}</h3>
-                                        <p>${leagueTeamObject.intPoints} points</p>
+                                        <p class="text__bubble">${leagueTeamObject.intPoints} points</p>
                                     </div>
                                 </li>`;
                 listItems.push(listData);
@@ -189,18 +189,18 @@ function displayPreviousGames(events) {
                 const eventDate = formatDate(eventObject.dateEventLocal, 'dd/mm/yyyy');
 
                 return `
-                    <li class="card__item card__item--column ${eventObject.strStatus.toLowerCase() == 'match postponed' ? 'card__item--postponed' : ''}">
-                        <div class="card__details">
-                            <div class="card__team">
-                                <img src="${homeTeam.strTeamBadge}" alt="">
+                    <li class="card__item ${eventObject.strStatus.toLowerCase() == 'match postponed' ? 'card__item--postponed' : ''}">
+                        <div class="card__group">
+                            <div>
+                                <img class="team__logo" src="${homeTeam.strTeamBadge}" alt="">
 
                                 <div class="team__score team__score--result ${ eventObject.intHomeScore > eventObject.intAwayScore ? 'team__score--win' : (eventObject.intHomeScore == eventObject.intAwayScore ? '' : 'team__score--loss') }">
                                     <p>${eventObject.intHomeScore ?? 0 }</p>
                                 </div>
                             </div>
 
-                            <div class="card__team">
-                                <img src="${awayTeam.strTeamBadge}" alt="">
+                            <div>
+                                <img class="team__logo" src="${awayTeam.strTeamBadge}" alt="">
 
                                 <div class="team__score team__score--result ${ eventObject.intAwayScore > eventObject.intHomeScore ? 'team__score--win' : (eventObject.intHomeScore == eventObject.intAwayScore ? '' : 'team__score--loss') }">
                                     <p>${eventObject.intAwayScore ?? 0 }</p>
@@ -256,23 +256,23 @@ function displayCurrentGames(events) {
                     const startTime = eventObject.strTime.substr(0, eventObject.strTime.lastIndexOf(":"));
     
                     return `
-                        <li class="match__item">
-                            <div class="match__teamname">
+                        <li class="card__item">
+                            <div class="event__teamname">
                                 <p>${eventObject.strHomeTeam}</p>
                             </div>
     
-                            <div class="match__details">
-                                <img class="match__details__logo" src="${homeTeam.strTeamBadge}" alt="">
+                            <div class="event__details">
+                                <img class="team__logo" src="${homeTeam.strTeamBadge}" alt="">
     
-                                <div class="match__details__time">
+                                <div class="event__details__time">
                                     <p>${startTime}</p>
                                 </div>
     
-                                <img class="match__details__logo" src="${awayTeam.strTeamBadge}" alt="">
+                                <img class="team__logo" src="${awayTeam.strTeamBadge}" alt="">
     
                             </div>
     
-                            <div class="match__teamname">
+                            <div class="event__teamname">
                                 <p>${eventObject.strAwayTeam}</p>
                             </div>
     

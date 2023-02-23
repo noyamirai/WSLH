@@ -22,14 +22,14 @@
 
     <body>
 
-        <header class="header">
+        <header class="header header--rounded">
 
             <figure class="header__logo__container">
-                <picture class="image-wrapper">
+                <picture class="logo-wrapper">
                     <img class="logo" src="../app/assets/logos/wsl-logo.png" alt="WSLH Logo">
                 </picture>
 
-                <figcaption class="header__logo__title ta-center">
+                <figcaption class="header__logo__title">
                     <h1>
                         FA Women's<br>Super League
                         <span>Personal Hub</span>
@@ -43,33 +43,33 @@
 
             <article id="home-page">
 
-                <section class="teamlist-overview js-teams-section">
+                <section class="scrollable js-teams-section">
                     <h2>WSL Teams</h2>
 
                     <div class="loader">
                         <i class="icon fa-solid fa-futbol"></i>
                     </div>
 
-                    <ul class="teamlist js-teamlist js-content hide">
+                    <ul class="cards cards--thumb cards--list js-teamlist js-content hide">
                         
                     </ul>
 
                 </section>
 
-                <section class="match-overview js-matches-section">
+                <section class="js-matches-section">
                     <h2>Games today</h2>
 
                     <div class="loader">
                         <i class="icon fa-solid fa-futbol"></i>
                     </div>
 
-                    <ul class="matchlist js-matchlist js-content hide ">
+                    <ul class="cards cards--event js-matchlist js-content hide ">
 
                     </ul>
 
                 </section>
 
-                <section class="blue top-three js-top-three-section">
+                <section class="banner banner--blue js-top-three-section">
 
                     <h2>Current top teams</h2>
 
@@ -77,20 +77,20 @@
                         <i class="icon fa-solid fa-futbol"></i>
                     </div>
 
-                    <ul class="team-highlight js-content js-top-three hide">
+                    <ul class="cards cards--highlight js-content js-top-three hide">
                         
                     </ul>
 
                 </section>
 
-                <section class="previous-matches js-prev-matches-section">
+                <section class="scrollable js-prev-matches-section">
                     <h2>Previous games</h2>
 
                     <div class="loader">
                         <i class="icon fa-solid fa-futbol"></i>
                     </div>
 
-                    <ul class="cards js-content js-prev-matches-list hide">
+                    <ul class="cards cards--game cards--list js-content js-prev-matches-list hide">
                         
                     </ul>
                 </section>
@@ -123,17 +123,17 @@
                 </section>
             </article>
 
-            <article class="team-details hide" id="team-details-page">
+            <article class="window hide" id="team-details-page">
 
                 <header class="header">
 
                     <figure class="header__logo__container">
-                        <picture class="image-wrapper">
-                            <img class="logo" src="../app/assets/logos/wsl-logo.png" alt="WSLH Logo">
+                        <picture class="logo-wrapper">
+                            <img class="logo js-teamlogo" src="../app/assets/logos/wsl-logo.png" alt="WSLH Logo">
                         </picture>
 
-                        <figcaption class="header__logo__title ta-center">
-                            <h1>Arsenal</h1>
+                        <figcaption class="header__logo__title">
+                            <h2 class="js-teamname">Arsenal</h2>
                         </figcaption>
                     </figure>
 
@@ -143,7 +143,50 @@
 
                 <section>
 
-                    <p>Lorem ipsum text</p>
+                    <h2>Previous games</h2>
+
+                    <ul class="cards cards--list cards--game js-content">
+                        <!-- <li class="card__item ">
+                            <div class="card__group">
+                                <div>
+                                    <img class="team__logo" src="https://www.thesportsdb.com/images/media/team/badge/rfg9ge1610530188.png" alt="">
+
+                                    <div class="team__score team__score--result team__score--loss">
+                                        <p>0</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <img class="team__logo" src="https://www.thesportsdb.com/images/media/team/badge/dtq1ny1610532512.png" alt="">
+
+                                    <div class="team__score team__score--result team__score--win">
+                                        <p>1</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span>12/02/23</span>
+                        </li>
+                        -->
+                    </ul>
+
+                    <div class="content">
+                        <h2>Squad</h2>
+
+                        <ul class="cards cards--overview">
+                            <!-- <li class="card__item card__item--column">
+                                <picture class="player__cutout">
+                                    <img class="" src="https://www.thesportsdb.com/images/media/player/cutout/8h3vak1657384615.png" alt="">
+                                </picture>
+
+                                <div class="card__details">
+                                    <h3>Beth Mead</h3>
+                                    <p>Forward</p>
+                                </div>
+                            </li> -->
+                            
+                        </ul>
+                    </div>
 
                 </section>
 
