@@ -29,7 +29,6 @@ Learn more about the WSL Personal Hub and dive deeper into this project by readi
 
 ## :package: Resources
 Our application uses the following recourses:
-- [Livescore API](https://rapidapi.com/apidojo/api/livescore6/)
 - [The Sports DB Api](https://www.thesportsdb.com/api.php)
 
 ## :warning: License
