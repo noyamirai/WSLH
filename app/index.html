@@ -143,17 +143,21 @@
 
                 <section class="js-team-details-section">
 
-                    <h2>Previous games</h2>
+                    <!-- TODO: wrap in sections as well -->
 
-                    <div class="loader">
-                        <i class="icon fa-solid fa-futbol"></i>
+                    <div class="js-team-prev-games-section">
+
+                        <h2>Previous games</h2>
+    
+                        <div class="loader js-prev-games-loader">
+                            <i class="icon fa-solid fa-futbol"></i>
+                        </div>
+    
+                        <ul class="cards cards--list cards--game js-content js-prev-team-games hide">
+                        </ul>
                     </div>
 
-                    <ul class="cards cards--list cards--game js-content">
-                        
-                       
-                    </ul>
-
+                    
                     <div class="content js-team-details-content">
                         <h2>Squad</h2>
 
@@ -161,19 +165,10 @@
                             <i class="icon fa-solid fa-futbol"></i>
                         </div>
 
-                        <ul class="cards cards--overview">
-                            <!-- <li class="card__item card__item--column">
-                                <picture class="player__cutout">
-                                    <img class="" src="https://www.thesportsdb.com/images/media/player/cutout/8h3vak1657384615.png" alt="">
-                                </picture>
+                        <div class="js-squad-list js-content hide">
 
-                                <div class="card__details">
-                                    <h3>Beth Mead</h3>
-                                    <p>Forward</p>
-                                </div>
-                            </li> -->
-                            
-                        </ul>
+                        </div>
+                        
                     </div>
 
                 </section>

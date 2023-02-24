@@ -4,14 +4,19 @@ export function revealSection(section) {
     const messageEl = section.querySelector('.js-message');
     const loaderEl = section.querySelector('.loader');
 
-    if (loaderEl)
-        loaderEl.classList.add('hide');
+    setTimeout(() => {
+        
+        if (loaderEl)
+            loaderEl.classList.add('hide');
+        
+        if (contentContainer)
+            contentContainer.classList.remove('hide');
     
-    if (contentContainer)
-        contentContainer.classList.remove('hide');
+        if (messageEl)
+            messageEl.classList.remove('hide');
+            
+    }, 200);
 
-    if (messageEl)
-        messageEl.classList.remove('hide');
 }
 
 export function showErrorMessage(section, text) {
@@ -24,5 +29,14 @@ export function showErrorMessage(section, text) {
         messageEl.innerHTML = `<i class="icon fa-solid fa-heart-crack"></i><p>${text}</p>`;
         section.appendChild(messageEl);
     }
+}
 
+export function toggleSpecificLoader(loaderDiv, state) {
+    const loaderEl = document.querySelector(loaderDiv);
+
+    if (state == 'on') {
+        loaderEl.classList.remove('hide');
+    } else {
+        loaderEl.classList.add('hide');
+    }
 }

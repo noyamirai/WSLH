@@ -1,9 +1,14 @@
 import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
 import { formatDate } from "./utils.js";
 import { getTeamDetails } from "../scripts/api.js";
-import { revealSection, showErrorMessage } from "../scripts/renderUI.js";
+import { revealSection, showErrorMessage, toggleSpecificLoader } from "../scripts/renderUI.js";
 
 export function displayData(target, data) {
+
+    if (target == 'team-details') {
+        displayTeamDetails(data);
+    }
+
     if (!Array.isArray(data)) {
         displayDataBasedOnIdentifier(data, target)
         
@@ -39,8 +44,6 @@ function displayDataBasedOnIdentifier(data, target) {
 
     } else if (data.identifier  == 'games_today') {
         displayCurrentGames(data[dataKey]);
-    } else if (data.identifier == 'team_details') {
-        displayTeamDetails(data[dataKey]);
     }
 }
 
@@ -196,56 +199,60 @@ export function displayTopThreeTeams(leagueTeams) {
     
 }
 
-function displayPreviousGames(events) {
+async function getPreviousGameList (events) {
+    const listItems = events.map(async (eventObject) => {
 
-    const prevMatchSection = document.querySelector('.js-prev-matches-section');
-    const prevMatchList = document.querySelector('.js-prev-matches-list');
-    let listItems = [];
+        const fetches = [];
+    
+        fetches.push(await getTeamDetails(eventObject.idHomeTeam));
+        fetches.push(await getTeamDetails(eventObject.idAwayTeam));
 
-    try {
+        let listItem = Promise.all(fetches).then(data => {
+            const homeTeam = data[0];
+            const awayTeam = data[1];
+            const eventDate = formatDate(eventObject.dateEvent, 'dd/mm/yyyy');
 
-        listItems = events.map(async (eventObject) => {
-        
-            const fetches = []
-        
-            fetches.push(await getTeamDetails(eventObject.idHomeTeam));
-            fetches.push(await getTeamDetails(eventObject.idAwayTeam));
+            return `
+                <li class="card__item ${eventObject.strStatus.toLowerCase() == 'match postponed' ? 'card__item--postponed' : ''}">
+                    <div class="card__group">
+                        <div>
+                            <img class="team__logo" src="${homeTeam.strTeamBadge}" alt="">
 
-            let listItem = Promise.all(fetches).then(data => {
-                const homeTeam = data[0];
-                const awayTeam = data[1];
-                const eventDate = formatDate(eventObject.dateEventLocal, 'dd/mm/yyyy');
-
-                return `
-                    <li class="card__item ${eventObject.strStatus.toLowerCase() == 'match postponed' ? 'card__item--postponed' : ''}">
-                        <div class="card__group">
-                            <div>
-                                <img class="team__logo" src="${homeTeam.strTeamBadge}" alt="">
-
-                                <div class="team__score team__score--result ${ eventObject.intHomeScore > eventObject.intAwayScore ? 'team__score--win' : (eventObject.intHomeScore == eventObject.intAwayScore ? '' : 'team__score--loss') }">
-                                    <p>${eventObject.intHomeScore ?? 0 }</p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <img class="team__logo" src="${awayTeam.strTeamBadge}" alt="">
-
-                                <div class="team__score team__score--result ${ eventObject.intAwayScore > eventObject.intHomeScore ? 'team__score--win' : (eventObject.intHomeScore == eventObject.intAwayScore ? '' : 'team__score--loss') }">
-                                    <p>${eventObject.intAwayScore ?? 0 }</p>
-                                </div>
+                            <div class="team__score team__score--result ${ eventObject.intHomeScore > eventObject.intAwayScore ? 'team__score--win' : (eventObject.intHomeScore == eventObject.intAwayScore ? '' : 'team__score--loss') }">
+                                <p>${eventObject.intHomeScore ?? 0 }</p>
                             </div>
                         </div>
 
-                        <span>${eventObject.strStatus.toLowerCase() == 'match postponed' ? 'Postponed' : eventDate }</span>
-                    </li>
-                `;
-            })
+                        <div>
+                            <img class="team__logo" src="${awayTeam.strTeamBadge}" alt="">
 
-            return listItem;
-        });
+                            <div class="team__score team__score--result ${ eventObject.intAwayScore > eventObject.intHomeScore ? 'team__score--win' : (eventObject.intHomeScore == eventObject.intAwayScore ? '' : 'team__score--loss') }">
+                                <p>${eventObject.intAwayScore ?? 0 }</p>
+                            </div>
+                        </div>
+                    </div>
 
+                    <span>${eventObject.strStatus.toLowerCase() == 'match postponed' ? 'Postponed' : eventDate }</span>
+                </li>
+            `;
+        })
+
+        return listItem;
+    });
+
+    return listItems;
+
+}
+
+async function displayPreviousGames(events) {
+
+    const prevMatchSection = document.querySelector('.js-prev-matches-section');
+    const prevMatchList = document.querySelector('.js-prev-matches-list');
+
+    try {
+
+        const listItems = await getPreviousGameList(events);
         Promise.all(listItems).then(data => {
-
             prevMatchList.innerHTML = '';
 
             data.forEach((element, key) => {
@@ -344,58 +351,97 @@ function displayCurrentGames(events) {
     }
 }
 
-function displayTeamDetails(teamObject) {
+async function displayTeamDetails(teamData) {
 
     const teamDetailsPage = document.querySelector('#team-details-page');
     const teamDetailsSection = document.querySelector('.js-team-details-section');
     const teamDetailsContent = document.querySelector('.js-team-details-content');
-    
-    if (!teamObject) {
+
+    teamData.forEach(async (data) => {
+        const resultKey = getResultKey(data);
+
+        if (data.identifier == 'team_details') {
+
+            const headerLogo = teamDetailsPage.querySelector('.js-teamlogo');
+            const teamName = teamDetailsPage.querySelector('.js-teamname');
+
+            let teamObject = data[resultKey];
+            
+            headerLogo.src = teamObject.strTeamBadge;
+            teamName.innerHTML = teamObject.strTeam;
+
+        } else if (data.identifier == 'prev_games_by_team') {
+            const listItems = await getPreviousGameList(data[resultKey]);
+
+            Promise.all(listItems).then(data => {
+
+                const prevMatchList = teamDetailsPage.querySelector('.js-prev-team-games');
+
+                prevMatchList.innerHTML = '';
+
+                data.forEach((element, key) => {
+                    prevMatchList.innerHTML += element;
+                });
+
+                const section = document.querySelector('.js-team-prev-games-section');
+                revealSection(section);
+
+            });
+        } else if (data.identifier == 'team_squad') {
+            const squadList = teamDetailsPage.querySelector('.js-squad-list');
+            squadList.innerHTML = '';
+
+            let listHtml = '';
+
+            // console.log(data[resultKey]);
+
+            for (const key in data[resultKey]) {
+                const playerGroup = data[resultKey][key];
+             
+                listHtml += `
+                    <div class="card-wrapper">
+                        <h3>${key}</h3>
+                        <ul class="cards cards--overview">   
+                `;
+
+                playerGroup.forEach((squadMember) => {
+                    const listItem = `
+                        <li class="card__item card__item--column">
+                            <picture class="player__cutout">
+                                <img class="${!squadMember.strCutout ? 'normal-photo' : ''}" src="${squadMember.strCutout ?? squadMember.strThumb }" alt="${squadMember.strPlayer} cutout">
+                            </picture>
+
+                            <div class="card__details">
+                                <h3>${squadMember.strPlayer}</h3>
+                                <p>${squadMember.strPosition}</p>
+                            </div>
+                        </li>
         
-        if (!teamObject || teamObject.length == 0) {
-            showErrorMessage(teamDetailsSection, 'Unable to find team');
-            revealSection(teamDetailsSection);
-            return;   
+                    `;
+
+                    listHtml += listItem;
+
+                });
+
+                listHtml += '</ul></div>';
+
+            }
+
+            squadList.innerHTML += listHtml;
+
+            const section = document.querySelector('.js-team-details-content');
+            revealSection(section);
+
         }
-    }
-    
-    const headerLogo = teamDetailsPage.querySelector('.js-teamlogo');
-    const teamName = teamDetailsPage.querySelector('.js-teamname');
 
-    teamObject = teamObject[0];
-    
-    headerLogo.src = teamObject.strTeamBadge;
-    teamName.innerHTML = teamObject.strTeam;
+    })
 
+    return;
+    
+    
     // TODO: fetch previous games
     // displayPreviousGames(prevGames);
 
     // TODO: fetch squad
-    
-    
-    // const listData = `
-    //         <li class="card__item ">
-    //             <div class="card__group">
-    //                 <div>
-    //                     <img class="team__logo" src="https://www.thesportsdb.com/images/media/team/badge/rfg9ge1610530188.png" alt="">
-
-    //                     <div class="team__score team__score--result team__score--loss">
-    //                         <p>0</p>
-    //                     </div>
-    //                 </div>
-
-    //                 <div>
-    //                     <img class="team__logo" src="https://www.thesportsdb.com/images/media/team/badge/dtq1ny1610532512.png" alt="">
-
-    //                     <div class="team__score team__score--result team__score--win">
-    //                         <p>1</p>
-    //                     </div>
-    //                 </div>
-    //             </div>
-
-    //             <span>12/02/23</span>
-    //         </li>
-    // `;
-
 
 }

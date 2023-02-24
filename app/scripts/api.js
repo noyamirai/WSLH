@@ -82,22 +82,65 @@ async function addAditionalData(teamData) {
 export async function getTeamDetails(idTeam, target = null) {
 
     let result;
+    const fetchedLeagueTeams = getDataFromStorage('league_teams');
+    const objectKey = getResultKey(fetchedLeagueTeams);
 
     // No fetched teams
     if (target) {
 
         try {
 
-            const apiData = getApiData('team_details', idTeam);
-            const teamData = await singleApiCall(apiData.team_details);
-            const resultKey = getResultKey(teamData);
-
-            if (teamData[resultKey]) {
-                return [teamData][0];
-            } else {
-                return teamData;
+            const apiData = {
+                'prev_games_by_team': {
+                    apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventslast.php',
+                    params: `?id=${idTeam}`,
+                    identifier: 'prev_games_by_team'
+                },
+                'next_games_by_team': {
+                    apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventsnext.php',
+                    params: `?id=${idTeam}`,
+                    identifier: 'next_games_by_team'
+                },
+                'team_squad': {
+                    apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookup_all_players.php',
+                    params: `?id=${idTeam}`,
+                    identifier: 'team_squad'
+                }
             }
 
+            const data = await performMultipleCalls(apiData);
+
+            fetchedLeagueTeams[objectKey].forEach(teamObject => {
+                if (teamObject.idTeam == idTeam) {
+                    data.push({ team: teamObject, 'identifier': 'team_details' });
+                }
+            });
+
+
+            console.log(data);
+            let squadArray = {};
+            
+            data.forEach((object, key) => {
+                const resultKey = getResultKey(object);
+
+                if (object.identifier == 'team_squad') {
+                    object[resultKey].forEach(player => {
+
+                        if (squadArray[player.strPosition]) {
+                            squadArray[player.strPosition].push(player);
+                        // create position in array
+                        } else {
+                            squadArray[player.strPosition] = [];
+                            squadArray[player.strPosition].push(player);
+                        }
+
+                    });
+
+                    data[key][resultKey] = squadArray;
+                }
+            });
+
+            return data;
             
         } catch (error) {
             console.log('ERROR???');
@@ -106,14 +149,34 @@ export async function getTeamDetails(idTeam, target = null) {
         
 
     } else {
-        const fetchedLeagueTeams = getDataFromStorage('league_teams');
-        const objectKey = getResultKey(fetchedLeagueTeams);
 
-        fetchedLeagueTeams[objectKey].forEach(teamObject => {
-            if (teamObject.idTeam == idTeam) {
-                result = teamObject;
+
+        const teamFound = fetchedLeagueTeams[objectKey].some(function(item) {
+            return item.idTeam === idTeam;
+        }); 
+
+        if (!teamFound) {
+            console.log('fetch team');
+
+            const apiData = {
+                apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookupteam.php',
+                params: `?id=${idTeam}`,
+                identifier: 'team_details'
             }
-        });
+
+            const data = await singleApiCall(apiData);
+            const resultKey = getResultKey(data);
+
+            return data[resultKey][0];
+
+        } else {
+            fetchedLeagueTeams[objectKey].forEach(teamObject => {
+                if (teamObject.idTeam == idTeam) {
+                    result = teamObject;
+                }
+            });
+        }
+        
     }
 
 
@@ -144,11 +207,6 @@ export function getApiData(query = '', args = '', newData = false) {
             apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventsday.php',
             params: `?d=${currentDate}&l=4849`,
             identifier: 'games_today'
-        },
-        'team_details': {
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookupteam.php',
-            params: `?id=${args}`,
-            identifier: 'team_details'
         }
     };
 
