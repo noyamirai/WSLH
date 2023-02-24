@@ -40,3 +40,41 @@ export function toggleSpecificLoader(loaderDiv, state) {
         loaderEl.classList.add('hide');
     }
 }
+
+
+export function setActiveMenu(target) {
+    const allMenuItems = document.querySelectorAll('.menu__item');
+
+    allMenuItems.forEach(menuItem => {
+        if (menuItem.classList.contains('active')) {
+            menuItem.classList.remove('active');
+        }
+
+        const anchorTag = menuItem.querySelector('a');
+        const hashPart = anchorTag.href.split('#')[1];
+
+        if (hashPart == target) {
+            menuItem.classList.add('active');
+        }
+    });
+}
+
+export function showPage(target) {
+
+    const allArticles = document.querySelectorAll('article');
+
+    console.log(target);
+
+    allArticles.forEach(articleEl => {
+        articleEl.classList.add('hide');
+
+        if (target == '' && articleEl.id == 'home-page') {
+            articleEl.classList.remove('hide');   
+        } else if (articleEl.id == (target + '-page')) {
+            articleEl.classList.remove('hide');
+        }
+    });
+
+    window.scrollTo(0, 0);
+
+}

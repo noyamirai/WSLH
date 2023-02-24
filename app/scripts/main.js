@@ -1,5 +1,5 @@
 import { getCurrentDate } from "./utils.js";
-import { getData, getApiData, performMultipleCalls, singleApiCall, getTeamDetails } from './api.js';
+import { getData, getApiData, handleMissingData, getTeamDetails } from './api.js';
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
 
@@ -73,8 +73,8 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
     try {
 
         let result;
-        let data;
 
+        // Prepare for additional team details
         if (query == 'league_teams' || query.includes('league_teams')) {
 
             if (query == 'league_teams') {
@@ -88,35 +88,20 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
         if (needsNewData) {
             console.log('NEEDS NEW DATA');
             
-            data = await getData(query);
-
-            if (query == '' || query.length > 0) {
-                saveDataToStorage(data);
-                result = data;
-
-            } else {
-                saveDataToStorage(data, query);
-                result = [data];
-            }
+            result = await getData(query);
+            saveDataToStorage(result, query);
             
         // User still has fresh data -> read from localstorage
         } else {
-
             console.log('GET DATA FROM LOCALSTORAGE');
 
             let urlData = getApiData(query);
-
-            result = [];
-
-            // console.log(urlData);
 
             // Save which keys are missing from storage (aka data no longer saved, need new data again)
             let missingData = checkMissingData(urlData);
 
             urlData = missingData.updatedData;
             missingData = missingData.toFetch;
-
-            // console.log(urlData);
 
             const hasUrlData = Object.keys(urlData).length > 0;
 
@@ -134,22 +119,11 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
 
             // Remaining data to fetch (new data)
             if (missingData.length > 0) {
-                console.log('DATA MISSING FROM LOCALSTORAGE');
-                let newData;
-
-                if (missingData.length == 1) {
-                    newData = await singleApiCall(missingData[0]);
-                    saveDataToStorage(newData, missingData[0].identifier);
-
-                    result.push(newData);
-
-                } else {
-                    newData = await performMultipleCalls(missingData);
-                    saveDataToStorage(newData);
-
-                    result = newData;
-                }
-
+                let newData = await handleMissingData(missingData);
+                
+                newData.forEach(item => {
+                    result.push(item);
+                });
             }
         }
 

@@ -1,11 +1,9 @@
 import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
 import { formatDate } from "./utils.js";
 import { getTeamDetails } from "../scripts/api.js";
-import { revealSection, showErrorMessage, toggleSpecificLoader } from "../scripts/renderUI.js";
+import { revealSection, showErrorMessage, setActiveMenu, showPage } from "../scripts/renderUI.js";
 
 export function displayData(target, data) {
-
-    console.log(data);
 
     if (target == 'team-details') {
         displayTeamDetails(data);
@@ -28,61 +26,30 @@ export function displayData(target, data) {
 function displayDataBasedOnIdentifier(data, target) {
     const dataKey = getResultKey(data);
 
-    if (data.identifier == 'standings') {
+    switch (data.identifier) {
+        case 'standings':
 
-        if (target == 'standings') {
-            displayStandings(data[dataKey]);
-        } else {
-            displayTopThreeTeams(data[dataKey].slice(0, 3));
-        }
-
-    } else if (data.identifier  == 'league_teams') {
-        displayLeagueTeams(data[dataKey]);
-
-    } else if (data.identifier  == 'prev_games') {
-
-        let prevGames = data[dataKey].slice(0,10);
-        displayPreviousGames(prevGames);
-
-    } else if (data.identifier  == 'games_today') {
-        displayCurrentGames(data[dataKey]);
+            if (target == 'standings') {
+                displayStandings(data[dataKey]);
+            } else {
+                displayTopThreeTeams(data[dataKey].slice(0, 3));
+            }
+            
+            break;
+    
+        case 'league_teams': 
+            displayLeagueTeams(data[dataKey]);
+            break;
+        case 'prev_games':
+            let prev10Games = data[dataKey].slice(0,10);
+            displayPreviousGames(prev10Games);
+            break;
+        case 'games_today': 
+            displayCurrentGames(data[dataKey]);
+            break;
+        default:
+            break;
     }
-}
-
-export function setActiveMenu(target) {
-    const allMenuItems = document.querySelectorAll('.menu__item');
-
-    allMenuItems.forEach(menuItem => {
-        if (menuItem.classList.contains('active')) {
-            menuItem.classList.remove('active');
-        }
-
-        const anchorTag = menuItem.querySelector('a');
-        const hashPart = anchorTag.href.split('#')[1];
-
-        if (hashPart == target) {
-            menuItem.classList.add('active');
-        }
-    });
-}
-
-export function showPage(target) {
-
-    const allArticles = document.querySelectorAll('article');
-
-    console.log(target);
-
-    allArticles.forEach(articleEl => {
-        articleEl.classList.add('hide');
-
-        if (target == '' && articleEl.id == 'home-page') {
-            articleEl.classList.remove('hide');   
-        } else if (articleEl.id == (target + '-page')) {
-            articleEl.classList.remove('hide');
-        }
-    });
-
-    window.scrollTo(0, 0);
 
 }
 
@@ -92,8 +59,8 @@ export function displayStandings (data) {
     const standingsTableBody = document.querySelector('.js-standings-body');
 
     if (!data || data.length == 0) {
-        showErrorMessage(teamSection, 'No data found...');
-        revealSection(teamSection);
+        showErrorMessage(standingsSection, 'No data found...');
+        revealSection(standingsSection);
         return;   
     }
 
@@ -201,7 +168,7 @@ export function displayTopThreeTeams(leagueTeams) {
     
 }
 
-async function getPreviousGameList (events) {
+async function getPreviousGameHtml (events) {
     const listItems = events.map(async (eventObject) => {
 
         const fetches = [];
@@ -253,7 +220,7 @@ async function displayPreviousGames(events) {
 
     try {
 
-        const listItems = await getPreviousGameList(events);
+        const listItems = await getPreviousGameHtml(events);
         Promise.all(listItems).then(data => {
             prevMatchList.innerHTML = '';
 
@@ -373,7 +340,7 @@ async function displayTeamDetails(teamData) {
             teamName.innerHTML = teamObject.strTeam;
 
         } else if (data.identifier == 'prev_games_by_team') {
-            const listItems = await getPreviousGameList(data[resultKey]);
+            const listItems = await getPreviousGameHtml(data[resultKey]);
 
             Promise.all(listItems).then(data => {
 
@@ -394,8 +361,6 @@ async function displayTeamDetails(teamData) {
             squadList.innerHTML = '';
 
             let listHtml = '';
-
-            // console.log(data[resultKey]);
 
             for (const key in data[resultKey]) {
                 const playerGroup = data[resultKey][key];
@@ -440,10 +405,4 @@ async function displayTeamDetails(teamData) {
 
     return;
     
-    
-    // TODO: fetch previous games
-    // displayPreviousGames(prevGames);
-
-    // TODO: fetch squad
-
 }

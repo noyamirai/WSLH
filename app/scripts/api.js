@@ -1,4 +1,4 @@
-import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
+import { getDataFromStorage, getResultKey, saveDataToStorage } from "../scripts/storage.js";
 import { getCurrentDate } from "./utils.js";
 
 export async function getData(query = '') {
@@ -6,7 +6,7 @@ export async function getData(query = '') {
     const apiData = getApiData(query, null, true);
     let result;
 
-
+    console.log(apiData);
     // no query provided
     if (query == '' || query.length > 0) {
         result = await performMultipleCalls(apiData);
@@ -183,6 +183,22 @@ export async function getTeamDetails(idTeam, target = null) {
     return result;
 }
 
+export async function handleMissingData (missingData) {
+    console.log('DATA MISSING FROM LOCALSTORAGE');
+    let newData;
+
+    if (missingData.length == 1) {
+        newData = await getData(missingData[0].identifier);
+        saveDataToStorage(newData, missingData[0].identifier);
+
+    } else {
+        newData = await performMultipleCalls(missingData);
+        saveDataToStorage(newData);
+    }
+
+    return newData;
+}
+
 export function getApiData(query = '', args = '', newData = false) {
     
     let currentDate = getCurrentDate(true);
@@ -210,28 +226,23 @@ export function getApiData(query = '', args = '', newData = false) {
         }
     };
 
+     if (newData || newData && query.includes('league_teams') || newData && query == 'league_teams') {
+        dataArray.male_team_data = {};
+        dataArray.male_team_data.apiUrl = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php'
+        dataArray.male_team_data.params =`?l=English%20Premier%20League`
+        dataArray.male_team_data.identifier = 'male_team_data';
+    }
 
-    if (query == '') {
-        if (newData || newData && query == 'league_teams') {
-            dataArray.male_team_data = {};
-            dataArray.male_team_data.apiUrl = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php'
-            dataArray.male_team_data.params =`?l=English%20Premier%20League`
-            dataArray.male_team_data.identifier = 'male_team_data';
-        }
-
+    if (query == '') { 
         return dataArray;
     }
 
     if (typeof query != 'string' && Array.isArray(query)) {
-
-        if (newData || newData && query.includes('league_teams')) {
-            dataArray.male_team_data = {};
-            dataArray.male_team_data.apiUrl = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php'
-            dataArray.male_team_data.params =`?l=English%20Premier%20League`
-            dataArray.male_team_data.identifier = 'male_team_data';
-        }
-    
         return Object.fromEntries(Object.entries(dataArray).filter(([key, value]) => query.includes(key)));
+    }
+
+    if (newData && query == 'league_teams') {
+        return {[query]: dataArray[query], 'male_team_data': dataArray['male_team_data'] };
     }
 
     return {[query]: dataArray[query] };
