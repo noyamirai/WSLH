@@ -4,63 +4,44 @@ import { getTeamDetails } from "../scripts/api.js";
 import { revealSection, showErrorMessage } from "../scripts/renderUI.js";
 
 export function displayData(target, data) {
-
     if (!Array.isArray(data)) {
-        const dataKey = getResultKey(data);
-
-        if (data.identifier == 'standings') {
-
-            if (target == 'standings') {
-                displayStandings(data[dataKey]);
-            } else {
-                displayTopThreeTeams(data[dataKey].slice(0, 3));
-            }
-
-        } else if (data.identifier  == 'league_teams') {
-            displayLeagueTeams(data[dataKey]);
-
-        } else if (data.identifier  == 'prev_games') {
-
-            let prevGames = data[dataKey].slice(0,10);
-            displayPreviousGames(prevGames);
-
-        } else if (data.identifier  == 'games_today') {
-            displayCurrentGames(data[dataKey]);
-        }
+        displayDataBasedOnIdentifier(data, target)
         
     } else {
-        // Set data based on identifier
         for (const key in data) {
             const item = data[key];
-            const identifier = Object.keys(item)[1];
-            const dataKey = Object.keys(item)[0];
-    
-            if (item[identifier] == 'standings') {
-    
-                if (target == 'standings') {
-                    console.log(item);
-                    displayStandings(item[dataKey]);
-                } else {
-                    displayTopThreeTeams(item[dataKey].slice(0, 3));
-                }
-    
-            } else if (item[identifier] == 'league_teams') {
-                displayLeagueTeams(item[dataKey]);
-    
-            } else if (item[identifier] == 'prev_games') {
-    
-                let prevGames = item[dataKey].slice(0,10);
-                displayPreviousGames(prevGames);
-    
-            } else if (item[identifier] == 'games_today') {
-                displayCurrentGames(item[dataKey]);
-            }
+            displayDataBasedOnIdentifier(item, target);
         }
     }
 
-
     setActiveMenu(target);
     showPage(target);
+}
+
+function displayDataBasedOnIdentifier(data, target) {
+    const dataKey = getResultKey(data);
+
+    if (data.identifier == 'standings') {
+
+        if (target == 'standings') {
+            displayStandings(data[dataKey]);
+        } else {
+            displayTopThreeTeams(data[dataKey].slice(0, 3));
+        }
+
+    } else if (data.identifier  == 'league_teams') {
+        displayLeagueTeams(data[dataKey]);
+
+    } else if (data.identifier  == 'prev_games') {
+
+        let prevGames = data[dataKey].slice(0,10);
+        displayPreviousGames(prevGames);
+
+    } else if (data.identifier  == 'games_today') {
+        displayCurrentGames(data[dataKey]);
+    } else if (data.identifier == 'team_details') {
+        displayTeamDetails(data[dataKey]);
+    }
 }
 
 export function setActiveMenu(target) {
@@ -83,6 +64,8 @@ export function setActiveMenu(target) {
 export function showPage(target) {
 
     const allArticles = document.querySelectorAll('article');
+
+    console.log(target);
 
     allArticles.forEach(articleEl => {
         articleEl.classList.add('hide');
@@ -359,4 +342,60 @@ function displayCurrentGames(events) {
         console.log('WEEWOOWEEOWW DISPLAY ERROR');
         console.log(error);
     }
+}
+
+function displayTeamDetails(teamObject) {
+
+    const teamDetailsPage = document.querySelector('#team-details-page');
+    const teamDetailsSection = document.querySelector('.js-team-details-section');
+    const teamDetailsContent = document.querySelector('.js-team-details-content');
+    
+    if (!teamObject) {
+        
+        if (!teamObject || teamObject.length == 0) {
+            showErrorMessage(teamDetailsSection, 'Unable to find team');
+            revealSection(teamDetailsSection);
+            return;   
+        }
+    }
+    
+    const headerLogo = teamDetailsPage.querySelector('.js-teamlogo');
+    const teamName = teamDetailsPage.querySelector('.js-teamname');
+
+    teamObject = teamObject[0];
+    
+    headerLogo.src = teamObject.strTeamBadge;
+    teamName.innerHTML = teamObject.strTeam;
+
+    // TODO: fetch previous games
+    // displayPreviousGames(prevGames);
+
+    // TODO: fetch squad
+    
+    
+    // const listData = `
+    //         <li class="card__item ">
+    //             <div class="card__group">
+    //                 <div>
+    //                     <img class="team__logo" src="https://www.thesportsdb.com/images/media/team/badge/rfg9ge1610530188.png" alt="">
+
+    //                     <div class="team__score team__score--result team__score--loss">
+    //                         <p>0</p>
+    //                     </div>
+    //                 </div>
+
+    //                 <div>
+    //                     <img class="team__logo" src="https://www.thesportsdb.com/images/media/team/badge/dtq1ny1610532512.png" alt="">
+
+    //                     <div class="team__score team__score--result team__score--win">
+    //                         <p>1</p>
+    //                     </div>
+    //                 </div>
+    //             </div>
+
+    //             <span>12/02/23</span>
+    //         </li>
+    // `;
+
+
 }

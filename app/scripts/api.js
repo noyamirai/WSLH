@@ -87,18 +87,15 @@ export async function getTeamDetails(idTeam, target = null) {
     if (target) {
 
         try {
-            console.log('NEW FETCH');
 
             const apiData = getApiData('team_details', idTeam);
-            // console.log();
             const teamData = await singleApiCall(apiData.team_details);
             const resultKey = getResultKey(teamData);
 
             if (teamData[resultKey]) {
-                console.log(teamData);
-                return [teamData];
+                return [teamData][0];
             } else {
-                return null;
+                return teamData;
             }
 
             

@@ -10,26 +10,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     routie({
         '': function() {
-            console.log('DEFAULT');
             initialCall('home', lastUpdated, currentDate);
         },
         'home': function() {
-            console.log('HOME PAGE');
             const toFetch = ['league_teams', 'standings', 'prev_games', 'games_today'];
 
             initialCall('home', lastUpdated, currentDate, toFetch);
         },
         'standings': function() {
-            console.log('STANDINGS PAGE');
-            console.log('FETCH: standings');   
-            
             initialCall('standings', lastUpdated, currentDate, 'standings');     
         },
         'team-details/:id': async function(teamId) {
-            console.log('DISPLAY TEAM DETAILS FOR: ' + teamId );
-
             const data = await getTeamDetails(teamId, 'team_details');
-            displayData('team_details', data);
+            displayData('team-details', data);
         }
     });
 
@@ -124,7 +117,7 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
             missingData = missingData.toFetch;
 
             console.log(missingData);
-            
+
             const hasUrlData = Object.keys(urlData).length > 0;
 
             if (hasUrlData) {
