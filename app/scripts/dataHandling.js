@@ -1,7 +1,7 @@
 import { getDataFromStorage, getResultKey } from "../scripts/storage.js";
 import { formatDate } from "./utils.js";
 import { getTeamDetails } from "../scripts/api.js";
-import { revealSection } from "../scripts/renderUI.js";
+import { revealSection, showErrorMessage } from "../scripts/renderUI.js";
 
 export function displayData(target, data) {
 
@@ -76,6 +76,12 @@ export function displayStandings (data) {
     const standingsSection = document.querySelector('.js-standings-section');
     const standingsTableBody = document.querySelector('.js-standings-body');
 
+    if (!data || data.length == 0) {
+        showErrorMessage(teamSection, 'No data found...');
+        revealSection(teamSection);
+        return;   
+    }
+
     standingsTableBody.innerHTML = '';
 
     data.forEach((teamObject, i) => {
@@ -107,6 +113,12 @@ export function displayLeagueTeams (data) {
     const teamListUl = document.querySelector('.js-teamlist');
     let listItems = [];
 
+    if (!data || data.length == 0) {
+        showErrorMessage(teamSection, 'No teams found...');
+        revealSection(teamSection);
+        return;   
+    }
+
     data.forEach((teamObject) => {
         const listData = `
                     <li class="card__item">
@@ -137,6 +149,13 @@ export function displayTopThreeTeams(leagueTeams) {
     let listItems = [];
 
     const fetchedLeagueTeams = getDataFromStorage('league_teams');
+
+    if (!leagueTeams || leagueTeams.length == 0 || !fetchedLeagueTeams || fetchedLeagueTeams.length == 0) {
+        showErrorMessage(teamSection, 'No teams found...');
+        revealSection(teamSection);
+        return;
+    }
+
     const objectKey = getResultKey(fetchedLeagueTeams);
 
     leagueTeams.forEach(leagueTeamObject => {
@@ -228,6 +247,8 @@ function displayPreviousGames(events) {
         })
        
     } catch (error) {
+        showErrorMessage(prevMatchSection, 'Something went wrong!');
+        revealSection(prevMatchSection);
         console.log('WEEWOOWEEOWW DISPLAY ERROR');
         console.log(error);
     }
@@ -296,15 +317,7 @@ function displayCurrentGames(events) {
             })
         } else {
 
-            let messageEl = matchSection.querySelector('.message');
-
-            if (!messageEl) {
-                
-                messageEl = document.createElement('div');
-                messageEl.className = 'message message--empty js-message hide';
-                messageEl.innerHTML = '<i class="icon fa-solid fa-heart-crack"></i><p>No games today</p>';
-                matchSection.appendChild(messageEl);
-            }
+            showErrorMessage(matchSection, 'No games today');
 
             if (matchList)
                 matchList.remove();
@@ -315,6 +328,8 @@ function displayCurrentGames(events) {
 
        
     } catch (error) {
+        showErrorMessage(matchSection, 'Something went wrong!');
+        revealSection(matchSection);
         console.log('WEEWOOWEEOWW DISPLAY ERROR');
         console.log(error);
     }

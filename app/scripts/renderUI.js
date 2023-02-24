@@ -13,3 +13,16 @@ export function revealSection(section) {
     if (messageEl)
         messageEl.classList.remove('hide');
 }
+
+export function showErrorMessage(section, text) {
+    let messageEl = section.querySelector('.message');
+
+    if (!messageEl) {
+        
+        messageEl = document.createElement('div');
+        messageEl.className = 'message message--empty js-message hide';
+        messageEl.innerHTML = `<i class="icon fa-solid fa-heart-crack"></i><p>${text}</p>`;
+        section.appendChild(messageEl);
+    }
+
+}
