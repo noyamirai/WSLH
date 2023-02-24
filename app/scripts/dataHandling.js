@@ -5,6 +5,8 @@ import { revealSection, showErrorMessage, toggleSpecificLoader } from "../script
 
 export function displayData(target, data) {
 
+    console.log(data);
+
     if (target == 'team-details') {
         displayTeamDetails(data);
     }

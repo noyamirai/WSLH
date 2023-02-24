@@ -24,7 +24,6 @@ export function checkMissingData(data) {
 
     let result = [];
 
-    console.log(data);
 
     // if (typeof data === 'object') {
     //     let localStorageKey = localStorage.getItem(data.identifier); 
@@ -38,6 +37,7 @@ export function checkMissingData(data) {
 
         for (const key in data) {
             const item = data[key];
+                console.log(item);
             let localStorageKey = localStorage.getItem(item.identifier); 
 
             if (localStorageKey === null || localStorageKey === undefined || localStorageKey == '' || localStorageKey == 'undefined') {

@@ -116,14 +116,14 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
             urlData = missingData.updatedData;
             missingData = missingData.toFetch;
 
-            console.log(missingData);
+            // console.log(urlData);
 
             const hasUrlData = Object.keys(urlData).length > 0;
 
             if (hasUrlData) {
 
                 // Get all available data saved in localstorage
-                if (typeof query != 'string' || Array.isArray(query)) {
+                if ((typeof query === 'string' && query == '') || (typeof query != 'string' || Array.isArray(query))) {
                     result = listAllDataFromStorage(urlData);
                     
                 // Get specific key data from localstorage
