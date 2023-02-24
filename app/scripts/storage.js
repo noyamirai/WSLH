@@ -24,15 +24,29 @@ export function checkMissingData(data) {
 
     let result = [];
 
-    for (const key in data) {
-        const item = data[key];
-        let localStorageKey = localStorage.getItem(item.identifier); 
+    console.log(data);
 
-        if (localStorageKey === null || localStorageKey === undefined || localStorageKey == '' || localStorageKey == 'undefined') {
-            delete data[item.identifier];
-            result.push(item);
+    // if (typeof data === 'object') {
+    //     let localStorageKey = localStorage.getItem(data.identifier); 
+
+    //     if (localStorageKey === null || localStorageKey === undefined || localStorageKey == '' || localStorageKey == 'undefined') {
+    //         result.push(data);
+    //         data = null;
+    //     }
+        
+    // } else {
+
+        for (const key in data) {
+            const item = data[key];
+            let localStorageKey = localStorage.getItem(item.identifier); 
+
+            if (localStorageKey === null || localStorageKey === undefined || localStorageKey == '' || localStorageKey == 'undefined') {
+                delete data[item.identifier];
+                result.push(item);
+            }
         }
-    }
+
+    // }
 
     return { 'toFetch': result, 'updatedData': data };
 }

@@ -1,9 +1,9 @@
 import { getCurrentDate } from "./utils.js";
-import { getData, getApiData, performMultipleCalls, singleApiCall } from './api.js';
+import { getData, getApiData, performMultipleCalls, singleApiCall, getTeamDetails } from './api.js';
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     let lastUpdated = localStorage.getItem("lastUpdated"); 
     let currentDate = getCurrentDate();
@@ -25,10 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             initialCall('standings', lastUpdated, currentDate, 'standings');     
         },
-        'team-details/:id': function(teamId) {
-            console.log('DISPLAY TEAM DETAILS FOR:' + teamId );
+        'team-details/:id': async function(teamId) {
+            console.log('DISPLAY TEAM DETAILS FOR: ' + teamId );
+
+            const data = await getTeamDetails(teamId, 'team_details');
+            displayData('team_details', data);
         }
     });
+
+    // TODO: error page
 
 });
 
@@ -86,8 +91,6 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
             }
         }
 
-        // console.log(query);
-
         // Check whether or not it requires brand new data
         if (needsNewData) {
             console.log('NEEDS NEW DATA');
@@ -119,13 +122,15 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
 
             urlData = missingData.updatedData;
             missingData = missingData.toFetch;
+
+            console.log(missingData);
             
             const hasUrlData = Object.keys(urlData).length > 0;
 
             if (hasUrlData) {
 
                 // Get all available data saved in localstorage
-                if (query == '' || query.length > 0) {
+                if (typeof query != 'string' || Array.isArray(query)) {
                     result = listAllDataFromStorage(urlData);
                     
                 // Get specific key data from localstorage

@@ -3,7 +3,7 @@ import { getCurrentDate } from "./utils.js";
 
 export async function getData(query = '') {
 
-    const apiData = getApiData(query, true);
+    const apiData = getApiData(query, null, true);
     let result;
 
 
@@ -79,27 +79,37 @@ async function addAditionalData(teamData) {
     return womenData[0].women;
 }
 
-export async function getTeamDetails(idTeam) {
-
-    const fetchedLeagueTeams = getDataFromStorage('league_teams');
-    // console.log('inside team details');
+export async function getTeamDetails(idTeam, target = null) {
 
     let result;
 
-    // console.log(fetchedLeagueTeams);
-
     // No fetched teams
-    if (fetchedLeagueTeams === null) {
+    if (target) {
 
-        console.log('NEW FETCH???');
-        const apiData = getApiData('league_teams');
-        const teamData = await singleApiCall(apiData);
+        try {
+            console.log('NEW FETCH');
 
-        console.log('GOT DATA ');
-        // console.log(teamData);
+            const apiData = getApiData('team_details', idTeam);
+            // console.log();
+            const teamData = await singleApiCall(apiData.team_details);
+            const resultKey = getResultKey(teamData);
+
+            if (teamData[resultKey]) {
+                console.log(teamData);
+                return [teamData];
+            } else {
+                return null;
+            }
+
+            
+        } catch (error) {
+            console.log('ERROR???');
+            console.log(error);
+        }
+        
 
     } else {
-
+        const fetchedLeagueTeams = getDataFromStorage('league_teams');
         const objectKey = getResultKey(fetchedLeagueTeams);
 
         fetchedLeagueTeams[objectKey].forEach(teamObject => {
@@ -107,14 +117,13 @@ export async function getTeamDetails(idTeam) {
                 result = teamObject;
             }
         });
-
     }
 
 
     return result;
 }
 
-export function getApiData(query = '', newData = false) {
+export function getApiData(query = '', args = '', newData = false) {
     
     let currentDate = getCurrentDate(true);
 
@@ -138,11 +147,15 @@ export function getApiData(query = '', newData = false) {
             apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventsday.php',
             params: `?d=${currentDate}&l=4849`,
             identifier: 'games_today'
+        },
+        'team_details': {
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/lookupteam.php',
+            params: `?id=${args}`,
+            identifier: 'team_details'
         }
-        
     };
 
-    
+
     if (query == '') {
         if (newData || newData && query == 'league_teams') {
             dataArray.male_team_data = {};
@@ -154,7 +167,7 @@ export function getApiData(query = '', newData = false) {
         return dataArray;
     }
 
-    if (query.length > 0) {
+    if (typeof query != 'string' && Array.isArray(query)) {
 
         if (newData || newData && query.includes('league_teams')) {
             dataArray.male_team_data = {};
@@ -166,7 +179,7 @@ export function getApiData(query = '', newData = false) {
         return Object.fromEntries(Object.entries(dataArray).filter(([key, value]) => query.includes(key)));
     }
 
-    return dataArray[query];
+    return {[query]: dataArray[query] };
 }
 
 export async function performMultipleCalls(apiData) {

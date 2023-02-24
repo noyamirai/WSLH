@@ -5,32 +5,59 @@ import { revealSection, showErrorMessage } from "../scripts/renderUI.js";
 
 export function displayData(target, data) {
 
-    // Set data based on identifier
-    for (const key in data) {
-        const item = data[key];
-        const identifier = Object.keys(item)[1];
-        const dataKey = Object.keys(item)[0];
+    if (!Array.isArray(data)) {
+        const dataKey = getResultKey(data);
 
-        if (item[identifier] == 'standings') {
+        if (data.identifier == 'standings') {
 
             if (target == 'standings') {
-                displayStandings(item[dataKey]);
+                displayStandings(data[dataKey]);
             } else {
-                displayTopThreeTeams(item[dataKey].slice(0, 3));
+                displayTopThreeTeams(data[dataKey].slice(0, 3));
             }
 
-        } else if (item[identifier] == 'league_teams') {
-            displayLeagueTeams(item[dataKey]);
+        } else if (data.identifier  == 'league_teams') {
+            displayLeagueTeams(data[dataKey]);
 
-        } else if (item[identifier] == 'prev_games') {
+        } else if (data.identifier  == 'prev_games') {
 
-            let prevGames = item[dataKey].slice(0,10);
+            let prevGames = data[dataKey].slice(0,10);
             displayPreviousGames(prevGames);
 
-        } else if (item[identifier] == 'games_today') {
-            displayCurrentGames(item[dataKey]);
+        } else if (data.identifier  == 'games_today') {
+            displayCurrentGames(data[dataKey]);
+        }
+        
+    } else {
+        // Set data based on identifier
+        for (const key in data) {
+            const item = data[key];
+            const identifier = Object.keys(item)[1];
+            const dataKey = Object.keys(item)[0];
+    
+            if (item[identifier] == 'standings') {
+    
+                if (target == 'standings') {
+                    console.log(item);
+                    displayStandings(item[dataKey]);
+                } else {
+                    displayTopThreeTeams(item[dataKey].slice(0, 3));
+                }
+    
+            } else if (item[identifier] == 'league_teams') {
+                displayLeagueTeams(item[dataKey]);
+    
+            } else if (item[identifier] == 'prev_games') {
+    
+                let prevGames = item[dataKey].slice(0,10);
+                displayPreviousGames(prevGames);
+    
+            } else if (item[identifier] == 'games_today') {
+                displayCurrentGames(item[dataKey]);
+            }
         }
     }
+
 
     setActiveMenu(target);
     showPage(target);
@@ -138,7 +165,6 @@ export function displayLeagueTeams (data) {
 
     teamSection.querySelector('h2').innerHTML = `WSL Teams <span class="identifier">(${data.length})</span>`;
     revealSection(teamSection);
-
 
 }
 
