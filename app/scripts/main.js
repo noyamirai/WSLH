@@ -1,5 +1,5 @@
 import { getCurrentDate } from "./utils.js";
-import { getData, getApiData, handleMissingData, getTeamDetails } from './api.js';
+import { fetchData, getApiUrls, handleMissingData, getTeamDetails } from './api.js';
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
 
@@ -88,14 +88,14 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
         if (needsNewData) {
             console.log('NEEDS NEW DATA');
             
-            result = await getData(query);
+            result = await fetchData(query);
             saveDataToStorage(result, query);
             
         // User still has fresh data -> read from localstorage
         } else {
             console.log('GET DATA FROM LOCALSTORAGE');
 
-            let urlData = getApiData(query);
+            let urlData = getApiUrls(query);
 
             // Save which keys are missing from storage (aka data no longer saved, need new data again)
             let missingData = checkMissingData(urlData);

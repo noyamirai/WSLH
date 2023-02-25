@@ -7,7 +7,7 @@
  */
 export function saveDataToStorage(data, storageKey) {
 
-    if (data.length > 0) {
+    if (Array.isArray(data) || (typeof data != 'object' && data.length > 0)) {
         data.forEach((dataObject, key) => {
             const jsonData = JSON.stringify(data[key]);
             localStorage.setItem(dataObject.identifier, jsonData);
@@ -20,6 +20,11 @@ export function saveDataToStorage(data, storageKey) {
     return;
 }
 
+/**
+ * Determines which keys are missing from local storage and updates the data object with only already available API endpoints
+ * @param {Object} data Object containing API endpoints
+ * @returns {Object}
+ */
 export function checkMissingData(data) {
 
     let result = [];
@@ -37,6 +42,12 @@ export function checkMissingData(data) {
     return { 'toFetch': result, 'updatedData': data };
 }
 
+/**
+ * Lists all data from local storage based on API endpoint identifiers
+ * 
+ * @param {Object} data Object containing API endpoints
+ * @returns {Array} Data from local storage
+ */
 export function listAllDataFromStorage(data) {
 
     let result = [];
@@ -50,6 +61,12 @@ export function listAllDataFromStorage(data) {
     return result;
 }
 
+/**
+ * Gets specific key from local storage
+ * 
+ * @param {string} key Object containing API endpoints
+ * @returns {*} Data from local storage
+ */
 export function getDataFromStorage(key) {
 
     const jsonData = localStorage.getItem(key);
@@ -57,6 +74,12 @@ export function getDataFromStorage(key) {
 
 }
 
+/**
+ * Returns result key from API data object
+ * 
+ * @param {Object} dataObject Object containing API results
+ * @returns {string} Object key which can be used to retrieve data
+ */
 export function getResultKey(dataObject) {
 
     let objectKey;

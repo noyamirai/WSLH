@@ -41,7 +41,6 @@ export function toggleSpecificLoader(loaderDiv, state) {
     }
 }
 
-
 export function setActiveMenu(target) {
     const allMenuItems = document.querySelectorAll('.menu__item');
 
@@ -62,8 +61,6 @@ export function setActiveMenu(target) {
 export function showPage(target) {
 
     const allArticles = document.querySelectorAll('article');
-
-    console.log(target);
 
     allArticles.forEach(articleEl => {
         articleEl.classList.add('hide');

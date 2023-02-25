@@ -58,6 +58,7 @@ export function displayStandings (data) {
     const standingsSection = document.querySelector('.js-standings-section');
     const standingsTableBody = document.querySelector('.js-standings-body');
 
+    // If there's no data
     if (!data || data.length == 0) {
         showErrorMessage(standingsSection, 'No data found...');
         revealSection(standingsSection);
@@ -66,7 +67,7 @@ export function displayStandings (data) {
 
     standingsTableBody.innerHTML = '';
 
-    data.forEach((teamObject, i) => {
+    data.forEach((teamObject) => {
 
         const tableRow = document.createElement('tr');
         tableRow.id = teamObject.idTeam;
@@ -95,6 +96,7 @@ export function displayLeagueTeams (data) {
     const teamListUl = document.querySelector('.js-teamlist');
     let listItems = [];
 
+    // If there's no data
     if (!data || data.length == 0) {
         showErrorMessage(teamSection, 'No teams found...');
         revealSection(teamSection);
@@ -129,38 +131,30 @@ export function displayTopThreeTeams(leagueTeams) {
     const teamListUl = document.querySelector('.js-top-three');
     let listItems = [];
 
-    const fetchedLeagueTeams = getDataFromStorage('league_teams');
-
-    if (!leagueTeams || leagueTeams.length == 0 || !fetchedLeagueTeams || fetchedLeagueTeams.length == 0) {
+    // If there's no data but also no data in storage
+    if (!leagueTeams || leagueTeams.length == 0) {
         showErrorMessage(teamSection, 'No teams found...');
         revealSection(teamSection);
         return;
     }
 
-    const objectKey = getResultKey(fetchedLeagueTeams);
-
     leagueTeams.forEach(leagueTeamObject => {
 
-        // Get team details for better pic
-        fetchedLeagueTeams[objectKey].forEach(teamObject => {
-            if (leagueTeamObject.idTeam == teamObject.idTeam) {
-                const listData = `
-                                <li class="card__item">
-                                    <img class="team__logo" src="${teamObject.strTeamBadge}" alt="${teamObject.strTeam}">
-                                    <div class="card__details">
-                                        <h3>${teamObject.strTeam}</h3>
-                                        <p class="text__bubble">${leagueTeamObject.intPoints} points</p>
-                                    </div>
-                                </li>`;
-                listItems.push(listData);
-            }
-        });
+        const listData = `
+                        <li class="card__item">
+                            <img class="team__logo" src="${leagueTeamObject.strTeamBadge.replace('/tiny', '')}" alt="${leagueTeamObject.strTeam}">
+                            <div class="card__details">
+                                <h3>${leagueTeamObject.strTeam}</h3>
+                                <p class="text__bubble">${leagueTeamObject.intPoints} points</p>
+                            </div>
+                        </li>`;
+        listItems.push(listData);
 
     });
 
     teamListUl.innerHTML = '';
 
-    listItems.forEach((element, key) => {
+    listItems.forEach((element) => {
         teamListUl.innerHTML += element;
     });
 
@@ -169,6 +163,7 @@ export function displayTopThreeTeams(leagueTeams) {
 }
 
 async function getPreviousGameHtml (events) {
+    // shoutout naar Robert voor deze
     const listItems = events.map(async (eventObject) => {
 
         const fetches = [];
@@ -224,7 +219,7 @@ async function displayPreviousGames(events) {
         Promise.all(listItems).then(data => {
             prevMatchList.innerHTML = '';
 
-            data.forEach((element, key) => {
+            data.forEach((element) => {
                 prevMatchList.innerHTML += element;
             });
 
@@ -234,6 +229,7 @@ async function displayPreviousGames(events) {
     } catch (error) {
         showErrorMessage(prevMatchSection, 'Something went wrong!');
         revealSection(prevMatchSection);
+
         console.log('WEEWOOWEEOWW DISPLAY ERROR');
         console.log(error);
     }
@@ -293,13 +289,15 @@ function displayCurrentGames(events) {
     
                 matchList.innerHTML = '';
     
-                data.forEach((element, key) => {
+                data.forEach((element) => {
                     matchList.innerHTML += element;
                 });
 
                 revealSection(matchSection);
     
-            })
+            });
+
+        // No games
         } else {
 
             showErrorMessage(matchSection, 'No games today');
@@ -311,10 +309,10 @@ function displayCurrentGames(events) {
         
         }
 
-       
     } catch (error) {
         showErrorMessage(matchSection, 'Something went wrong!');
         revealSection(matchSection);
+
         console.log('WEEWOOWEEOWW DISPLAY ERROR');
         console.log(error);
     }
@@ -325,6 +323,8 @@ async function displayTeamDetails(teamData) {
     const teamDetailsPage = document.querySelector('#team-details-page');
     const teamDetailsSection = document.querySelector('.js-team-details-section');
     const teamDetailsContent = document.querySelector('.js-team-details-content');
+
+    // TODO: error handling
 
     teamData.forEach(async (data) => {
         const resultKey = getResultKey(data);
@@ -401,7 +401,7 @@ async function displayTeamDetails(teamData) {
 
         }
 
-    })
+    });
 
     return;
     
