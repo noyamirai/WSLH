@@ -123,7 +123,7 @@
                 </section>
             </article>
 
-            <article class="window hide" id="team-details-page">
+            <article class="window" id="team-details-page">
 
                 <header class="header">
 
@@ -141,24 +141,39 @@
 
                 </header>
 
-                <section class="js-team-details-section">
+                <div class="js-team-details-section">
 
-                    <!-- TODO: wrap in sections as well -->
+                    <section class="js-team-next-game-section">
+                        <h2>Next up</h2>
 
-                    <div class="js-team-prev-games-section">
+                        <div class="loader">
+                            <i class="icon fa-solid fa-futbol"></i>
+                        </div>
+
+                        <div class="js-next-game js-content hide">
+
+                            <ul class="cards cards--event js-next-game-list">
+                            </ul>
+                        </div>
+                        
+                    </section>
+
+                    <section class="js-team-prev-games-section">
 
                         <h2>Previous games</h2>
     
                         <div class="loader js-prev-games-loader">
                             <i class="icon fa-solid fa-futbol"></i>
                         </div>
-    
-                        <ul class="cards cards--list cards--game js-content js-prev-team-games hide">
-                        </ul>
-                    </div>
 
+                        <div class="js-content hide">
+                            <ul class="cards cards--list cards--game js-prev-team-games">
+                            </ul>
+                        </div>
+    
+                    </section>
                     
-                    <div class="content js-team-details-content">
+                    <section class="banner banner--purple js-team-squad-section">
                         <h2>Squad</h2>
 
                         <div class="loader">
@@ -169,9 +184,9 @@
 
                         </div>
                         
-                    </div>
+                    </section>
 
-                </section>
+                </div>
 
             </article>
 

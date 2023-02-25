@@ -235,58 +235,64 @@ async function displayPreviousGames(events) {
     }
 }
 
-function displayCurrentGames(events) {
+async function getEventsHtml(events, displayDate = false) {
+    const listItems = events.map(async (eventObject) => {
+            
+        const fetches = [];
+    
+        fetches.push(await getTeamDetails(eventObject.idHomeTeam));
+        fetches.push(await getTeamDetails(eventObject.idAwayTeam));
+
+        let listItem = Promise.all(fetches).then(data => {
+            const homeTeam = data[0];
+            const awayTeam = data[1];
+            const startTime = eventObject.strTime.substr(0, eventObject.strTime.lastIndexOf(":"));
+            const eventDate = formatDate(eventObject.dateEvent, 'dd/mm/yyyy');
+
+            return `
+                <li class="card__item">
+                    
+                    <div class="event__teamname">
+                        <p>${eventObject.strHomeTeam}</p>
+                    </div>
+
+                    <div class="event__details">
+                        <img class="team__logo" src="${homeTeam.strTeamBadge}" alt="">
+
+                        <div class="event__details__time">
+                            <p>${startTime}</p>
+                        </div>
+
+                        <img class="team__logo" src="${awayTeam.strTeamBadge}" alt="">
+
+                    </div>
+
+                    <div class="event__teamname">
+                        <p>${eventObject.strAwayTeam}</p>
+                    </div>
+
+                    ${ displayDate ? `<div class="event__details__date"><p >${eventDate}</p></div>` : ''}
+                </li>
+            `;
+        })
+
+        return listItem;
+    });   
+
+    return listItems;
+}
+
+async function displayCurrentGames(events) {
 
     const matchSection = document.querySelector('.js-matches-section');
     const matchList = document.querySelector('.js-matchlist');
-    let listItems = [];
 
     try {
 
         if (events) {
             
-            listItems = events.map(async (eventObject) => {
-            
-                const fetches = [];
-            
-                fetches.push(await getTeamDetails(eventObject.idHomeTeam));
-                fetches.push(await getTeamDetails(eventObject.idAwayTeam));
-    
-                let listItem = Promise.all(fetches).then(data => {
-                    const homeTeam = data[0];
-                    const awayTeam = data[1];
-                    const startTime = eventObject.strTime.substr(0, eventObject.strTime.lastIndexOf(":"));
-    
-                    return `
-                        <li class="card__item">
-                            <div class="event__teamname">
-                                <p>${eventObject.strHomeTeam}</p>
-                            </div>
-    
-                            <div class="event__details">
-                                <img class="team__logo" src="${homeTeam.strTeamBadge}" alt="">
-    
-                                <div class="event__details__time">
-                                    <p>${startTime}</p>
-                                </div>
-    
-                                <img class="team__logo" src="${awayTeam.strTeamBadge}" alt="">
-    
-                            </div>
-    
-                            <div class="event__teamname">
-                                <p>${eventObject.strAwayTeam}</p>
-                            </div>
-    
-                        </li>
-                    `;
-                })
-    
-                return listItem;
-            });
-    
+            const listItems = await getEventsHtml(events);
             Promise.all(listItems).then(data => {
-    
                 matchList.innerHTML = '';
     
                 data.forEach((element) => {
@@ -294,9 +300,8 @@ function displayCurrentGames(events) {
                 });
 
                 revealSection(matchSection);
-    
             });
-
+    
         // No games
         } else {
 
@@ -321,10 +326,6 @@ function displayCurrentGames(events) {
 async function displayTeamDetails(teamData) {
 
     const teamDetailsPage = document.querySelector('#team-details-page');
-    const teamDetailsSection = document.querySelector('.js-team-details-section');
-    const teamDetailsContent = document.querySelector('.js-team-details-content');
-
-    // TODO: error handling
 
     teamData.forEach(async (data) => {
         const resultKey = getResultKey(data);
@@ -396,8 +397,25 @@ async function displayTeamDetails(teamData) {
 
             squadList.innerHTML += listHtml;
 
-            const section = document.querySelector('.js-team-details-content');
+            const section = document.querySelector('.js-team-squad-section');
             revealSection(section);
+
+        } else if (data.identifier == 'next_games_by_team') {
+            const listItems = await getEventsHtml(data[resultKey].slice(0,1), true);
+
+            Promise.all(listItems).then(data => {
+                console.log(data);
+                const matchList = teamDetailsPage.querySelector('.js-next-game-list');
+                matchList.innerHTML = '';
+    
+                data.forEach((element) => {
+                    matchList.innerHTML += element;
+                });
+
+                const section = document.querySelector('.js-team-next-game-section');
+                revealSection(section);
+            });
+
 
         }
 

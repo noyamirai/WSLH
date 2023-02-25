@@ -180,7 +180,7 @@ h2:has(.identifier) {
     .header h1, .header h2 {
         font-size: 18px;
         font-size:  1.8rem;
-
+        line-height: 1;
         margin: 0;
         
         color: white;
@@ -339,6 +339,10 @@ section + .banner {
     background-color: var(--secondary-color);
 }
 
+.banner--purple {
+  background-color: var(--accent-color);
+}
+
 /* =============================================================================
   #MESSAGE
 ============================================================================= */
@@ -412,9 +416,15 @@ section + .banner {
         background-color: var(--grey);
     }
 
+    .card__item:hover a {
+      transform: scale(1.2);
+    }
+
         .card__item a {
             display: flex;
             padding: 14px;
+
+            transition: all 250ms ease-in-out;
         }
 
     /* Game overview/stats */
@@ -562,9 +572,18 @@ section + .banner {
 }
 
     .cards--event .card__item {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .cards--event:has(.event__details__date) {
+      padding: 0 12px;
+    }
+    
+    .cards--event .card__item:has(.event__details__date) {
+      padding: var(--default-padding) 0;
     }
 
     .cards--event .card__item + .card__item {
@@ -658,11 +677,46 @@ section + .banner {
         background-color: var(--secondary-color);
       }
 
+      .event__details__date {
+        position: absolute;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        left: -12px;
+        right: -12px;
+        top: 0;
+
+        height: 35px;
+
+        background-color: var(--secondary-color);
+        text-align: center;
+        z-index: 200;
+
+        font-weight: 600;
+        color: var(--white);
+      }
+
+      .cards--event .card__item:first-of-type .event__details__date {
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+      }
+
+      .cards--event .card__item:has(.event__details__date) {
+        padding-top: calc(35px + 16px);
+      }
+
+      .cards--event .card__item:has(.event__details__date) + .card__item {
+        border: none;
+        margin: 0;
+      }
+
 * + .cards--overview {
   margin-top: 16px;
 }
 
-.cards--overview {
+.cards--overview, .banner .cards--overview  {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
@@ -861,16 +915,18 @@ td:first-child {
   inset: 0 0 0 0;
 
   background-color: var(--white);
-    border-top-right-radius: 30px;
-  border-top-left-radius: 30px;
-
   z-index: 500;
 
-  /* border-top-right-radius: 30px;
-  border-top-left-radius: 30px; */
-
+  transform: translateX(100%);
   overflow-y: scroll;
+
+  transition: transform 450ms ease-in-out;
 }
+
+  .window--open {
+    transform: translateX(0);
+  }
+
 
   .window .header {
     padding: 0;
@@ -878,9 +934,6 @@ td:first-child {
     height: 200px;
 
     background: var(--secondary-color);
-
-    border-top-right-radius: 30px;
-    border-top-left-radius: 30px;
   }
 
     .window .header::before {
@@ -923,21 +976,16 @@ td:first-child {
       width: max-content;
     }
 
-  .window section {
-    padding: calc(var(--default-padding) + 20px) 0 var(--default-padding) 12px;
+  .window section:first-of-type {
+    padding: calc(var(--default-padding) + 20px) 0 0 12px;
   }
 
-  .window .content {
-    padding: 0;
-    margin-right: var(--default-padding);
-    
+  .window section:last-of-type {
+    padding-bottom: var(--default-padding);
   }
 
-  .window * + .content {
-    margin-top: 20px;
-    padding-top: 20px;
-
-    border-top: 2px solid #eee;
+  .window .banner::before {
+    display: none;
   }
 
   /* =============================================================================
@@ -963,7 +1011,7 @@ button {
     justify-content: center;
     
     position: absolute;
-    right: var(--default-padding);
+    left: var(--default-padding);
     top: var(--default-padding);
 
     background-color: #FFF;

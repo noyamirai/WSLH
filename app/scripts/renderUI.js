@@ -61,14 +61,19 @@ export function setActiveMenu(target) {
 export function showPage(target) {
 
     const allArticles = document.querySelectorAll('article');
-
     allArticles.forEach(articleEl => {
-        articleEl.classList.add('hide');
+        if (!articleEl.classList.contains('window')) {
+            articleEl.classList.add('hide');
+        } else {
+            articleEl.classList.remove('window--open');
+        }
 
         if (target == '' && articleEl.id == 'home-page') {
             articleEl.classList.remove('hide');   
+        } else if (target == 'team-details' && articleEl.id == (target + '-page')) {
+            articleEl.classList.add('window--open');
         } else if (articleEl.id == (target + '-page')) {
-            articleEl.classList.remove('hide');
+            articleEl.classList.remove('hide'); 
         }
     });
 
