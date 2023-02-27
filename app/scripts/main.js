@@ -1,7 +1,7 @@
 import { getCurrentDate } from "./utils.js";
 import { fetchData, getApiUrls, handleMissingData, getTeamDetails } from './api.js';
 import { displayData } from "./dataHandling.js";
-import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage } from "./storage.js";
+import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage, getResultKey } from "./storage.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -120,10 +120,33 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
             // Remaining data to fetch (new data)
             if (missingData.length > 0) {
                 let newData = await handleMissingData(missingData);
-                
-                newData.forEach(item => {
-                    result.push(item);
-                });
+
+                console.log(newData);
+
+                // if data in localstorage
+                if (result && result.length > 0) {
+
+                    // singular call was made
+                    if (typeof newData === 'object' && !Array.isArray(newData)) {
+                        const resultKey = getResultKey(newData);
+
+                        if (result && result.length > 0) {
+                            result.push(newData[resultKey]);
+                        }
+
+                    // multiple calls were made
+                    } else {
+                        newData.forEach(item => {
+                            result.push(item);
+                        });
+                    }
+                    
+                // nothing from localstorage aka empty result
+                } else {
+                    result = newData;
+                }
+
+
             }
         }
 

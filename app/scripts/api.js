@@ -10,28 +10,28 @@ import { getCurrentDate } from "./utils.js";
  * @returns {Promise<Array>} A Promise that resolves with an array of objects containing data from API calls.
  */
 export async function fetchData(query = '') {
-
-     // Get API endpoints based on query parameter
+    // Get API endpoints based on query parameter
     const apiData = getApiUrls(query, true);
+    const apiDataKeys = Object.keys(apiData);
     let result;
 
-    // Check if the query is specified or if its an Array
-    if (query == '' || (Array.isArray(query) && query.length > 0)) {
+    // Check if its an object with multiple keys
+    if (apiDataKeys.length > 1) {
         result = await performMultipleCalls(apiData);
 
     // Specific API call
     } else {
-        result = await singleApiCall(apiData);
+        result = await singleApiCall(apiData[query]);
     }
 
     // Check if the query asks to fetch league_teams
-    if (query == 'league_teams' || query.includes('league_teams') || query == '') {
+    if (apiDataKeys.length > 0 && apiDataKeys.includes('league_teams')) {
 
         // Process the results to combine male and female team data
         let teamData = [];
 
         result.forEach((item) => {
-            const dataKey = Object.keys(item)[0];
+            const dataKey = getResultKey(item);
             
             if (item.identifier == 'male_team_data' || item.identifier == 'league_teams') {
 
@@ -308,7 +308,7 @@ export function getApiUrls(query = '', newData = false) {
     };
 
     // If new data is requested, add an additional API endpoint to fetch male team data.
-     if (newData || newData && query.includes('league_teams') || newData && query == 'league_teams') {
+     if (newData && query.includes('league_teams') || newData && query == 'league_teams' || newData) {
         dataArray.male_team_data = {};
         dataArray.male_team_data.apiUrl = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php'
         dataArray.male_team_data.params =`?l=English%20Premier%20League`
@@ -358,8 +358,9 @@ export async function performMultipleCalls(apiData) {
 export async function singleApiCall(urlData) {
 
     try {
-
+        
         let url = urlData.apiUrl + urlData.params;
+        console.log(urlData.apiUrl);
 
         const response = await fetch(url);
 

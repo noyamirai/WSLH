@@ -27,7 +27,8 @@ export function saveDataToStorage(data, storageKey) {
  */
 export function checkMissingData(data) {
 
-    let result = [];
+    let toFetch = [];
+    let newData = [];
 
     for (const key in data) {
         const item = data[key];
@@ -35,11 +36,13 @@ export function checkMissingData(data) {
 
         if (localStorageKey === null || localStorageKey === undefined || localStorageKey == '' || localStorageKey == 'undefined') {
             delete data[item.identifier];
-            result.push(item);
+            toFetch.push(item);
+        } else {
+            newData.push(item);
         }
     }
 
-    return { 'toFetch': result, 'updatedData': data };
+    return { 'toFetch': toFetch, 'updatedData': newData };
 }
 
 /**
