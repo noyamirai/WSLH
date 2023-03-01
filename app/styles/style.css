@@ -397,10 +397,10 @@ section + .banner {
   #CARDS
 ============================================================================= */
 .card-wrapper + .card-wrapper {
-  margin-top: var(--default-padding);
-  padding-top: var(--default-padding);
+  margin-top: 18px;
+  /* padding-top: var(--default-padding); */
 
-  border-top: 2px solid #eee;
+  /* border-top: 2px solid #eee; */
 }
 
 .cards {
@@ -712,8 +712,18 @@ section + .banner {
         margin: 0;
       }
 
-* + .cards--overview {
+*  + .cards--overview {
   margin-top: 16px;
+}
+
+.cards--heading {
+  text-align: center;
+  color: var(--white);
+  font-size: 14px; font-size: 1.4rem;
+  padding: 6px;
+
+  border-radius: 6px;
+  background-color: var(--secondary-color);
 }
 
 .cards--overview, .banner .cards--overview  {
@@ -977,7 +987,11 @@ td:first-child {
     }
 
   .window section:first-of-type {
-    padding: calc(var(--default-padding) + 20px) 0 0 12px;
+    padding-top: calc(var(--default-padding) + 20px);
+  } 
+
+  .window section:has(.cards--list) {
+    padding: 0 0 0 12px;
   }
 
   .window section:last-of-type {

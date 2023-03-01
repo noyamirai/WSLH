@@ -21,8 +21,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             initialCall('standings', lastUpdated, currentDate, 'standings');     
         },
         'team-details/:id': async function(teamId) {
-            const data = await getTeamDetails(teamId, 'team_details');
-            displayData('team-details', data);
+            try {
+                const data = await getTeamDetails(teamId, 'team_details');
+                displayData('team-details', data);
+                
+            } catch (error) {
+                console.log(error);
+                // TOOD: error handling
+            }
         }
     });
 

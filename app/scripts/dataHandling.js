@@ -368,7 +368,7 @@ async function displayTeamDetails(teamData) {
              
                 listHtml += `
                     <div class="card-wrapper">
-                        <h3>${key}</h3>
+                        <h3 class="cards--heading">${key}</h3>
                         <ul class="cards cards--overview">   
                 `;
 
@@ -381,7 +381,7 @@ async function displayTeamDetails(teamData) {
 
                             <div class="card__details">
                                 <h3>${squadMember.strPlayer}</h3>
-                                <p>${squadMember.strPosition}</p>
+                               <!-- <p>${squadMember.strPosition}</p> -->
                             </div>
                         </li>
         
