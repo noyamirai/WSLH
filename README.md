@@ -16,15 +16,16 @@ WSL Personal Hub will be offering the following features:
 | Features :nail_care:        | Status :rocket:    |
 |-----------------------------|---------------------|
 | View current league standings    | :white_check_mark: |
-| Team overviews    | :hourglass: |
+| Team details    | :white_check_mark: |
 | Today's games    | :white_check_mark: |
 | Previous ten games    | :white_check_mark: |
+| Favorite teams   | :hourglass: |
 
-<!-- ---
+---
 
 ## :memo: Documentation
 
-Learn more about the WSL Personal Hub and dive deeper into this project by reading the process documentation in our [wiki](https://github.com/noyamirai/projectteamcreator/wiki). -->
+Learn more about the WSL Personal Hub and dive deeper into this project by reading the [process documentation](./app/docs/productdoc.md).
 
 ## :package: Resources
 Our application uses the following recourses:
