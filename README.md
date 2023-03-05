@@ -7,11 +7,11 @@ Whether you're a super fan or simply looking to stay informed, the WSL Personal 
 
 So whether you're a super fan or simply looking to stay informed on the FA Women's Super League, we invite you to check out our application. Thank you for your interest in our project, and we hope you find it useful!
 
-<!-- TODO: add preview screens of the app -->
+![WSLH - App preview](./app/docs/assets/WSLH-app_preview.png)
 
 ## :computer: Features
 
-WSL Personal Hub will be offering the following features: 
+WSL Personal Hub offers the following features (for now): 
 
 | Features :nail_care:        | Status :rocket:    |
 |-----------------------------|---------------------|
@@ -20,8 +20,6 @@ WSL Personal Hub will be offering the following features:
 | Today's games    | :white_check_mark: |
 | Previous ten games    | :white_check_mark: |
 | Favorite teams   | :hourglass: |
-
----
 
 ## :memo: Documentation
 
