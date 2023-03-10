@@ -2,6 +2,7 @@ import { getCurrentDate } from "./utils.js";
 import { fetchData, getApiUrls, handleMissingData, getTeamDetails } from './api.js';
 import { displayData } from "./dataHandling.js";
 import { saveDataToStorage, checkMissingData, listAllDataFromStorage, getDataFromStorage, getResultKey } from "./storage.js";
+import { showPage, setActiveMenu } from './renderUI.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -27,6 +28,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
             } catch (error) {
                 console.log(error);
+                const failScreen = document.querySelector('.failed');
+                failScreen.classList.remove('hide');
                 // TOOD: error handling
             }
         }
@@ -126,7 +129,6 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
             // Remaining data to fetch (new data)
             if (missingData.length > 0) {
                 let newData = await handleMissingData(missingData);
-
                 console.log(newData);
 
                 // if data in localstorage
@@ -151,8 +153,6 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
                 } else {
                     result = newData;
                 }
-
-
             }
         }
 
@@ -165,7 +165,9 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
     } catch (error) {
         const failScreen = document.querySelector('.failed');
         failScreen.classList.remove('hide');
-        
+        // showPage(target);
+        // setActiveMenu(target);
+
         console.log('WEE WEOO WEE WOO');
         console.log(error);
     }

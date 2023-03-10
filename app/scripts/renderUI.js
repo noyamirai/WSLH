@@ -19,6 +19,17 @@ export function revealSection(section) {
 
 }
 
+export function getSection(id) {
+    const sections = {
+        'standings': '.js-standings-section',
+        'league_teams': ['js-teams-section', '.js-top-three-section'],
+        'prev_games': '.js-prev-matches-section',
+        'games_today': '.js-matches-section' 
+    }
+
+    return sections[id];
+}
+
 export function showErrorMessage(section, text) {
     let messageEl = section.querySelector('.message');
 

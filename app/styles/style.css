@@ -1020,6 +1020,27 @@ button {
 
 }
 
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 8px;
+  border-radius: 3px;
+  background-color: var(--accent-color);
+
+  color: var(--white);
+  text-decoration: none;
+
+  font-weight: 600;
+
+  min-width: 100px;
+}
+
+* + .btn {
+  margin-top: 12px;
+}
+
 .btn--menu {
 
     display: flex;

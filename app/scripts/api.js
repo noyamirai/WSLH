@@ -1,4 +1,5 @@
 import { getDataFromStorage, getResultKey, saveDataToStorage } from "../scripts/storage.js";
+import { getSection, revealSection, showErrorMessage, showPage } from "./renderUI.js";
 import { getCurrentDate } from "./utils.js";
 
 /**
@@ -296,7 +297,7 @@ export function getApiUrls(query = '', newData = false) {
             identifier: 'league_teams'
         },
         'prev_games': {
-            apiUrl: 'https://www.thesportssdb.com/api/v1/json/60130162/eventspastleague.php',
+            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventspastleague.php',
             params: '?id=4849',
             identifier: 'prev_games'
         },
@@ -380,6 +381,15 @@ export async function singleApiCall(urlData) {
         }
         
     } catch (error) {
+        // console.log(urlData);
+        // const sectionClass = getSection(urlData.identifier);
+        // const sectionElement = document.querySelector(sectionClass);
+
+        // console.log(urlData.identifier);
+
+        // showErrorMessage(sectionElement, 'Something went wrong!');
+        // revealSection(sectionElement);
+
         // If there is an error in processing the response, throw an error with the message
         throw new Error(error);
     }

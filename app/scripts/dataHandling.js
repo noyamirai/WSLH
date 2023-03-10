@@ -216,6 +216,7 @@ async function displayPreviousGames(events) {
     try {
 
         const listItems = await getPreviousGameHtml(events);
+        
         Promise.all(listItems).then(data => {
             prevMatchList.innerHTML = '';
 
