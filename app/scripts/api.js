@@ -296,7 +296,7 @@ export function getApiUrls(query = '', newData = false) {
             identifier: 'league_teams'
         },
         'prev_games': {
-            apiUrl: 'https://www.thesportsdb.com/api/v1/json/60130162/eventspastleague.php',
+            apiUrl: 'https://www.thesportssdb.com/api/v1/json/60130162/eventspastleague.php',
             params: '?id=4849',
             identifier: 'prev_games'
         },

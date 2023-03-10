@@ -163,6 +163,9 @@ async function saveAndDisplayData(target, query = '', needsNewData = false) {
         
     // TODO: error handling
     } catch (error) {
+        const failScreen = document.querySelector('.failed');
+        failScreen.classList.remove('hide');
+        
         console.log('WEE WEOO WEE WOO');
         console.log(error);
     }
