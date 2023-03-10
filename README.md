@@ -20,6 +20,7 @@ WSL Personal Hub offers the following features (for now):
 | Today's games    | :white_check_mark: |
 | Previous ten games    | :white_check_mark: |
 | Favorite teams   | :hourglass: |
+| Match details   | :hourglass: |
 
 ## :memo: Documentation
 
